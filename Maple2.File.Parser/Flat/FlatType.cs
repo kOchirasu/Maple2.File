@@ -29,9 +29,29 @@ namespace Maple2.File.Parser.Flat {
         }
 
         public IEnumerable<FlatProperty> GetProperties() {
+            return Properties.Values;
+        }
+
+        public IEnumerable<FlatProperty> GetInheritedProperties() {
+            HashSet<string> added = new(Properties.Keys);
+            List<FlatProperty> props = new();
+            for (int i = Mixin.Count - 1; i >= 0; i--) {
+                foreach (FlatProperty prop in Mixin[i].GetAllProperties()) {
+                    if (added.Contains(prop.Name)) {
+                        continue;
+                    }
+                    added.Add(prop.Name);
+                    props.Add(prop);
+                }
+            }
+
+            return props;
+        }
+
+        public IEnumerable<FlatProperty> GetAllProperties() {
             Dictionary<string, FlatProperty> props = new(Properties);
             for (int i = Mixin.Count - 1; i >= 0; i--) {
-                foreach (FlatProperty prop in Mixin[i].GetProperties()) {
+                foreach (FlatProperty prop in Mixin[i].GetAllProperties()) {
                     props.TryAdd(prop.Name, prop);
                 }
             }

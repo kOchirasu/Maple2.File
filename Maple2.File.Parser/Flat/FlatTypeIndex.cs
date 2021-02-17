@@ -8,9 +8,11 @@ using Maple2.File.IO.Crypto.Common;
 
 namespace Maple2.File.Parser.Flat {
     public class FlatTypeIndex {
+        private readonly string root; // flat, flat/library, flat/presets
         private readonly Dictionary<string, FlatTypeNode> typeNodes;
 
-        public FlatTypeIndex(string exportedPath) {
+        public FlatTypeIndex(string exportedPath, string root = "flat") {
+            this.root = root;
             typeNodes = ReadTypeNodes(exportedPath);
 
             foreach (FlatTypeNode typeNode in typeNodes.Values) {
@@ -18,6 +20,10 @@ namespace Maple2.File.Parser.Flat {
                     typeNodes[mixin.Name.ToLower()].Children.Add(typeNode);
                 }
             }
+        }
+
+        public IEnumerable<FlatType> GetAllTypes() {
+            return typeNodes.Values.Select(node => node.Value);
         }
 
         public FlatType GetType(string name) {
@@ -35,13 +41,13 @@ namespace Maple2.File.Parser.Flat {
         }
 
         // Builds Index
-        private static Dictionary<string, FlatTypeNode> ReadTypeNodes(string exportedPath) {
+        private Dictionary<string, FlatTypeNode> ReadTypeNodes(string exportedPath) {
             var reader = new M2dReader(exportedPath);
 
             Dictionary<string, XmlNode> xmlNodes = new();
             Dictionary<string, FlatTypeNode> types = new();
             foreach (PackFileEntry entry in reader.Files) {
-                if (!entry.Name.StartsWith("flat")) continue;
+                if (!entry.Name.StartsWith(root)) continue;
 
                 XmlDocument xmlDocument = reader.GetXmlDocument(entry);
                 XmlNode node = xmlDocument.SelectSingleNode("model");
@@ -75,15 +81,35 @@ namespace Maple2.File.Parser.Flat {
                         throw new ConstraintException("Null value found for property node");
                     }
 
-                    XmlNode setNode = propNode.SelectSingleNode("set");
-                    string setValue = setNode?.Attributes?["value"]?.Value;
+                    FlatProperty property;
 
-                    var property = new FlatProperty {
-                        Name = propNode.Attributes["name"].Value,
-                        Type = propNode.Attributes["type"].Value,
-                        Id = propNode.Attributes["id"].Value,
-                        Value = setValue,
-                    };
+                    XmlNodeList setNodes = propNode.SelectNodes("set");
+                    string propName = propNode.Attributes["name"].Value;
+                    string propType = propNode.Attributes["type"].Value;
+                    string propId = propNode.Attributes["id"].Value;
+
+                    if (propType.StartsWith("Assoc")) {
+                        List<(string, string)> values = new();
+                        foreach (XmlNode setNode in setNodes) {
+                            values.Add((setNode.Attributes["index"].Value, setNode.Attributes["value"].Value));
+                        }
+
+                        property = new FlatProperty {
+                            Name = propName,
+                            Type = propType,
+                            Id = propId,
+                            Value = FlatProperty.ParseAssocType(propType, values),
+                        };
+                    } else {
+                        string value = setNodes[0].Attributes["value"].Value;
+                        property = new FlatProperty {
+                            Name = propName,
+                            Type = propType,
+                            Id = propId,
+                            Value = FlatProperty.ParseType(propType, value),
+                        };
+                    }
+
                     type.Properties.Add(property.Name, property);
                 }
             }
