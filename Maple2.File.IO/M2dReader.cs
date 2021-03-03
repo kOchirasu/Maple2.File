@@ -50,5 +50,9 @@ namespace Maple2.File.IO {
 
             return document;
         }
+
+        public byte[] GetBytes(PackFileEntry entry) {
+            return CryptoManager.DecryptData(entry.FileHeader, m2dFile);
+        }
     }
 }
