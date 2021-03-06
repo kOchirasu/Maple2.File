@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Xml.Enum;
+using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class SubConditionTarget {
@@ -29,7 +29,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int targetCheckMinRange;
         [XmlAttribute] public int targetInRangeCount;
         [XmlAttribute] public int targetFriendly;
-        [XmlAttribute] public CompareType targetCountSign;
+        [XmlAttribute] public string targetCountSign;
         [XmlIgnore] public string[] requireStates; // csv
         [XmlIgnore] public string[] requireSubStates; // csv
         [XmlIgnore] public string[] requireMasteryTypes; // csv

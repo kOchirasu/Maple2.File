@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class Upgrade {

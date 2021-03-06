@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
+using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
     // Typed
@@ -9,14 +10,14 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlIgnore] public int[] level; // csv
         [XmlIgnore] public int[] skillID; // csv
         [XmlIgnore] public int[] linkSkillID; // csv
-        [XmlAttribute] public int overlapCount;
+        [XmlAttribute] public int overlapCount = 1;
         [XmlAttribute] public int skillTarget;
         [XmlAttribute, DefaultValue(1)] public int skillOwner = 1; // if 0 then 1?
         [XmlAttribute] public uint delay;
         [XmlAttribute] public int removeDelay;
         [XmlAttribute] public int interval;
         [XmlAttribute] public int immediateActive;
-        [XmlAttribute] public int fireCount;
+        [XmlAttribute] public int fireCount = 1;
         [XmlAttribute] public int nonTargetActive;
         [XmlAttribute] public int useDirection;
         [XmlAttribute] public int onlySensingActive;

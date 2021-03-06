@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Maple2.File.Parser.Xml {
+namespace Maple2.File.Parser.Tools {
     internal static class Serialize {
         public static string StringCsv(string[] data) {
             return string.Join(',', data);

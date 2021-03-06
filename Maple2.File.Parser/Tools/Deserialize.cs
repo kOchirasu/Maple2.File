@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 
-namespace Maple2.File.Parser.Xml {
+namespace Maple2.File.Parser.Tools {
     internal static class Deserialize {
         public static string[] StringCsv(string value) {
             return value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
