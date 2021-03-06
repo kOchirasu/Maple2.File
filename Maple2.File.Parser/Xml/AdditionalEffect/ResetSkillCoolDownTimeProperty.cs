@@ -3,7 +3,7 @@ using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ResetSkillCoolDownTimeProperty {
-        [XmlIgnore] public int[] skillCodes; // csv
+        [XmlIgnore] public int[] skillCodes;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("skillCodes")]

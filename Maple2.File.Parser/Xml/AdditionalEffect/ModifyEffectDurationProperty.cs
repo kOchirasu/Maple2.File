@@ -3,9 +3,9 @@ using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ModifyEffectDurationProperty {
-        [XmlIgnore] public int[] effectCodes; // csv
-        [XmlIgnore] public float[] durationFactors; // csv
-        [XmlIgnore] public float[] durationValues; // csv
+        [XmlIgnore] public int[] effectCodes;
+        [XmlIgnore] public float[] durationFactors;
+        [XmlIgnore] public float[] durationValues;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("effectCodes")]

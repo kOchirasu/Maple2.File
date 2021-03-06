@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Skill;
@@ -18,7 +17,7 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public string endEffect;
         [XmlAttribute] public string splashInvokeEffect;
         [XmlAttribute] public string splashEndEffect;
-        [XmlIgnore] public string[] strTagEffects; // csv
+        [XmlIgnore] public string[] strTagEffects;
         [XmlAttribute] public string selfInputCombo;
         [XmlAttribute] public string weaponSequenceName;
         [XmlAttribute] public string loopKeepEffect;
@@ -37,7 +36,7 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public float moveangle;
         [XmlAttribute] public float movevangle;
         [XmlAttribute] public float movedistance;
-        [XmlAttribute, DefaultValue(0)] public int moveEaseType;
+        [XmlAttribute] public int moveEaseType;
         [XmlAttribute] public float moveMid;
         [XmlAttribute] public float moveHeight;
         [XmlAttribute] public int hide;
@@ -71,16 +70,16 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public int cubeMagicPathID;
         [XmlAttribute] public int direction = 3;
         [XmlAttribute] public int sequence;
-        [XmlAttribute, DefaultValue(0)] public int attacktype;
-        [XmlAttribute, DefaultValue(0)] public int attackMethodType;
+        [XmlAttribute] public int attacktype;
+        [XmlAttribute] public int attackMethodType;
         [XmlAttribute] public int hitImmuneBreak;
         [XmlAttribute] public float brokenForce;
         [XmlAttribute] public int brokenOffence;
-        [XmlAttribute, DefaultValue(0)] public int unrideOnHit;
+        [XmlAttribute] public int unrideOnHit;
         [XmlAttribute] public int releaseObjectWeaponOnHit = 1;
-        [XmlIgnore] public int[] compulsionType; // csv
+        [XmlIgnore] public int[] compulsionType;
         [XmlAttribute] public int grabTargetType;
-        [XmlIgnore] public string[] grabNodeCategory; // csv
+        [XmlIgnore] public string[] grabNodeCategory;
 
         [XmlElement] public PetTamingProperty petTamingProperty;
         [XmlElement] public SplashManualActiveProperty splashManualActiveProperty;

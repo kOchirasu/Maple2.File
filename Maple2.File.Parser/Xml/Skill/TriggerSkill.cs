@@ -7,9 +7,9 @@ namespace Maple2.File.Parser.Xml.Skill {
     public class TriggerSkill {
         [XmlAttribute] public int splash;
         [XmlAttribute] public int randomCast;
-        [XmlIgnore] public int[] level; // csv
-        [XmlIgnore] public int[] skillID; // csv
-        [XmlIgnore] public int[] linkSkillID; // csv
+        [XmlIgnore] public int[] level;
+        [XmlIgnore] public int[] skillID;
+        [XmlIgnore] public int[] linkSkillID;
         [XmlAttribute] public int overlapCount = 1;
         [XmlAttribute] public int skillTarget;
         [XmlAttribute, DefaultValue(1)] public int skillOwner = 1; // if 0 then 1?
@@ -25,7 +25,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int activeByIntervalTick;
         [XmlAttribute] public int dependOnDamageCount;
         [XmlAttribute] public int independent;
-        [XmlAttribute, DefaultValue(0)] public int chain;
+        [XmlAttribute] public int chain;
         [XmlAttribute, DefaultValue(150.0f)] public float chainDistance = 150.0f; // default to 150.0 if not float
 
         [XmlElement] public BeginCondition beginCondition;

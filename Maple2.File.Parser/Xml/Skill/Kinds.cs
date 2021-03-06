@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
@@ -7,7 +6,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int type;
         [XmlAttribute] public int subType;
         [XmlAttribute] public int rangeType;
-        [XmlAttribute, DefaultValue(0)] public int groupType;
+        [XmlAttribute] public int groupType;
         [XmlAttribute] public int jump;
         [XmlAttribute] public string state; // ??
         [XmlAttribute("continue")] public int continueSkill;
@@ -24,7 +23,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int releaseStunState;
         [XmlAttribute] public int disableWater;
         [XmlAttribute] public bool holdAttack;
-        [XmlIgnore] public int[] groupIDs; // csv
+        [XmlIgnore] public int[] groupIDs;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("groupIDs")]

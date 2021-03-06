@@ -3,8 +3,8 @@ using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ImmuneEffectProperty {
-        [XmlIgnore] public int[] immuneEffectCodes; // csv
-        [XmlIgnore] public int[] immuneBuffCategories; // csv
+        [XmlIgnore] public int[] immuneEffectCodes;
+        [XmlIgnore] public int[] immuneBuffCategories;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("immuneEffectCodes")]

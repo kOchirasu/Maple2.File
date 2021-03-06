@@ -24,20 +24,20 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public bool onlyBattleRidingState;
         [XmlAttribute] public bool allowMapleSurvival;
 
-        [XmlElement] public List<RequireJob> job;
-        [XmlElement] public List<RequireEffect> requireEffect;
-        [XmlElement] public List<RequireSkillElement> requireSkillElement;
-        [XmlElement] public List<RequireMapCodes> requireMapCodes;
-        [XmlElement] public List<RequireMapCategoryCodes> requireMapCategoryCodes;
-        [XmlElement] public List<RequireMapContinentCodes> requireMapContinentCodes;
-        [XmlElement] public List<RequireDungeonRoomGroupTypes> requireDungeonRoomGroupTypes;
-        [XmlElement] public List<RequireSkillCodes> requireSkillCodes;
+        [XmlElement] public List<Job> job;
+        [XmlElement] public List<Effect> requireEffect;
+        [XmlElement] public List<SkillElement> requireSkillElement;
+        [XmlElement] public List<MapCodes> requireMapCodes;
+        [XmlElement] public List<MapCategoryCodes> requireMapCategoryCodes;
+        [XmlElement] public List<MapContinentCodes> requireMapContinentCodes;
+        [XmlElement] public List<DungeonRoomGroupTypes> requireDungeonRoomGroupTypes;
+        [XmlElement] public List<SkillCodes> requireSkillCodes;
         [XmlElement] public List<HasNotAdditionalEffectGroup> hasNotAdditionalEffectGroup;
-        [XmlElement] public List<RequireAchieveCodes> requireAchieveCodes;
-        [XmlElement] public List<RequireAchieveGrades> requireAchieveGrades;
+        [XmlElement] public List<AchieveCodes> requireAchieveCodes;
+        [XmlElement] public List<AchieveGrades> requireAchieveGrades;
         [XmlElement] public StatValue stat;
-        [XmlElement] public List<RequireItem> item;
-        [XmlElement] public List<RequireWeapon> weapon;
+        [XmlElement] public List<Item> item;
+        [XmlElement] public List<Weapon> weapon;
         [XmlElement("owner")] public SubConditionTarget skillOwner;
         [XmlElement("caster")] public SubConditionTarget skillCaster;
         [XmlElement("target")] public SubConditionTarget skillTarget;
@@ -46,60 +46,60 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public float defaultRechargingCooldownTime;
         [XmlAttribute] public bool isShadowWorld;
         [XmlAttribute] public bool glideOnGroundDisable;
-    }
 
-    public class RequireJob {
-        [XmlAttribute] public int code;
-    }
+        public class Job {
+            [XmlAttribute] public int code;
+        }
 
-    public class RequireEffect {
-        [XmlAttribute] public int code;
-    }
+        public class Effect {
+            [XmlAttribute] public int code;
+        }
 
-    public class RequireSkillElement {
-        [XmlAttribute] public int element;
-    }
+        public class SkillElement {
+            [XmlAttribute] public int element;
+        }
 
-    public class RequireMapCodes {
-        [XmlAttribute] public int code;
-    }
+        public class MapCodes {
+            [XmlAttribute] public int code;
+        }
 
-    public class RequireMapCategoryCodes {
-        [XmlAttribute] public int code;
-    }
+        public class MapCategoryCodes {
+            [XmlAttribute] public int code;
+        }
 
-    public class RequireMapContinentCodes {
-        [XmlAttribute] public int code;
-    }
+        public class MapContinentCodes {
+            [XmlAttribute] public int code;
+        }
 
-    public class RequireDungeonRoomGroupTypes {
-        [XmlAttribute] public string type;
-    }
+        public class DungeonRoomGroupTypes {
+            [XmlAttribute] public string type;
+        }
 
-    public class RequireSkillCodes {
-        [XmlAttribute] public int code;
-    }
+        public class SkillCodes {
+            [XmlAttribute] public int code;
+        }
 
-    public class HasNotAdditionalEffectGroup {
-        [XmlAttribute] public int id;
-    }
+        public class HasNotAdditionalEffectGroup {
+            [XmlAttribute] public int id;
+        }
 
-    public class RequireAchieveCodes {
-        [XmlAttribute] public int id;
-    }
+        public class AchieveCodes {
+            [XmlAttribute] public int id;
+        }
 
-    public class RequireAchieveGrades {
-        [XmlAttribute] public int grade;
-    }
+        public class AchieveGrades {
+            [XmlAttribute] public int grade;
+        }
 
-    public class RequireItem {
-        [XmlAttribute] public int id;
-        [XmlAttribute] public int count;
-        [XmlAttribute] public int rank;
-    }
+        public class Item {
+            [XmlAttribute] public int id;
+            [XmlAttribute] public int count;
+            [XmlAttribute] public int rank;
+        }
 
-    public class RequireWeapon {
-        [XmlAttribute] public int lh;
-        [XmlAttribute] public int rh;
+        public class Weapon {
+            [XmlAttribute] public int lh;
+            [XmlAttribute] public int rh;
+        }
     }
 }

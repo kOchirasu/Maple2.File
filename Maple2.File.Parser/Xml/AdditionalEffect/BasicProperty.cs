@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
@@ -39,15 +38,15 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int statSetID;
         [XmlAttribute] public int disableRevivalHere;
         [XmlAttribute] public int attackPossibleEffectID;
-        [XmlAttribute, DefaultValue(0)] public int skillGroupType;
-        [XmlIgnore] public int[] attackPossibleSkillIDs; // csv
-        [XmlIgnore] public int[] attackPossibleDotEffectIDs; // csv
-        [XmlIgnore] public int[] groupIDs; // csv
+        [XmlAttribute] public int skillGroupType;
+        [XmlIgnore] public int[] attackPossibleSkillIDs;
+        [XmlIgnore] public int[] attackPossibleDotEffectIDs;
+        [XmlIgnore] public int[] groupIDs;
         [XmlAttribute] public int immediateActiveRequireSkill;
-        [XmlIgnore] public int[] itemSlotDisable; // csv
+        [XmlIgnore] public int[] itemSlotDisable;
         [XmlAttribute] public int tailEffect;
-        [XmlIgnore] public int[] upgradeSkillLevelID; // csv
-        [XmlIgnore] public int[] upgradeSkillLevelValue; // csv
+        [XmlIgnore] public int[] upgradeSkillLevelID;
+        [XmlIgnore] public int[] upgradeSkillLevelValue;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("attackPossibleSkillIDs")]

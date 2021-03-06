@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 
@@ -8,7 +7,7 @@ namespace Maple2.File.Parser.Xml.Skill.Property {
         [XmlAttribute] public int overlap;
         [XmlAttribute] public int explosion;
         [XmlAttribute] public int rayPhysxTest;
-        [XmlAttribute, DefaultValue(0)] public int nonTarget;
+        [XmlAttribute] public int nonTarget;
         [XmlAttribute] public int bounceType;
         [XmlAttribute] public int bounceCount;
         [XmlAttribute] public float bounceRadius;

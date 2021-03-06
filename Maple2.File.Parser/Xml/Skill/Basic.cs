@@ -8,8 +8,4 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlElement] public Kinds kinds;
         [XmlElement] public StateAttribute stateAttr;
     }
-
-    public class Feature {
-        [XmlAttribute] public string feature;
-    }
 }

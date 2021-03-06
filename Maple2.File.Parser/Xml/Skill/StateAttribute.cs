@@ -1,12 +1,11 @@
-﻿using System.ComponentModel;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class StateAttribute {
         [XmlAttribute] public int battle;
         [XmlAttribute] public int speedRank;
         [XmlAttribute] public int superArmor;
-        [XmlAttribute, DefaultValue(0)] public int superArmorApplyFieldType;
+        [XmlAttribute] public int superArmorApplyFieldType;
         [XmlAttribute] public int autoTargeting;
         [XmlAttribute] public int autoTargetingType;
         [XmlAttribute] public int moveType;

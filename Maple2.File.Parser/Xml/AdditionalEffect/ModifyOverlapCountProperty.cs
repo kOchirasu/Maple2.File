@@ -3,8 +3,8 @@ using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ModifyOverlapCountProperty {
-        [XmlIgnore] public int[] effectCodes; // csv
-        [XmlIgnore] public int[] offsetCounts; // csv
+        [XmlIgnore] public int[] effectCodes;
+        [XmlIgnore] public int[] offsetCounts;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("effectCodes")]

@@ -4,9 +4,9 @@ using Maple2.File.Parser.Tools;
 namespace Maple2.File.Parser.Xml.Skill {
     public class Upgrade {
         [XmlAttribute] public int level;
-        [XmlIgnore] public int[] skillIDs; // csv
-        [XmlIgnore] public int[] skillLevels; // csv
-        [XmlIgnore] public int[] questIDs; // csv
+        [XmlIgnore] public int[] skillIDs;
+        [XmlIgnore] public int[] skillLevels;
+        [XmlIgnore] public int[] questIDs;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("skillIDs")]

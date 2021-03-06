@@ -5,8 +5,8 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class CancelEffectProperty {
         [XmlAttribute] public int cancelCheckSameCaster;
         [XmlAttribute] public int cancelPassiveEffect;
-        [XmlIgnore] public int[] cancelEffectCodes; // csv
-        [XmlIgnore] public int[] cancelBuffCategories; // csv
+        [XmlIgnore] public int[] cancelEffectCodes;
+        [XmlIgnore] public int[] cancelBuffCategories;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("cancelEffectCodes")]

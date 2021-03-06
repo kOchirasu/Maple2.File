@@ -1,39 +1,38 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class SubConditionTarget {
-        [XmlIgnore] public int[] hasBuffID; // csv
+        [XmlIgnore] public int[] hasBuffID;
         [XmlAttribute] public int multiHasBuffID;
-        [XmlIgnore] public int[] hasBuffLevel; //csv
-        [XmlIgnore] public int[] hasBuffOwner; // csv
-        [XmlIgnore] public int[] checkActivateBuff; // csv
-        [XmlIgnore] public int[] hasBuffCount; // csv/map/something
-        [XmlIgnore] public string[] hasBuffCountCompare; // csv/map/something
-        [XmlAttribute, DefaultValue(0)] public int eventCondition;
+        [XmlIgnore] public int[] hasBuffLevel;
+        [XmlIgnore] public int[] hasBuffOwner;
+        [XmlIgnore] public int[] checkActivateBuff;
+        [XmlIgnore] public int[] hasBuffCount; // csv map?
+        [XmlIgnore] public string[] hasBuffCountCompare; // csv map?
+        [XmlAttribute] public int eventCondition;
         [XmlAttribute] public int hasSkillID;
         [XmlAttribute] public int hasSkillLevel;
         [XmlAttribute] public int ignoreOwnerEvent;
-        [XmlIgnore] public int[] hasNotBuffID; // csv
-        [XmlAttribute, DefaultValue(0)] public int multiHasNotBuffID;
+        [XmlIgnore] public int[] hasNotBuffID;
+        [XmlAttribute] public int multiHasNotBuffID;
         [XmlAttribute] public int hasBuffOverlapGroup;
-        [XmlIgnore] public int[] eventSkillID; // csv
-        [XmlIgnore] public int[] eventIgnoreSkillID; // csv
-        [XmlIgnore] public int[] eventEffectID; // csv
-        [XmlIgnore] public string[] NpcRaceString; // csv
-        [XmlIgnore] public int[] NpcRanks; // csv
-        [XmlIgnore] public int[] NpcIDs; // csv
+        [XmlIgnore] public int[] eventSkillID;
+        [XmlIgnore] public int[] eventIgnoreSkillID;
+        [XmlIgnore] public int[] eventEffectID;
+        [XmlIgnore] public string[] NpcRaceString;
+        [XmlIgnore] public int[] NpcRanks;
+        [XmlIgnore] public int[] NpcIDs;
         [XmlAttribute] public int targetCheckRange;
         [XmlAttribute] public int targetCheckMinRange;
         [XmlAttribute] public int targetInRangeCount;
         [XmlAttribute] public int targetFriendly;
         [XmlAttribute] public string targetCountSign;
-        [XmlIgnore] public string[] requireStates; // csv
-        [XmlIgnore] public string[] requireSubStates; // csv
-        [XmlIgnore] public string[] requireMasteryTypes; // csv
-        [XmlIgnore] public int[] requireMasteryValues; // csv
+        [XmlIgnore] public string[] requireStates;
+        [XmlIgnore] public string[] requireSubStates;
+        [XmlIgnore] public string[] requireMasteryTypes;
+        [XmlIgnore] public int[] requireMasteryValues;
 
         [XmlElement] public List<CompareRange> compareStat;
 

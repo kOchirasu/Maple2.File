@@ -9,8 +9,8 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int npcComboSkillID;
         [XmlAttribute] public int npcComboSkillLevel = 1;
         [XmlAttribute] public bool disableChargingAttackSkipFrame;
-        [XmlIgnore] public int[] inputSkill; // csv
-        [XmlIgnore] public int[] outputSkill; // csv
+        [XmlIgnore] public int[] inputSkill;
+        [XmlIgnore] public int[] outputSkill;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("inputSkill")]

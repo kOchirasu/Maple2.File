@@ -3,7 +3,7 @@ using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill.Property {
     public class SplashManualActiveProperty {
-        [XmlIgnore] public int[] splashSkillIDs; // csv
+        [XmlIgnore] public int[] splashSkillIDs;
         [XmlAttribute] public bool onlyManualActiveSplash;
 
         /* Custom Attribute Serializers */

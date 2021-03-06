@@ -26,9 +26,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public float resAspR;
         [XmlAttribute] public long deathResistanceHP;
 
-        [XmlIgnore] public int[] compulsionEventTypes; // csv
-        [XmlIgnore] public float[] compulsionEventRate; // csv
-        [XmlIgnore] public int[] compulsionEventSkillCodes; // csv
+        [XmlIgnore] public int[] compulsionEventTypes;
+        [XmlIgnore] public float[] compulsionEventRate;
+        [XmlIgnore] public int[] compulsionEventSkillCodes;
 
         [XmlElement] public Stat Stat; // long AND float
         [XmlElement] public SpecialAbility SpecialAbility;

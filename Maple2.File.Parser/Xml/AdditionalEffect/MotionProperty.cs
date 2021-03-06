@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
@@ -13,9 +12,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public bool IgnoreOptimalHideKeepEffect;
         [XmlAttribute] public bool IgnoreOptimalHideStopEffect;
         [XmlAttribute] public bool IgnoreOptimalHideInvokeEffect;
-        [XmlIgnore] public int[] disableEffectStates; // csv
+        [XmlIgnore] public int[] disableEffectStates;
         [XmlAttribute] public int hide;
-        [XmlIgnore] public int[] clearCondition; // csv
+        [XmlIgnore] public int[] clearCondition;
         [XmlAttribute] public float alphaBlending = 1.0f;
         [XmlAttribute] public int stun;
         [XmlAttribute] public string stunAnimation;
@@ -30,11 +29,11 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int ignoreCollisionGroups;
         [XmlAttribute] public int noFly;
         [XmlAttribute] public int superArmor;
-        [XmlAttribute, DefaultValue(0)] public int superArmorApplyFieldType;
+        [XmlAttribute] public int superArmorApplyFieldType;
         [XmlAttribute] public int skillUseDisable;
         [XmlAttribute] public int useFixedZRotation;
         [XmlAttribute] public float fixedZRotation;
-        [XmlIgnore] public int[] skillUseDisableIDs; // csv
+        [XmlIgnore] public int[] skillUseDisableIDs;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("disableEffectStates")]

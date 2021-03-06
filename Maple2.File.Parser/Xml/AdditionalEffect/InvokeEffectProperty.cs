@@ -7,9 +7,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int skillGroupID;
         [XmlAttribute] public int effectID;
         [XmlAttribute] public int effectGroupID;
-        [XmlIgnore] public int[] types; // csv
-        [XmlIgnore] public float[] values; // csv
-        [XmlIgnore] public float[] rates; // csv
+        [XmlIgnore] public int[] types;
+        [XmlIgnore] public float[] values;
+        [XmlIgnore] public float[] rates;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("types")]

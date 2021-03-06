@@ -27,7 +27,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public bool targetSelectGuild;
         [XmlAttribute] public int targetStatCompare;
         [XmlAttribute] public int targetStatCompareFunction;
-        [XmlIgnore] public int[] applyTargetIgnoreNpcRanks; // csv
+        [XmlIgnore] public int[] applyTargetIgnoreNpcRanks;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("rangeAdd")]

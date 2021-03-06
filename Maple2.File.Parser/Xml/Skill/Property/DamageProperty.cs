@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Maple2.File.Parser.Xml.Skill.Property {
     public class DamageProperty {
@@ -18,12 +17,12 @@ namespace Maple2.File.Parser.Xml.Skill.Property {
         [XmlAttribute] public string effectRemain;
         [XmlAttribute] public bool IgnoreOptimalHideDamageHitEffect;
         [XmlAttribute] public bool IgnoreOptimalHideDamageRemainEffect;
-        [XmlAttribute, DefaultValue(0)] public int push;
+        [XmlAttribute] public int push;
         [XmlAttribute] public float pushdistance;
         [XmlAttribute] public float pushduration;
         [XmlAttribute] public float pushprob = 1.0f;
-        [XmlAttribute, DefaultValue(0)] public int pushEaseType; // if n < 0 || n > 2, set to 0
-        [XmlAttribute, DefaultValue(0)] public int pushApplyField;
+        [XmlAttribute] public int pushEaseType; // if n < 0 || n > 2, set to 0
+        [XmlAttribute] public int pushApplyField;
         [XmlAttribute] public int pushDown;
         [XmlAttribute] public int pushFall;
         [XmlAttribute] public int pushPriority;
