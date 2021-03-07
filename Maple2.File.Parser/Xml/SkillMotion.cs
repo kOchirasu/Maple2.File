@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Skill;
 using Maple2.File.Parser.Xml.Skill.Property;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml {
     public class SkillMotionData {
@@ -11,18 +12,18 @@ namespace Maple2.File.Parser.Xml {
     }
 
     public class SkillMotionProperty {
-        [XmlAttribute] public string sequenceName;
-        [XmlAttribute] public string motionEffect;
-        [XmlAttribute] public string loopEffect;
-        [XmlAttribute] public string endEffect;
-        [XmlAttribute] public string splashInvokeEffect;
-        [XmlAttribute] public string splashEndEffect;
-        [XmlIgnore] public string[] strTagEffects;
-        [XmlAttribute] public string selfInputCombo;
-        [XmlAttribute] public string weaponSequenceName;
-        [XmlAttribute] public string loopKeepEffect;
-        [XmlAttribute] public string loopEndEffect;
-        [XmlAttribute] public string splashDurationCastEffect;
+        [XmlAttribute] public string sequenceName = string.Empty;
+        [XmlAttribute] public string motionEffect = string.Empty;
+        [XmlAttribute] public string loopEffect = string.Empty;
+        [XmlAttribute] public string endEffect = string.Empty;
+        [XmlAttribute] public string splashInvokeEffect = string.Empty;
+        [XmlAttribute] public string splashEndEffect = string.Empty;
+        [XmlIgnore] public string[] strTagEffects = Empty<string>();
+        [XmlAttribute] public string selfInputCombo = string.Empty;
+        [XmlAttribute] public string weaponSequenceName = string.Empty;
+        [XmlAttribute] public string loopKeepEffect = string.Empty;
+        [XmlAttribute] public string loopEndEffect = string.Empty;
+        [XmlAttribute] public string splashDurationCastEffect = string.Empty;
         [XmlAttribute] public bool IgnoreOptimalHideCastEffect;
         [XmlAttribute] public bool IgnoreOptimalHideEndEffect;
         [XmlAttribute] public bool IgnoreOptimalHideSplashInvokeEffect;
@@ -63,7 +64,7 @@ namespace Maple2.File.Parser.Xml {
     }
 
     public class SkillAttackData {
-        [XmlAttribute] public string point;
+        [XmlAttribute] public string point = string.Empty;
         [XmlAttribute] public int pointGroupID;
         [XmlAttribute] public int targetCount;
         [XmlAttribute] public int magicPathID;
@@ -77,9 +78,9 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public int brokenOffence;
         [XmlAttribute] public int unrideOnHit;
         [XmlAttribute] public int releaseObjectWeaponOnHit = 1;
-        [XmlIgnore] public int[] compulsionType;
+        [XmlIgnore] public int[] compulsionType = Empty<int>();
         [XmlAttribute] public int grabTargetType;
-        [XmlIgnore] public string[] grabNodeCategory;
+        [XmlIgnore] public string[] grabNodeCategory = Empty<string>();
 
         [XmlElement] public PetTamingProperty petTamingProperty;
         [XmlElement] public SplashManualActiveProperty splashManualActiveProperty;
@@ -104,6 +105,6 @@ namespace Maple2.File.Parser.Xml {
         }
 
         // Ignored by client.
-        [XmlAttribute] public string compulsionHit;
+        [XmlAttribute] public string compulsionHit = string.Empty;
     }
 }

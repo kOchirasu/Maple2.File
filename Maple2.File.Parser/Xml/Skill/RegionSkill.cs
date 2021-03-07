@@ -1,11 +1,12 @@
 ﻿using System.Numerics;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class RegionSkill {
         [XmlAttribute] public int includeCaster;
-        [XmlAttribute] public string rangeType; // box, cylinder, frustum, hole_cylinder
+        [XmlAttribute] public string rangeType = string.Empty; // box, cylinder, frustum, hole_cylinder
         [XmlAttribute] public float distance;
         [XmlIgnore] public Vector3 rangeAdd;
         [XmlIgnore] public Vector3 rangeOffset;
@@ -27,7 +28,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public bool targetSelectGuild;
         [XmlAttribute] public int targetStatCompare;
         [XmlAttribute] public int targetStatCompareFunction;
-        [XmlIgnore] public int[] applyTargetIgnoreNpcRanks;
+        [XmlIgnore] public int[] applyTargetIgnoreNpcRanks = Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("rangeAdd")]

@@ -72,7 +72,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         }
 
         public class DungeonRoomGroupTypes {
-            [XmlAttribute] public string type;
+            [XmlAttribute] public string type = string.Empty;
         }
 
         public class SkillCodes {

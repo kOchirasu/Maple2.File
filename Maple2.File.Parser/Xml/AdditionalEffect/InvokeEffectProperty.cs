@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class InvokeEffectProperty {
@@ -7,9 +8,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int skillGroupID;
         [XmlAttribute] public int effectID;
         [XmlAttribute] public int effectGroupID;
-        [XmlIgnore] public int[] types;
-        [XmlIgnore] public float[] values;
-        [XmlIgnore] public float[] rates;
+        [XmlIgnore] public int[] types = Empty<int>();
+        [XmlIgnore] public float[] values = Empty<float>();
+        [XmlIgnore] public float[] rates = Empty<float>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("types")]

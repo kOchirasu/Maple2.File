@@ -9,6 +9,6 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int infinitySP;
         [XmlAttribute] public int visibleItemOption = 1;
         [XmlAttribute] public int cinematicPlay;
-        [XmlAttribute] public string icon;
+        [XmlAttribute] public string icon = string.Empty;
     }
 }

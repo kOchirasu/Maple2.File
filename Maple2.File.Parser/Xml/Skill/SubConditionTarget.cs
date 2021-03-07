@@ -1,38 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class SubConditionTarget {
-        [XmlIgnore] public int[] hasBuffID;
+        [XmlIgnore] public int[] hasBuffID = Empty<int>();
         [XmlAttribute] public int multiHasBuffID;
-        [XmlIgnore] public int[] hasBuffLevel;
-        [XmlIgnore] public int[] hasBuffOwner;
-        [XmlIgnore] public int[] checkActivateBuff;
-        [XmlIgnore] public int[] hasBuffCount; // csv map?
-        [XmlIgnore] public string[] hasBuffCountCompare; // csv map?
+        [XmlIgnore] public int[] hasBuffLevel = Empty<int>();
+        [XmlIgnore] public int[] hasBuffOwner = Empty<int>();
+        [XmlIgnore] public int[] checkActivateBuff = Empty<int>();
+        [XmlIgnore] public int[] hasBuffCount = Empty<int>(); // csv map?
+        [XmlIgnore] public string[] hasBuffCountCompare = Empty<string>(); // csv map?
         [XmlAttribute] public int eventCondition;
         [XmlAttribute] public int hasSkillID;
-        [XmlAttribute] public int hasSkillLevel;
+        [XmlAttribute] public short hasSkillLevel;
         [XmlAttribute] public int ignoreOwnerEvent;
-        [XmlIgnore] public int[] hasNotBuffID;
+        [XmlIgnore] public int[] hasNotBuffID = Empty<int>();
         [XmlAttribute] public int multiHasNotBuffID;
         [XmlAttribute] public int hasBuffOverlapGroup;
-        [XmlIgnore] public int[] eventSkillID;
-        [XmlIgnore] public int[] eventIgnoreSkillID;
-        [XmlIgnore] public int[] eventEffectID;
-        [XmlIgnore] public string[] NpcRaceString;
-        [XmlIgnore] public int[] NpcRanks;
-        [XmlIgnore] public int[] NpcIDs;
+        [XmlIgnore] public int[] eventSkillID = Empty<int>();
+        [XmlIgnore] public int[] eventIgnoreSkillID = Empty<int>();
+        [XmlIgnore] public int[] eventEffectID = Empty<int>();
+        [XmlIgnore] public string[] NpcRaceString = Empty<string>();
+        [XmlIgnore] public int[] NpcRanks = Empty<int>();
+        [XmlIgnore] public int[] NpcIDs = Empty<int>();
         [XmlAttribute] public int targetCheckRange;
         [XmlAttribute] public int targetCheckMinRange;
         [XmlAttribute] public int targetInRangeCount;
         [XmlAttribute] public int targetFriendly;
-        [XmlAttribute] public string targetCountSign;
-        [XmlIgnore] public string[] requireStates;
-        [XmlIgnore] public string[] requireSubStates;
-        [XmlIgnore] public string[] requireMasteryTypes;
-        [XmlIgnore] public int[] requireMasteryValues;
+        [XmlAttribute] public string targetCountSign = string.Empty;
+        [XmlIgnore] public string[] requireStates = Empty<string>();
+        [XmlIgnore] public string[] requireSubStates = Empty<string>();
+        [XmlIgnore] public string[] requireMasteryTypes = Empty<string>();
+        [XmlIgnore] public int[] requireMasteryValues = Empty<int>();
 
         [XmlElement] public List<CompareRange> compareStat;
 

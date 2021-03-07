@@ -38,7 +38,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public float bap;
         [XmlAttribute] public float bap_pet;
 
-        [XmlAttribute] public string func;
+        [XmlAttribute] public string func = string.Empty;
         [XmlAttribute] public int type;
     }
 }

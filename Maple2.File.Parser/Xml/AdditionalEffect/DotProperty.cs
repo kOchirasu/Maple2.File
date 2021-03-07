@@ -23,6 +23,6 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class DotBuffProperty {
         [XmlAttribute] public int target;
         [XmlAttribute] public int buffID;
-        [XmlAttribute] public int buffLevel;
+        [XmlAttribute] public short buffLevel;
     }
 }

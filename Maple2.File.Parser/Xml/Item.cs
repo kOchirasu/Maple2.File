@@ -10,8 +10,8 @@ namespace Maple2.File.Parser.Xml {
     }
 
     public class ItemData {
-        [XmlAttribute] public string feature;
-        [XmlAttribute] public string locale;
+        [XmlAttribute] public string feature = string.Empty;
+        [XmlAttribute] public string locale = string.Empty;
 
         [XmlElement] public Basic basic;
         [XmlElement] public Slots slots;

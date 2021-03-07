@@ -1,12 +1,13 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class CancelEffectProperty {
         [XmlAttribute] public int cancelCheckSameCaster;
         [XmlAttribute] public int cancelPassiveEffect;
-        [XmlIgnore] public int[] cancelEffectCodes;
-        [XmlIgnore] public int[] cancelBuffCategories;
+        [XmlIgnore] public int[] cancelEffectCodes = Empty<int>();
+        [XmlIgnore] public int[] cancelBuffCategories = Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("cancelEffectCodes")]

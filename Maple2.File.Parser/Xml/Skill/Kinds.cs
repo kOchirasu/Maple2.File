@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class Kinds {
@@ -8,12 +9,12 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int rangeType;
         [XmlAttribute] public int groupType;
         [XmlAttribute] public int jump;
-        [XmlAttribute] public string state; // ??
+        [XmlAttribute] public string state = string.Empty; // ??
         [XmlAttribute("continue")] public int continueSkill;
         [XmlAttribute] public int spRecoverySkill;
         [XmlAttribute] public int element;
         [XmlAttribute] public int motionType;
-        [XmlAttribute] public string emotion;
+        [XmlAttribute] public string emotion = string.Empty;
         [XmlAttribute] public float offsetNameTag;
         [XmlAttribute] public float offsetHPBar;
         [XmlAttribute] public int immediateActive;
@@ -23,7 +24,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int releaseStunState;
         [XmlAttribute] public int disableWater;
         [XmlAttribute] public bool holdAttack;
-        [XmlIgnore] public int[] groupIDs;
+        [XmlIgnore] public int[] groupIDs = Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("groupIDs")]
@@ -34,9 +35,9 @@ namespace Maple2.File.Parser.Xml.Skill {
 
         // Ignored by client.
         [XmlAttribute] public int emotionNameTagOffset;
-        [XmlAttribute] public string changeSkillCheckEffectID; // int[]
-        [XmlAttribute] public string changeSkillCheckEffectLevel; // int[]
-        [XmlAttribute] public string changeSkillID; // int[]
+        [XmlAttribute] public string changeSkillCheckEffectID = string.Empty; // int[]
+        [XmlAttribute] public string changeSkillCheckEffectLevel = string.Empty; // int[]
+        [XmlAttribute] public string changeSkillID = string.Empty; // int[]
         [XmlAttribute] public int emotionType;
         [XmlAttribute] public int unrideOnHit;
     }

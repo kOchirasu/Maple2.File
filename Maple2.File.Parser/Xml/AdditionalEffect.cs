@@ -11,8 +11,8 @@ namespace Maple2.File.Parser.Xml {
     }
 
     public class AdditionalEffectData {
-        [XmlAttribute] public string locale;
-        [XmlAttribute] public string feature;
+        [XmlAttribute] public string locale = string.Empty;
+        [XmlAttribute] public string feature = string.Empty;
 
         [XmlElement] public BeginCondition beginCondition;
         [XmlElement] public BasicProperty BasicProperty;

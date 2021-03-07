@@ -1,9 +1,10 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class BasicProperty {
-        [XmlAttribute] public int level = 1; //?
+        [XmlAttribute] public short level = 1;
         [XmlAttribute] public int accountEffect;
         [XmlAttribute] public int group;
         [XmlAttribute] public int buffType = 1;
@@ -25,8 +26,8 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int pvpOnOff;
         [XmlAttribute] public int casterKeepEffect;
         [XmlAttribute] public int casterIndividualEffect;
-        [XmlAttribute] public string coolDownTime;
-        [XmlAttribute] public string clearDistanceFromCaster;
+        [XmlAttribute] public string coolDownTime = string.Empty;
+        [XmlAttribute] public string clearDistanceFromCaster = string.Empty;
         [XmlAttribute] public int useInvokeEffectFactor;
         [XmlAttribute] public int clearEffectFromPVPZone;
         [XmlAttribute] public int doNotClearEffectFromEnterPVPZone;
@@ -39,14 +40,14 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int disableRevivalHere;
         [XmlAttribute] public int attackPossibleEffectID;
         [XmlAttribute] public int skillGroupType;
-        [XmlIgnore] public int[] attackPossibleSkillIDs;
-        [XmlIgnore] public int[] attackPossibleDotEffectIDs;
-        [XmlIgnore] public int[] groupIDs;
+        [XmlIgnore] public int[] attackPossibleSkillIDs = Empty<int>();
+        [XmlIgnore] public int[] attackPossibleDotEffectIDs = Empty<int>();
+        [XmlIgnore] public int[] groupIDs = Empty<int>();
         [XmlAttribute] public int immediateActiveRequireSkill;
-        [XmlIgnore] public int[] itemSlotDisable;
+        [XmlIgnore] public int[] itemSlotDisable = Empty<int>();
         [XmlAttribute] public int tailEffect;
-        [XmlIgnore] public int[] upgradeSkillLevelID;
-        [XmlIgnore] public int[] upgradeSkillLevelValue;
+        [XmlIgnore] public int[] upgradeSkillLevelID = Empty<int>();
+        [XmlIgnore] public int[] upgradeSkillLevelValue = Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("attackPossibleSkillIDs")]

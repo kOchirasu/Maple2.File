@@ -4,7 +4,7 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ReflectProperty {
         [XmlAttribute] public float reflectionRate;
         [XmlAttribute] public int reflectionAdditionalEffectId;
-        [XmlAttribute] public int reflectionAdditionalEffectLevel;
+        [XmlAttribute] public short reflectionAdditionalEffectLevel;
         [XmlAttribute] public int reflectionCount;
         [XmlAttribute] public int physicalReflectionValue;
         [XmlAttribute] public float physicalReflectionRate;

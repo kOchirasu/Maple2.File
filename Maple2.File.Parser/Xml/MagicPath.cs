@@ -19,7 +19,7 @@ namespace Maple2.File.Parser.Xml {
     public class MagicData {
         [XmlIgnore] public Vector3 fireOffsetPosition;
         [XmlIgnore] public Vector3 fireFixedPosition;
-        [XmlAttribute] public string fireNode;
+        [XmlAttribute] public string fireNode = string.Empty;
         [XmlIgnore] public Vector3 direction = Vector3.UnitX;
         [XmlAttribute] public float dirRotZDegree;
         [XmlIgnore] public Vector3 controlValue0;

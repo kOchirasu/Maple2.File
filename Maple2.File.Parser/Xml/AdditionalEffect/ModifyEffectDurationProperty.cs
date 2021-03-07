@@ -1,11 +1,12 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ModifyEffectDurationProperty {
-        [XmlIgnore] public int[] effectCodes;
-        [XmlIgnore] public float[] durationFactors;
-        [XmlIgnore] public float[] durationValues;
+        [XmlIgnore] public int[] effectCodes = Empty<int>();
+        [XmlIgnore] public float[] durationFactors = Empty<float>();
+        [XmlIgnore] public float[] durationValues = Empty<float>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("effectCodes")]

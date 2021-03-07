@@ -9,20 +9,20 @@ namespace Maple2.File.Parser.Xml {
     }
 
     public class KeyFrameMotion {
-        [XmlAttribute] public string name;
+        [XmlAttribute] public string name = string.Empty;
 
         [XmlElement] public List<FrameSequence> seq;
     }
 
     public class FrameSequence {
         [XmlAttribute] public int id;
-        [XmlAttribute] public string name;
+        [XmlAttribute] public string name = string.Empty;
 
         [XmlElement] public List<FrameSequenceKey> key;
     }
 
     public class FrameSequenceKey {
-        [XmlAttribute] public string name;
+        [XmlAttribute] public string name = string.Empty;
         [XmlAttribute] public double time;
     }
 }

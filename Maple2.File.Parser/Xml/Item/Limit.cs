@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Limit {
@@ -17,9 +18,9 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public int tradeLimitRank = 4;
         [XmlAttribute] public int vipLevel;
         [XmlAttribute] public bool enableSocketTransfer = true;
-        [XmlIgnore] public int[] jobLimit;
-        [XmlIgnore] public int[] disableJobLimit;
-        [XmlIgnore] public int[] recommendJobs;
+        [XmlIgnore] public int[] jobLimit = Empty<int>();
+        [XmlIgnore] public int[] disableJobLimit = Empty<int>();
+        [XmlIgnore] public int[] recommendJobs = Empty<int>();
 
         // Handle versioning
         [XmlIgnore]

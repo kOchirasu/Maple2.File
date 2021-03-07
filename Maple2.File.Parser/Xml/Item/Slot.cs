@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Slots {
@@ -9,17 +10,17 @@ namespace Maple2.File.Parser.Xml.Item {
     }
 
     public class Slot {
-        [XmlAttribute] public string name;
+        [XmlAttribute] public string name = string.Empty;
 
         [XmlElement] public List<Asset> asset;
         [XmlElement] public List<Scale> scale;
         [XmlElement] public Decal decal;
 
         public class Asset {
-            [XmlAttribute] public string name;
-            [XmlAttribute] public string selfnode;
-            [XmlAttribute] public string targetnode;
-            [XmlAttribute] public string attachnode;
+            [XmlAttribute] public string name = string.Empty;
+            [XmlAttribute] public string selfnode = string.Empty;
+            [XmlAttribute] public string targetnode = string.Empty;
+            [XmlAttribute] public string attachnode = string.Empty;
             [XmlAttribute] public int pony;
             [XmlAttribute] public int zalign;
             [XmlAttribute] public int replace;
@@ -40,7 +41,7 @@ namespace Maple2.File.Parser.Xml.Item {
         }
 
         public class Scale {
-            [XmlIgnore] public float[] values;
+            [XmlIgnore] public float[] values = Empty<float>();
             [XmlAttribute] public float min;
             [XmlAttribute] public float max;
             [XmlAttribute] public int reverse;
@@ -54,23 +55,23 @@ namespace Maple2.File.Parser.Xml.Item {
         }
 
         public class Decal {
-            [XmlAttribute] public string texture;
-            [XmlAttribute] public string controlTexture;
+            [XmlAttribute] public string texture = string.Empty;
+            [XmlAttribute] public string controlTexture = string.Empty;
 
             [XmlElement] public List<Custom> custom;
         }
 
         public class Custom {
-            [XmlAttribute] public string icon;
-            [XmlAttribute] public string position;
-            [XmlAttribute] public string rotation;
+            [XmlAttribute] public string icon = string.Empty;
+            [XmlAttribute] public string position = string.Empty;
+            [XmlAttribute] public string rotation = string.Empty;
         }
 
         public class UserRotation {
-            [XmlAttribute] public string axis;
+            [XmlAttribute] public string axis = string.Empty;
             [XmlAttribute] public float min;
             [XmlAttribute] public float max;
-            [XmlIgnore] public float[] @default;
+            [XmlIgnore] public float[] @default = Empty<float>();
 
             /* Custom Attribute Serializers */
             [XmlAttribute("default")]
@@ -81,7 +82,7 @@ namespace Maple2.File.Parser.Xml.Item {
         }
 
         public class JointAngle {
-            [XmlAttribute] public string name;
+            [XmlAttribute] public string name = string.Empty;
             [XmlAttribute] public float soft;
             [XmlAttribute] public float posz;
             [XmlAttribute] public float zero;
@@ -90,8 +91,8 @@ namespace Maple2.File.Parser.Xml.Item {
 
         public class Dummy {
             [XmlAttribute] public int gender;
-            [XmlAttribute] public string sequence;
-            [XmlAttribute] public string targetnode;
+            [XmlAttribute] public string sequence = string.Empty;
+            [XmlAttribute] public string targetnode = string.Empty;
             [XmlAttribute] public bool worldmode;
             [XmlAttribute] public bool worldlerp;
             [XmlAttribute] public float step;
@@ -113,7 +114,7 @@ namespace Maple2.File.Parser.Xml.Item {
         }
 
         public class PhysX {
-            [XmlIgnore] public string[] action;
+            [XmlIgnore] public string[] action = Empty<string>();
 
             /* Custom Attribute Serializers */
             [XmlAttribute("action")]

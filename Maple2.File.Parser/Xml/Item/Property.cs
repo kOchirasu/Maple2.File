@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Property {
@@ -16,21 +17,21 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public int survival;
         [XmlAttribute] public int useSurvival;
         [XmlAttribute] public int applyFatiguePenalty;
-        [XmlAttribute] public string category;
-        [XmlAttribute] public string blackMarketCategory;
+        [XmlAttribute] public string category = string.Empty;
+        [XmlAttribute] public string blackMarketCategory = string.Empty;
         [XmlAttribute] public int iconCode;
         [XmlAttribute] public int representOption = 35; // if -1 then 35 (real default is -1)
         [XmlAttribute] public string slotIcon = "icon0.png";
-        [XmlAttribute] public string slotIconCustom;
-        [XmlAttribute] public string movie;
-        [XmlAttribute] public string xmlData;
-        [XmlAttribute] public string presetPath;
+        [XmlAttribute] public string slotIconCustom = string.Empty;
+        [XmlAttribute] public string movie = string.Empty;
+        [XmlAttribute] public string xmlData = string.Empty;
+        [XmlAttribute] public string presetPath = string.Empty;
         [XmlAttribute] public bool remakeDisable;
         [XmlAttribute] public int reference;
         [XmlAttribute] public int gearScore;
         [XmlAttribute] public int unlimitedEnchantMaxGrade;
         [XmlAttribute] public int socketDataId;
-        [XmlAttribute] public string functionTags;
+        [XmlAttribute] public string functionTags = string.Empty;
         [XmlAttribute] public int moveDisable;
         [XmlAttribute] public bool disableDrop;
 
@@ -75,14 +76,14 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlIgnore]
         public int[] rePackingScrollID =>
             Deserialize.IntCsv(Deserialize.StringOverrides(_globalRePackingScrollID, _rePackingScrollID));
-        [XmlAttribute("rePackingScrollID"), DefaultValue(null)]
-        public string _rePackingScrollID;
+        [XmlAttribute("rePackingScrollID")]
+        public string _rePackingScrollID = string.Empty;
         [XmlAttribute("globalRePackingScrollID"), DefaultValue(null)]
         public string _globalRePackingScrollID;
 
         public class Sell {
-            [XmlIgnore] public long[] price;
-            [XmlIgnore] public long[] priceCustom;
+            [XmlIgnore] public long[] price = Empty<long>();
+            [XmlIgnore] public long[] priceCustom = Empty<long>();
 
             /* Custom Attribute Serializers */
             [XmlAttribute("price")]

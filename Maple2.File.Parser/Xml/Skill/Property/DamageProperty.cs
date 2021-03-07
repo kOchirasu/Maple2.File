@@ -13,8 +13,8 @@ namespace Maple2.File.Parser.Xml.Skill.Property {
         [XmlAttribute] public float damageByTargetMaxHP;
         [XmlAttribute] public long constDamageByTargetHP;
         [XmlAttribute] public long constDamageByTargetSP;
-        [XmlAttribute] public string effectHit;
-        [XmlAttribute] public string effectRemain;
+        [XmlAttribute] public string effectHit = string.Empty;
+        [XmlAttribute] public string effectRemain = string.Empty;
         [XmlAttribute] public bool IgnoreOptimalHideDamageHitEffect;
         [XmlAttribute] public bool IgnoreOptimalHideDamageRemainEffect;
         [XmlAttribute] public int push;
@@ -27,7 +27,7 @@ namespace Maple2.File.Parser.Xml.Skill.Property {
         [XmlAttribute] public int pushFall;
         [XmlAttribute] public int pushPriority;
         [XmlAttribute] public int pushPriorityHitImmune;
-        [XmlAttribute] public string pushAnimation;
+        [XmlAttribute] public string pushAnimation = string.Empty;
         [XmlAttribute] public float pushUpDistance;
         [XmlAttribute] public int attackMaterial;
         [XmlAttribute] public int jumpHitIgnore;

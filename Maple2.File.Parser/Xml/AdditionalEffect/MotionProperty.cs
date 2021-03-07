@@ -1,23 +1,24 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class MotionProperty {
-        [XmlAttribute] public string sequenceName;
-        [XmlAttribute] public string startEffect;
-        [XmlAttribute] public string keepEffect;
-        [XmlAttribute] public string stopEffect;
-        [XmlAttribute] public string invokeEffect;
+        [XmlAttribute] public string sequenceName = string.Empty;
+        [XmlAttribute] public string startEffect = string.Empty;
+        [XmlAttribute] public string keepEffect = string.Empty;
+        [XmlAttribute] public string stopEffect = string.Empty;
+        [XmlAttribute] public string invokeEffect = string.Empty;
         [XmlAttribute] public bool IgnoreOptimalHideStartEffect;
         [XmlAttribute] public bool IgnoreOptimalHideKeepEffect;
         [XmlAttribute] public bool IgnoreOptimalHideStopEffect;
         [XmlAttribute] public bool IgnoreOptimalHideInvokeEffect;
-        [XmlIgnore] public int[] disableEffectStates;
+        [XmlIgnore] public int[] disableEffectStates = Empty<int>();
         [XmlAttribute] public int hide;
-        [XmlIgnore] public int[] clearCondition;
+        [XmlIgnore] public int[] clearCondition = Empty<int>();
         [XmlAttribute] public float alphaBlending = 1.0f;
         [XmlAttribute] public int stun;
-        [XmlAttribute] public string stunAnimation;
+        [XmlAttribute] public string stunAnimation = string.Empty;
         [XmlAttribute] public int confusionMove;
         [XmlAttribute] public int soundPitch;
         [XmlAttribute] public int abnormalImmuneBreak;
@@ -33,7 +34,7 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int skillUseDisable;
         [XmlAttribute] public int useFixedZRotation;
         [XmlAttribute] public float fixedZRotation;
-        [XmlIgnore] public int[] skillUseDisableIDs;
+        [XmlIgnore] public int[] skillUseDisableIDs = Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("disableEffectStates")]
@@ -57,6 +58,6 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         // Ignored by client.
         [XmlAttribute] public int confusion;
         [XmlAttribute] public int chaosMode;
-        [XmlAttribute] public string materialEffect;
+        [XmlAttribute] public string materialEffect = string.Empty;
     }
 }

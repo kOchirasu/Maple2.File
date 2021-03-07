@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class StatusProperty {
@@ -26,9 +27,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public float resAspR;
         [XmlAttribute] public long deathResistanceHP;
 
-        [XmlIgnore] public int[] compulsionEventTypes;
-        [XmlIgnore] public float[] compulsionEventRate;
-        [XmlIgnore] public int[] compulsionEventSkillCodes;
+        [XmlIgnore] public int[] compulsionEventTypes = Empty<int>();
+        [XmlIgnore] public float[] compulsionEventRate = Empty<float>();
+        [XmlIgnore] public int[] compulsionEventSkillCodes = Empty<int>();
 
         [XmlElement] public Stat Stat; // long AND float
         [XmlElement] public SpecialAbility SpecialAbility;
@@ -53,10 +54,10 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         }
 
         // Ignored by client.
-        [XmlAttribute] public string saValue;
-        [XmlAttribute] public string saRate;
-        [XmlAttribute] public string value;
-        [XmlAttribute] public string rate;
+        [XmlAttribute] public string saValue = string.Empty;
+        [XmlAttribute] public string saRate = string.Empty;
+        [XmlAttribute] public string value = string.Empty;
+        [XmlAttribute] public string rate = string.Empty;
     }
 
     public class Stat {

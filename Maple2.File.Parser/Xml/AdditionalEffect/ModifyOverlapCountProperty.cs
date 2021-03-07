@@ -1,10 +1,11 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ModifyOverlapCountProperty {
-        [XmlIgnore] public int[] effectCodes;
-        [XmlIgnore] public int[] offsetCounts;
+        [XmlIgnore] public int[] effectCodes = Empty<int>();
+        [XmlIgnore] public int[] offsetCounts = Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("effectCodes")]

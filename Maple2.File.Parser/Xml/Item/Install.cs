@@ -20,10 +20,10 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public float staticAngle;
         [XmlAttribute] public int indoor;
         [XmlAttribute] public int bankType;
-        [XmlAttribute] public string asset;
-        [XmlAttribute] public string preset;
-        [XmlAttribute] public string mapAttribute;
-        [XmlAttribute] public string propCollisionGroup;
+        [XmlAttribute] public string asset = string.Empty;
+        [XmlAttribute] public string preset = string.Empty;
+        [XmlAttribute] public string mapAttribute = string.Empty;
+        [XmlAttribute] public string propCollisionGroup = string.Empty;
         [XmlAttribute] public bool useInstancing = true;
         [XmlIgnore] public Vector3 physXdimension;
 

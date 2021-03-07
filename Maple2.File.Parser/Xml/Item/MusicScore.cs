@@ -7,7 +7,7 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public int masteryValueMax;
         [XmlAttribute] public bool isCustomNote;
         [XmlAttribute] public int noteLengthMax;
-        [XmlAttribute] public string fileName;
+        [XmlAttribute] public string fileName = string.Empty;
         [XmlAttribute] public int playTime;
         [XmlAttribute] public int recommendCategoryId;
     }

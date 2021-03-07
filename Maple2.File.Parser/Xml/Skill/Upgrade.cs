@@ -1,12 +1,13 @@
 ﻿using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
+using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class Upgrade {
-        [XmlAttribute] public int level;
-        [XmlIgnore] public int[] skillIDs;
-        [XmlIgnore] public int[] skillLevels;
-        [XmlIgnore] public int[] questIDs;
+        [XmlAttribute] public short level;
+        [XmlIgnore] public int[] skillIDs = Empty<int>();
+        [XmlIgnore] public int[] skillLevels = Empty<int>();
+        [XmlIgnore] public int[] questIDs = Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("skillIDs")]

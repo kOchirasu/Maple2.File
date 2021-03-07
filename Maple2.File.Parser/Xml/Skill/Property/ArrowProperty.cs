@@ -15,12 +15,12 @@ namespace Maple2.File.Parser.Xml.Skill.Property {
         [XmlIgnore] public Vector3 collision;
         [XmlIgnore] public Vector3 collisionAdd;
         [XmlAttribute] public int rayType;
-        [XmlAttribute] public string effect;
-        [XmlAttribute] public string effectRemain;
-        [XmlAttribute] public string effectRay;
-        [XmlAttribute] public string effectDestroy;
-        [XmlAttribute] public string targetKeepEffect;
-        [XmlAttribute] public string effectInvoke;
+        [XmlAttribute] public string effect = string.Empty;
+        [XmlAttribute] public string effectRemain = string.Empty;
+        [XmlAttribute] public string effectRay = string.Empty;
+        [XmlAttribute] public string effectDestroy = string.Empty;
+        [XmlAttribute] public string targetKeepEffect = string.Empty;
+        [XmlAttribute] public string effectInvoke = string.Empty;
 
         /* Custom Attribute Serializers */
         [XmlAttribute("collision")]

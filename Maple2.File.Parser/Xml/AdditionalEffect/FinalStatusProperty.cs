@@ -5,8 +5,8 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlElement] public FinalStat Stat;
 
         // Ignored by client.
-        [XmlAttribute] public string value;
-        [XmlAttribute] public string rate;
+        [XmlAttribute] public string value = string.Empty;
+        [XmlAttribute] public string rate = string.Empty;
     }
 
     public class FinalStat {

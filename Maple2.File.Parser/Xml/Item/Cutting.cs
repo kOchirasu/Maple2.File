@@ -6,7 +6,7 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlElement] public List<Mesh> mesh;
 
         public class Mesh {
-            [XmlAttribute] public string name;
+            [XmlAttribute] public string name = string.Empty;
             [XmlAttribute] public int gender;
         }
     }

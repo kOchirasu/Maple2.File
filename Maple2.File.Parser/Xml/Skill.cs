@@ -7,15 +7,15 @@ using Maple2.File.Parser.Xml.Skill.Property;
 namespace Maple2.File.Parser.Xml {
     [XmlRoot("ms2")]
     public class SkillData {
-        [XmlAttribute] public string feature;
+        [XmlAttribute] public string feature = string.Empty;
 
         [XmlElement] public List<Basic> basic;
         [XmlElement] public List<SkillLevelData> level;
     }
 
     public class SkillLevelData {
-        [XmlAttribute] public string feature;
-        [XmlAttribute] public int value;
+        [XmlAttribute] public string feature = string.Empty;
+        [XmlAttribute] public short value;
 
         [XmlElement] public BeginCondition beginCondition;
         [XmlElement] public ChangeSkill changeSkill;
@@ -47,12 +47,12 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public float glideVerticalAccelerateLimit;
         [XmlAttribute] public float glideHorizontalAccelerateLimit;
         [XmlAttribute] public bool bEffect;
-        [XmlAttribute] public string effectRun;
-        [XmlAttribute] public string effectIdle;
-        [XmlAttribute] public string aniIdle;
-        [XmlAttribute] public string aniLeft;
-        [XmlAttribute] public string aniRight;
-        [XmlAttribute] public string aniRun;
+        [XmlAttribute] public string effectRun = string.Empty;
+        [XmlAttribute] public string effectIdle = string.Empty;
+        [XmlAttribute] public string aniIdle = string.Empty;
+        [XmlAttribute] public string aniLeft = string.Empty;
+        [XmlAttribute] public string aniRight = string.Empty;
+        [XmlAttribute] public string aniRun = string.Empty;
         [XmlAttribute] public bool onGroundDisable;
     }
 }
