@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class Kinds {
@@ -24,7 +24,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int releaseStunState;
         [XmlAttribute] public int disableWater;
         [XmlAttribute] public bool holdAttack;
-        [XmlIgnore] public int[] groupIDs = Empty<int>();
+        [XmlIgnore] public int[] groupIDs = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("groupIDs")]

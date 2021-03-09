@@ -1,13 +1,13 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Basic {
         [XmlAttribute] public int originID;
         [XmlAttribute] public int friendly = 1;
         [XmlAttribute] public string stringTag = string.Empty;
-        [XmlIgnore] public string[] attributeTag = Empty<string>();
+        [XmlIgnore] public string[] attributeTag = Array.Empty<string>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("attributeTag")]

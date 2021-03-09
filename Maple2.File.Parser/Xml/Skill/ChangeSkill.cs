@@ -1,14 +1,14 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class ChangeSkill {
-        [XmlIgnore] public int[] changeSkillCheckEffectID = Empty<int>();
-        [XmlIgnore] public int[] changeSkillCheckEffectLevel = Empty<int>();
-        [XmlIgnore] public int[] changeSkillCheckEffectOverlapCount = Empty<int>();
-        [XmlIgnore] public int[] changeSkillID = Empty<int>();
-        [XmlIgnore] public int[] changeSkillLevel = Empty<int>();
+        [XmlIgnore] public int[] changeSkillCheckEffectID = Array.Empty<int>();
+        [XmlIgnore] public int[] changeSkillCheckEffectLevel = Array.Empty<int>();
+        [XmlIgnore] public int[] changeSkillCheckEffectOverlapCount = Array.Empty<int>();
+        [XmlIgnore] public int[] changeSkillID = Array.Empty<int>();
+        [XmlIgnore] public int[] changeSkillLevel = Array.Empty<int>();
         [XmlAttribute] public int originSkillID;
         [XmlAttribute] public short originSkillLevel = 1;
         [XmlAttribute] public int autoChange;

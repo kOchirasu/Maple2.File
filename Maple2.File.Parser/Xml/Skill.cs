@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Skill;
 using Maple2.File.Parser.Xml.Skill.Property;
-using static System.Array;
 
 // ./data/xml/skill/%02d/%08u.xml
 namespace Maple2.File.Parser.Xml {
@@ -70,7 +70,7 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public string endEffect = string.Empty;
         [XmlAttribute] public string splashInvokeEffect = string.Empty;
         [XmlAttribute] public string splashEndEffect = string.Empty;
-        [XmlIgnore] public string[] strTagEffects = Empty<string>();
+        [XmlIgnore] public string[] strTagEffects = Array.Empty<string>();
         [XmlAttribute] public string selfInputCombo = string.Empty;
         [XmlAttribute] public string weaponSequenceName = string.Empty;
         [XmlAttribute] public string loopKeepEffect = string.Empty;
@@ -130,9 +130,9 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public int brokenOffence;
         [XmlAttribute] public int unrideOnHit;
         [XmlAttribute] public int releaseObjectWeaponOnHit = 1;
-        [XmlIgnore] public int[] compulsionType = Empty<int>();
+        [XmlIgnore] public int[] compulsionType = Array.Empty<int>();
         [XmlAttribute] public int grabTargetType;
-        [XmlIgnore] public string[] grabNodeCategory = Empty<string>();
+        [XmlIgnore] public string[] grabNodeCategory = Array.Empty<string>();
 
         [XmlElement] public PetTamingProperty petTamingProperty;
         [XmlElement] public SplashManualActiveProperty splashManualActiveProperty;

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Option {
@@ -12,15 +11,15 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public int randomMakeType;
         [XmlAttribute] public int constantMakeType;
         [XmlAttribute] public int optionRandom;
+        [XmlAttribute] public float optionLevelFactor = 1.0f;
+        [XmlIgnore] public float? globalOptionLevelFactor;
         [XmlAttribute] public int optionID;
 
-        // Handle versioning
-        [XmlIgnore]
-        public float optionLevelFactor =>
-            Deserialize.Overrides(float.MinValue, _globalOptionLevelFactor, _optionLevelFactor);
-        [XmlAttribute("optionLevelFactor")]
-        public float _optionLevelFactor = 1.0f;
-        [XmlAttribute("globalOptionLevelFactor"), DefaultValue(float.MinValue)]
-        public float _globalOptionLevelFactor = float.MinValue;
+        /* Custom Attribute Serializers */
+        [XmlAttribute("globalOptionLevelFactor"), DefaultValue(null)]
+        public string _globalOptionLevelFactor {
+            get => globalOptionLevelFactor?.ToString();
+            set => globalOptionLevelFactor = float.TryParse(value, out float n) ? n : null;
+        }
     }
 }

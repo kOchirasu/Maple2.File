@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class BasicProperty {
@@ -40,14 +40,14 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int disableRevivalHere;
         [XmlAttribute] public int attackPossibleEffectID;
         [XmlAttribute] public int skillGroupType;
-        [XmlIgnore] public int[] attackPossibleSkillIDs = Empty<int>();
-        [XmlIgnore] public int[] attackPossibleDotEffectIDs = Empty<int>();
-        [XmlIgnore] public int[] groupIDs = Empty<int>();
+        [XmlIgnore] public int[] attackPossibleSkillIDs = Array.Empty<int>();
+        [XmlIgnore] public int[] attackPossibleDotEffectIDs = Array.Empty<int>();
+        [XmlIgnore] public int[] groupIDs = Array.Empty<int>();
         [XmlAttribute] public int immediateActiveRequireSkill;
-        [XmlIgnore] public int[] itemSlotDisable = Empty<int>();
+        [XmlIgnore] public int[] itemSlotDisable = Array.Empty<int>();
         [XmlAttribute] public int tailEffect;
-        [XmlIgnore] public int[] upgradeSkillLevelID = Empty<int>();
-        [XmlIgnore] public int[] upgradeSkillLevelValue = Empty<int>();
+        [XmlIgnore] public int[] upgradeSkillLevelID = Array.Empty<int>();
+        [XmlIgnore] public int[] upgradeSkillLevelValue = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("attackPossibleSkillIDs")]

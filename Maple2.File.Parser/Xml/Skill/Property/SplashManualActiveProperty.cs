@@ -1,10 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill.Property {
     public class SplashManualActiveProperty {
-        [XmlIgnore] public int[] splashSkillIDs = Empty<int>();
+        [XmlIgnore] public int[] splashSkillIDs = Array.Empty<int>();
         [XmlAttribute] public bool onlyManualActiveSplash;
 
         /* Custom Attribute Serializers */

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using System;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Slots {
@@ -41,7 +41,7 @@ namespace Maple2.File.Parser.Xml.Item {
         }
 
         public class Scale {
-            [XmlIgnore] public float[] values = Empty<float>();
+            [XmlIgnore] public float[] values = Array.Empty<float>();
             [XmlAttribute] public float min;
             [XmlAttribute] public float max;
             [XmlAttribute] public int reverse;
@@ -71,7 +71,7 @@ namespace Maple2.File.Parser.Xml.Item {
             [XmlAttribute] public string axis = string.Empty;
             [XmlAttribute] public float min;
             [XmlAttribute] public float max;
-            [XmlIgnore] public float[] @default = Empty<float>();
+            [XmlIgnore] public float[] @default = Array.Empty<float>();
 
             /* Custom Attribute Serializers */
             [XmlAttribute("default")]
@@ -114,7 +114,7 @@ namespace Maple2.File.Parser.Xml.Item {
         }
 
         public class PhysX {
-            [XmlIgnore] public string[] action = Empty<string>();
+            [XmlIgnore] public string[] action = Array.Empty<string>();
 
             /* Custom Attribute Serializers */
             [XmlAttribute("action")]

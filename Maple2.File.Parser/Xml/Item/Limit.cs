@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel;
+using System;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Limit {
         [XmlAttribute] public int genderLimit = 2;
         [XmlAttribute] public int levelLimit = 1;
         [XmlAttribute] public int levelLimitMax;
+        [XmlAttribute] public int transferType;
+        [XmlIgnore] public int? globalTransferType;
+        [XmlIgnore] public int? globalTransferTypeNA;
         [XmlAttribute] public int transferTypeVersion;
         [XmlAttribute] public int shopSell;
         [XmlAttribute] public int enableBreak;
@@ -18,22 +21,23 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public int tradeLimitRank = 4;
         [XmlAttribute] public int vipLevel;
         [XmlAttribute] public bool enableSocketTransfer = true;
-        [XmlIgnore] public int[] jobLimit = Empty<int>();
-        [XmlIgnore] public int[] disableJobLimit = Empty<int>();
-        [XmlIgnore] public int[] recommendJobs = Empty<int>();
-
-        // Handle versioning
-        [XmlIgnore]
-        public int transferType =>
-            Deserialize.Overrides(int.MinValue, _globalTransferTypeNA, _globalTransferType, _transferType);
-        [XmlAttribute("transferType")]
-        public int _transferType;
-        [XmlAttribute("globalTransferType"), DefaultValue(int.MinValue)]
-        public int _globalTransferType = int.MinValue;
-        [XmlAttribute("globalTransferTypeNA"), DefaultValue(int.MinValue)]
-        public int _globalTransferTypeNA = int.MinValue;
+        [XmlIgnore] public int[] jobLimit = Array.Empty<int>();
+        [XmlIgnore] public int[] disableJobLimit = Array.Empty<int>();
+        [XmlIgnore] public int[] recommendJobs = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
+        [XmlAttribute("globalTransferType"), DefaultValue(null)]
+        public string _globalTransferType {
+            get => globalTransferType?.ToString();
+            set => globalTransferType = int.TryParse(value, out int n) ? n : null;
+        }
+
+        [XmlAttribute("globalTransferTypeNA"), DefaultValue(null)]
+        public string _globalTransferTypeNA {
+            get => globalTransferTypeNA?.ToString();
+            set => globalTransferTypeNA = int.TryParse(value, out int n) ? n : null;
+        }
+
         [XmlAttribute("jobLimit")]
         public string _jobLimit {
             get => Serialize.IntCsv(jobLimit);

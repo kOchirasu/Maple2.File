@@ -1,12 +1,12 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Mutation {
         [XmlAttribute] public int interval = 2;
-        [XmlIgnore] public string[] assets = Empty<string>();
-        [XmlIgnore] public int[] skills = Empty<int>();
+        [XmlIgnore] public string[] assets = Array.Empty<string>();
+        [XmlIgnore] public int[] skills = Array.Empty<int>();
         [XmlAttribute] public string changeeffect = string.Empty;
 
         /* Custom Attribute Serializers */

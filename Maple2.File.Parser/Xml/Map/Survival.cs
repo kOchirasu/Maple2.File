@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Map {
     public class Survival {
@@ -14,8 +14,8 @@ namespace Maple2.File.Parser.Xml.Map {
         [XmlAttribute] public int plusInven;
         [XmlAttribute] public int plusInven_Basic;
         [XmlAttribute] public int plusInven_Zero;
-        [XmlIgnore] public int[] enteranceBuffIDs = Empty<int>();
-        [XmlIgnore] public int[] enteranceBuffLevels = Empty<int>();
+        [XmlIgnore] public int[] enteranceBuffIDs = Array.Empty<int>();
+        [XmlIgnore] public int[] enteranceBuffLevels = Array.Empty<int>();
         [XmlAttribute] public bool ExtrafallDamage;
 
         /* Custom Attribute Serializers */

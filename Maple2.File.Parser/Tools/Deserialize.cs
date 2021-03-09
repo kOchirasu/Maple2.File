@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 
@@ -37,24 +38,11 @@ namespace Maple2.File.Parser.Tools {
             return new Vector3(x, y, z);
         }
 
-        public static T Overrides<T>(T unsetValue, params T[] keys) where T : struct, IEquatable<T> {
-            foreach (T key in keys) {
-                if (!unsetValue.Equals(key)) {
-                    return key;
-                }
-            }
+        public static Color Color(string value) {
+            byte[] bytes = BitConverter.GetBytes(Convert.ToInt32(value, 16));
+            bytes[3] = bytes[3] == 0 ? 0xFF : bytes[3]; // Alpha 255 if not set
 
-            return default;
-        }
-
-        public static string StringOverrides(params string[] keys) {
-            foreach (string key in keys) {
-                if (key != null) {
-                    return key;
-                }
-            }
-
-            return string.Empty;
+            return System.Drawing.Color.FromArgb(bytes[3], bytes[0], bytes[1], bytes[2]);
         }
     }
 }

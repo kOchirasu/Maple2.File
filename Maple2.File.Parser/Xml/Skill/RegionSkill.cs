@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
+using System;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class RegionSkill {
@@ -28,7 +28,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public bool targetSelectGuild;
         [XmlAttribute] public int targetStatCompare;
         [XmlAttribute] public int targetStatCompareFunction;
-        [XmlIgnore] public int[] applyTargetIgnoreNpcRanks = Empty<int>();
+        [XmlIgnore] public int[] applyTargetIgnoreNpcRanks = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("rangeAdd")]

@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Map {
     public class Property {
@@ -42,10 +42,10 @@ namespace Maple2.File.Parser.Xml.Map {
         [XmlAttribute] public bool minimapPing;
         [XmlAttribute] public bool popupMenu = true;
         [XmlAttribute] public bool gemSystem = true;
-        [XmlIgnore] public int[] skillUseDisable = Empty<int>();
-        [XmlIgnore] public int[] enteranceBuffIDs = Empty<int>();
-        [XmlIgnore] public int[] enteranceBuffLevels = Empty<int>();
-        [XmlIgnore] public string[] propertyTags = Empty<string>();
+        [XmlIgnore] public int[] skillUseDisable = Array.Empty<int>();
+        [XmlIgnore] public int[] enteranceBuffIDs = Array.Empty<int>();
+        [XmlIgnore] public int[] enteranceBuffLevels = Array.Empty<int>();
+        [XmlIgnore] public string[] propertyTags = Array.Empty<string>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("skillUseDisable")]

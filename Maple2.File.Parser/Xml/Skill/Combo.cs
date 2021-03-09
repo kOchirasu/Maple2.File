@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public class Combo {
@@ -10,8 +10,8 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int npcComboSkillID;
         [XmlAttribute] public short npcComboSkillLevel = 1;
         [XmlAttribute] public bool disableChargingAttackSkipFrame;
-        [XmlIgnore] public int[] inputSkill = Empty<int>();
-        [XmlIgnore] public int[] outputSkill = Empty<int>();
+        [XmlIgnore] public int[] inputSkill = Array.Empty<int>();
+        [XmlIgnore] public int[] outputSkill = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("inputSkill")]

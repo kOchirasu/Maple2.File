@@ -1,11 +1,11 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ImmuneEffectProperty {
-        [XmlIgnore] public int[] immuneEffectCodes = Empty<int>();
-        [XmlIgnore] public int[] immuneBuffCategories = Empty<int>();
+        [XmlIgnore] public int[] immuneEffectCodes = Array.Empty<int>();
+        [XmlIgnore] public int[] immuneBuffCategories = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("immuneEffectCodes")]

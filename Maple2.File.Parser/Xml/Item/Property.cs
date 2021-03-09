@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
+using System;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Property {
@@ -29,7 +29,18 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public bool remakeDisable;
         [XmlAttribute] public int reference;
         [XmlAttribute] public int gearScore;
+        [XmlAttribute] public int tradableCount;
+        [XmlIgnore] public int? globalTradableCount;
+        [XmlIgnore] public int? globalTradableCountNA;
+        [XmlAttribute] public int tradableCountDeduction;
+        [XmlIgnore] public int? globalTradableCountDeduction;
         [XmlAttribute] public int unlimitedEnchantMaxGrade;
+        [XmlAttribute] public int rePackingLimitCount;
+        [XmlIgnore] public int? globalRePackingLimitCount;
+        [XmlAttribute] public int rePackingItemConsumeCount;
+        [XmlIgnore] public int? globalRePackingItemConsumeCount;
+        [XmlIgnore] public int[] rePackingScrollID = Array.Empty<int>();
+        [XmlIgnore] public int[] globalRePackingScrollID;
         [XmlAttribute] public int socketDataId;
         [XmlAttribute] public string functionTags = string.Empty;
         [XmlAttribute] public int moveDisable;
@@ -38,52 +49,52 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlElement] public Sell sell;
         [XmlElement] public Exp exp;
 
-        // Handle versioning
-        [XmlIgnore]
-        public int tradableCount =>
-            Deserialize.Overrides(int.MinValue, _globalTradableCountNA, _globalTradableCount, _tradableCount);
-        [XmlAttribute("tradableCount")]
-        public int _tradableCount;
-        [XmlAttribute("globalTradableCount"), DefaultValue(int.MinValue)]
-        public int _globalTradableCount = int.MinValue;
-        [XmlAttribute("globalTradableCountNA"), DefaultValue(int.MinValue)]
-        public int _globalTradableCountNA = int.MinValue;
+        /* Custom Attribute Serializers */
+        [XmlAttribute("globalTradableCount"), DefaultValue(null)]
+        public string _globalTradableCount {
+            get => globalTradableCount?.ToString();
+            set => globalTradableCount = int.TryParse(value, out int n) ? n : null;
+        }
 
-        [XmlIgnore]
-        public int tradableCountDeduction =>
-            Deserialize.Overrides(int.MinValue, _globalTradableCountDeduction, _tradableCountDeduction);
-        [XmlAttribute("tradableCountDeduction")]
-        public int _tradableCountDeduction;
-        [XmlAttribute("globalTradableCountDeduction"), DefaultValue(int.MinValue)]
-        public int _globalTradableCountDeduction = int.MinValue;
+        [XmlAttribute("globalTradableCountNA"), DefaultValue(null)]
+        public string _globalTradableCountNA {
+            get => globalTradableCountNA?.ToString();
+            set => globalTradableCountNA = int.TryParse(value, out int n) ? n : null;
+        }
 
-        [XmlIgnore]
-        public int rePackingLimitCount =>
-            Deserialize.Overrides(int.MinValue, _globalRePackingLimitCount, _rePackingLimitCount);
-        [XmlAttribute("rePackingLimitCount")]
-        public int _rePackingLimitCount;
-        [XmlAttribute("globalRePackingLimitCount"), DefaultValue(int.MinValue)]
-        public int _globalRePackingLimitCount = int.MinValue;
+        [XmlAttribute("globalTradableCountDeduction"), DefaultValue(null)]
+        public string _globalTradableCountDeduction {
+            get => globalTradableCountDeduction?.ToString();
+            set => globalTradableCountDeduction = int.TryParse(value, out int n) ? n : null;
+        }
 
-        [XmlIgnore]
-        public int rePackingItemConsumeCount =>
-            Deserialize.Overrides(int.MinValue, _globalRePackingItemConsumeCount, _rePackingItemConsumeCount);
-        [XmlAttribute("rePackingItemConsumeCount")]
-        public int _rePackingItemConsumeCount;
-        [XmlAttribute("globalRePackingItemConsumeCount"), DefaultValue(int.MinValue)]
-        public int _globalRePackingItemConsumeCount = int.MinValue;
+        [XmlAttribute("globalRePackingLimitCount"), DefaultValue(null)]
+        public string _globalRePackingLimitCount {
+            get => globalRePackingLimitCount?.ToString();
+            set => globalRePackingLimitCount = int.TryParse(value, out int n) ? n : null;
+        }
 
-        [XmlIgnore]
-        public int[] rePackingScrollID =>
-            Deserialize.IntCsv(Deserialize.StringOverrides(_globalRePackingScrollID, _rePackingScrollID));
+        [XmlAttribute("globalRePackingItemConsumeCount"), DefaultValue(null)]
+        public string _globalRePackingItemConsumeCount {
+            get => globalRePackingItemConsumeCount?.ToString();
+            set => globalRePackingItemConsumeCount = int.TryParse(value, out int n) ? n : null;
+        }
+
         [XmlAttribute("rePackingScrollID")]
-        public string _rePackingScrollID = string.Empty;
+        public string _rePackingScrollID {
+            get => Serialize.IntCsv(rePackingScrollID);
+            set => rePackingScrollID = Deserialize.IntCsv(value);
+        }
+
         [XmlAttribute("globalRePackingScrollID"), DefaultValue(null)]
-        public string _globalRePackingScrollID;
+        public string _globalRePackingScrollID {
+            get => Serialize.IntCsv(globalRePackingScrollID);
+            set => globalRePackingScrollID = Deserialize.IntCsv(value);
+        }
 
         public class Sell {
-            [XmlIgnore] public long[] price = Empty<long>();
-            [XmlIgnore] public long[] priceCustom = Empty<long>();
+            [XmlIgnore] public long[] price = Array.Empty<long>();
+            [XmlIgnore] public long[] priceCustom = Array.Empty<long>();
 
             /* Custom Attribute Serializers */
             [XmlAttribute("price")]

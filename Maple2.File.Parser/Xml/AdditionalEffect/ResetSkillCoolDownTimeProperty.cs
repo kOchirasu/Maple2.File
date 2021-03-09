@@ -1,10 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
     public class ResetSkillCoolDownTimeProperty {
-        [XmlIgnore] public int[] skillCodes = Empty<int>();
+        [XmlIgnore] public int[] skillCodes = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("skillCodes")]

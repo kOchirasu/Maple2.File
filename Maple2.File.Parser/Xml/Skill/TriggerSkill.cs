@@ -1,16 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using static System.Array;
 
 namespace Maple2.File.Parser.Xml.Skill {
     // Typed
     public class TriggerSkill {
         [XmlAttribute] public int splash;
         [XmlAttribute] public int randomCast;
-        [XmlIgnore] public int[] level = Empty<int>();
-        [XmlIgnore] public int[] skillID = Empty<int>();
-        [XmlIgnore] public int[] linkSkillID = Empty<int>();
+        [XmlIgnore] public int[] level = Array.Empty<int>();
+        [XmlIgnore] public int[] skillID = Array.Empty<int>();
+        [XmlIgnore] public int[] linkSkillID = Array.Empty<int>();
         [XmlAttribute] public int overlapCount = 1;
         [XmlAttribute] public int skillTarget;
         [XmlAttribute, DefaultValue(1)] public int skillOwner = 1; // if 0 then 1?
