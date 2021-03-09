@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
-    public class StatusProperty {
+    public partial class StatusProperty {
         [XmlAttribute] public int statChangeBase;
         [XmlAttribute] public int statChangeResult;
         [XmlAttribute] public float statChangeRate;
@@ -27,31 +27,12 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public float resAspR;
         [XmlAttribute] public long deathResistanceHP;
 
-        [XmlIgnore] public int[] compulsionEventTypes = Array.Empty<int>();
-        [XmlIgnore] public float[] compulsionEventRate = Array.Empty<float>();
-        [XmlIgnore] public int[] compulsionEventSkillCodes = Array.Empty<int>();
+        [M2dArray] public int[] compulsionEventTypes = Array.Empty<int>();
+        [M2dArray] public float[] compulsionEventRate = Array.Empty<float>();
+        [M2dArray] public int[] compulsionEventSkillCodes = Array.Empty<int>();
 
         [XmlElement] public Stat Stat; // long AND float
         [XmlElement] public SpecialAbility SpecialAbility;
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("compulsionEventTypes")]
-        public string _compulsionEventTypes {
-            get => Serialize.IntCsv(compulsionEventTypes);
-            set => compulsionEventTypes = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("compulsionEventRate")]
-        public string _compulsionEventRate {
-            get => Serialize.FloatCsv(compulsionEventRate);
-            set => compulsionEventRate = Deserialize.FloatCsv(value);
-        }
-
-        [XmlAttribute("compulsionEventSkillCodes")]
-        public string _compulsionEventSkillCodes {
-            get => Serialize.IntCsv(compulsionEventSkillCodes);
-            set => compulsionEventSkillCodes = Deserialize.IntCsv(value);
-        }
 
         // Ignored by client.
         [XmlAttribute] public string saValue = string.Empty;

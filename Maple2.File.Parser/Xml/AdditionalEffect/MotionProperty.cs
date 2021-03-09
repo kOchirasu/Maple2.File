@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
-    public class MotionProperty {
+    public partial class MotionProperty {
         [XmlAttribute] public string sequenceName = string.Empty;
         [XmlAttribute] public string startEffect = string.Empty;
         [XmlAttribute] public string keepEffect = string.Empty;
@@ -13,9 +13,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public bool IgnoreOptimalHideKeepEffect;
         [XmlAttribute] public bool IgnoreOptimalHideStopEffect;
         [XmlAttribute] public bool IgnoreOptimalHideInvokeEffect;
-        [XmlIgnore] public int[] disableEffectStates = Array.Empty<int>();
+        [M2dArray] public int[] disableEffectStates = Array.Empty<int>();
         [XmlAttribute] public int hide;
-        [XmlIgnore] public int[] clearCondition = Array.Empty<int>();
+        [M2dArray] public int[] clearCondition = Array.Empty<int>();
         [XmlAttribute] public float alphaBlending = 1.0f;
         [XmlAttribute] public int stun;
         [XmlAttribute] public string stunAnimation = string.Empty;
@@ -34,26 +34,7 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int skillUseDisable;
         [XmlAttribute] public int useFixedZRotation;
         [XmlAttribute] public float fixedZRotation;
-        [XmlIgnore] public int[] skillUseDisableIDs = Array.Empty<int>();
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("disableEffectStates")]
-        public string _disableEffectStates {
-            get => Serialize.IntCsv(disableEffectStates);
-            set => disableEffectStates = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("clearCondition")]
-        public string _clearCondition {
-            get => Serialize.IntCsv(clearCondition);
-            set => clearCondition = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("skillUseDisableIDs")]
-        public string _skillUseDisableIDs {
-            get => Serialize.IntCsv(skillUseDisableIDs);
-            set => skillUseDisableIDs = Deserialize.IntCsv(value);
-        }
+        [M2dArray] public int[] skillUseDisableIDs = Array.Empty<int>();
 
         // Ignored by client.
         [XmlAttribute] public int confusion;

@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Skill.Property {
-    public class SplashManualActiveProperty {
-        [XmlIgnore] public int[] splashSkillIDs = Array.Empty<int>();
+    public partial class SplashManualActiveProperty {
+        [M2dArray] public int[] splashSkillIDs = Array.Empty<int>();
         [XmlAttribute] public bool onlyManualActiveSplash;
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("splashSkillIDs")]
-        public string _splashSkillIDs {
-            get => Serialize.IntCsv(splashSkillIDs);
-            set => splashSkillIDs = Deserialize.IntCsv(value);
-        }
     }
 }

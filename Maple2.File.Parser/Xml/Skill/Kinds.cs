@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Skill {
-    public class Kinds {
+    public partial class Kinds {
         [XmlAttribute] public int type;
         [XmlAttribute] public int subType;
         [XmlAttribute] public int rangeType;
@@ -24,14 +24,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public int releaseStunState;
         [XmlAttribute] public int disableWater;
         [XmlAttribute] public bool holdAttack;
-        [XmlIgnore] public int[] groupIDs = Array.Empty<int>();
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("groupIDs")]
-        public string _groupIDs {
-            get => Serialize.IntCsv(groupIDs);
-            set => groupIDs = Deserialize.IntCsv(value);
-        }
+        [M2dArray] public int[] groupIDs = Array.Empty<int>();
 
         // Ignored by client.
         [XmlAttribute] public int emotionNameTagOffset;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Map {
-    public class Property {
+    public partial class Property {
         [XmlAttribute] public int mapCategoryCode;
         [XmlAttribute] public int revivalreturnid; // mapId if 0
         [XmlAttribute] public int enterreturnid;
@@ -42,35 +42,10 @@ namespace Maple2.File.Parser.Xml.Map {
         [XmlAttribute] public bool minimapPing;
         [XmlAttribute] public bool popupMenu = true;
         [XmlAttribute] public bool gemSystem = true;
-        [XmlIgnore] public int[] skillUseDisable = Array.Empty<int>();
-        [XmlIgnore] public int[] enteranceBuffIDs = Array.Empty<int>();
-        [XmlIgnore] public int[] enteranceBuffLevels = Array.Empty<int>();
-        [XmlIgnore] public string[] propertyTags = Array.Empty<string>();
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("skillUseDisable")]
-        public string _skillUseDisable {
-            get => Serialize.IntCsv(skillUseDisable);
-            set => skillUseDisable = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("enteranceBuffIDs")]
-        public string _enteranceBuffIDs {
-            get => Serialize.IntCsv(enteranceBuffIDs);
-            set => enteranceBuffIDs = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("enteranceBuffLevels")]
-        public string _enteranceBuffLevels {
-            get => Serialize.IntCsv(enteranceBuffLevels);
-            set => enteranceBuffLevels = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("propertyTags")]
-        public string _propertyTags {
-            get => Serialize.StringCsv(propertyTags);
-            set => propertyTags = Deserialize.StringCsv(value);
-        }
+        [M2dArray] public int[] skillUseDisable = Array.Empty<int>();
+        [M2dArray] public int[] enteranceBuffIDs = Array.Empty<int>();
+        [M2dArray] public int[] enteranceBuffLevels = Array.Empty<int>();
+        [M2dArray] public string[] propertyTags = Array.Empty<string>();
 
         // Ignored by client.
         [XmlAttribute] public int additionalUseDisable;

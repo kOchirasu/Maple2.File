@@ -1,32 +1,13 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Skill {
-    public class Upgrade {
+    public partial class Upgrade {
         [XmlAttribute] public short level;
-        [XmlIgnore] public int[] skillIDs = Array.Empty<int>();
-        [XmlIgnore] public int[] skillLevels = Array.Empty<int>();
-        [XmlIgnore] public int[] questIDs = Array.Empty<int>();
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("skillIDs")]
-        public string _skillIDs {
-            get => Serialize.IntCsv(skillIDs);
-            set => skillIDs = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("skillLevels")]
-        public string _skillLevels {
-            get => Serialize.IntCsv(skillLevels);
-            set => skillLevels = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("questIDs")]
-        public string _questIDs {
-            get => Serialize.IntCsv(questIDs);
-            set => questIDs = Deserialize.IntCsv(value);
-        }
+        [M2dArray] public int[] skillIDs = Array.Empty<int>();
+        [M2dArray] public int[] skillLevels = Array.Empty<int>();
+        [M2dArray] public int[] questIDs = Array.Empty<int>();
 
         // Ignored by client.
         [XmlAttribute] public int money;

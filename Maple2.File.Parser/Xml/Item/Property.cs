@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using System;
+﻿using System;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Item {
-    public class Property {
+    public partial class Property {
         [XmlAttribute] public int skin;
         [XmlAttribute] public int skinType;
         [XmlAttribute] public int slotMax = 1; // if > 99999, set to 99999
@@ -30,17 +30,17 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public int reference;
         [XmlAttribute] public int gearScore;
         [XmlAttribute] public int tradableCount;
-        [XmlIgnore] public int? globalTradableCount;
-        [XmlIgnore] public int? globalTradableCountNA;
+        [M2dNullable] public int? globalTradableCount;
+        [M2dNullable] public int? globalTradableCountNA;
         [XmlAttribute] public int tradableCountDeduction;
-        [XmlIgnore] public int? globalTradableCountDeduction;
+        [M2dNullable] public int? globalTradableCountDeduction;
         [XmlAttribute] public int unlimitedEnchantMaxGrade;
         [XmlAttribute] public int rePackingLimitCount;
-        [XmlIgnore] public int? globalRePackingLimitCount;
+        [M2dNullable] public int? globalRePackingLimitCount;
         [XmlAttribute] public int rePackingItemConsumeCount;
-        [XmlIgnore] public int? globalRePackingItemConsumeCount;
-        [XmlIgnore] public int[] rePackingScrollID = Array.Empty<int>();
-        [XmlIgnore] public int[] globalRePackingScrollID;
+        [M2dNullable] public int? globalRePackingItemConsumeCount;
+        [M2dArray] public int[] rePackingScrollID = Array.Empty<int>();
+        [M2dArray] public int[] globalRePackingScrollID;
         [XmlAttribute] public int socketDataId;
         [XmlAttribute] public string functionTags = string.Empty;
         [XmlAttribute] public int moveDisable;
@@ -49,50 +49,7 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlElement] public Sell sell;
         [XmlElement] public Exp exp;
 
-        /* Custom Attribute Serializers */
-        [XmlAttribute("globalTradableCount"), DefaultValue(null)]
-        public string _globalTradableCount {
-            get => globalTradableCount?.ToString();
-            set => globalTradableCount = int.TryParse(value, out int n) ? n : null;
-        }
-
-        [XmlAttribute("globalTradableCountNA"), DefaultValue(null)]
-        public string _globalTradableCountNA {
-            get => globalTradableCountNA?.ToString();
-            set => globalTradableCountNA = int.TryParse(value, out int n) ? n : null;
-        }
-
-        [XmlAttribute("globalTradableCountDeduction"), DefaultValue(null)]
-        public string _globalTradableCountDeduction {
-            get => globalTradableCountDeduction?.ToString();
-            set => globalTradableCountDeduction = int.TryParse(value, out int n) ? n : null;
-        }
-
-        [XmlAttribute("globalRePackingLimitCount"), DefaultValue(null)]
-        public string _globalRePackingLimitCount {
-            get => globalRePackingLimitCount?.ToString();
-            set => globalRePackingLimitCount = int.TryParse(value, out int n) ? n : null;
-        }
-
-        [XmlAttribute("globalRePackingItemConsumeCount"), DefaultValue(null)]
-        public string _globalRePackingItemConsumeCount {
-            get => globalRePackingItemConsumeCount?.ToString();
-            set => globalRePackingItemConsumeCount = int.TryParse(value, out int n) ? n : null;
-        }
-
-        [XmlAttribute("rePackingScrollID")]
-        public string _rePackingScrollID {
-            get => Serialize.IntCsv(rePackingScrollID);
-            set => rePackingScrollID = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("globalRePackingScrollID"), DefaultValue(null)]
-        public string _globalRePackingScrollID {
-            get => Serialize.IntCsv(globalRePackingScrollID);
-            set => globalRePackingScrollID = Deserialize.IntCsv(value);
-        }
-
-        public class Sell {
+        public partial class Sell {
             [XmlIgnore] public long[] price = Array.Empty<long>();
             [XmlIgnore] public long[] priceCustom = Array.Empty<long>();
 

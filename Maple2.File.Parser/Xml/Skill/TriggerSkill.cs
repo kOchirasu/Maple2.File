@@ -1,16 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
-    // Typed
-    public class TriggerSkill {
+    public partial class TriggerSkill {
         [XmlAttribute] public int splash;
         [XmlAttribute] public int randomCast;
-        [XmlIgnore] public int[] level = Array.Empty<int>();
-        [XmlIgnore] public int[] skillID = Array.Empty<int>();
-        [XmlIgnore] public int[] linkSkillID = Array.Empty<int>();
+        [M2dArray] public int[] level = Array.Empty<int>();
+        [M2dArray] public int[] skillID = Array.Empty<int>();
+        [M2dArray] public int[] linkSkillID = Array.Empty<int>();
         [XmlAttribute] public int overlapCount = 1;
         [XmlAttribute] public int skillTarget;
         [XmlAttribute, DefaultValue(1)] public int skillOwner = 1; // if 0 then 1?
@@ -30,24 +30,5 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute, DefaultValue(150.0f)] public float chainDistance = 150.0f; // default to 150.0 if not float
 
         [XmlElement] public BeginCondition beginCondition;
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("level")]
-        public string _level {
-            get => Serialize.IntCsv(level);
-            set => level = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("skillID")]
-        public string _skillID {
-            get => Serialize.IntCsv(skillID);
-            set => skillID = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("linkSkillID")]
-        public string _linkSkillID {
-            get => Serialize.IntCsv(linkSkillID);
-            set => linkSkillID = Deserialize.IntCsv(value);
-        }
     }
 }

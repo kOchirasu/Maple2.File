@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
-    public class BasicProperty {
+    public partial class BasicProperty {
         [XmlAttribute] public short level = 1;
         [XmlAttribute] public int accountEffect;
         [XmlAttribute] public int group;
@@ -40,50 +40,13 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public int disableRevivalHere;
         [XmlAttribute] public int attackPossibleEffectID;
         [XmlAttribute] public int skillGroupType;
-        [XmlIgnore] public int[] attackPossibleSkillIDs = Array.Empty<int>();
-        [XmlIgnore] public int[] attackPossibleDotEffectIDs = Array.Empty<int>();
-        [XmlIgnore] public int[] groupIDs = Array.Empty<int>();
+        [M2dArray] public int[] attackPossibleSkillIDs = Array.Empty<int>();
+        [M2dArray] public int[] attackPossibleDotEffectIDs = Array.Empty<int>();
+        [M2dArray] public int[] groupIDs = Array.Empty<int>();
         [XmlAttribute] public int immediateActiveRequireSkill;
-        [XmlIgnore] public int[] itemSlotDisable = Array.Empty<int>();
+        [M2dArray] public int[] itemSlotDisable = Array.Empty<int>();
         [XmlAttribute] public int tailEffect;
-        [XmlIgnore] public int[] upgradeSkillLevelID = Array.Empty<int>();
-        [XmlIgnore] public int[] upgradeSkillLevelValue = Array.Empty<int>();
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("attackPossibleSkillIDs")]
-        public string _attackPossibleSkillIDs {
-            get => Serialize.IntCsv(attackPossibleSkillIDs);
-            set => attackPossibleSkillIDs = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("attackPossibleDotEffectIDs")]
-        public string _attackPossibleDotEffectIDs {
-            get => Serialize.IntCsv(attackPossibleDotEffectIDs);
-            set => attackPossibleDotEffectIDs = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("groupIDs")]
-        public string _groupIDs {
-            get => Serialize.IntCsv(groupIDs);
-            set => groupIDs = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("itemSlotDisable")]
-        public string _itemSlotDisable {
-            get => Serialize.IntCsv(itemSlotDisable);
-            set => itemSlotDisable = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("upgradeSkillLevelID")]
-        public string _upgradeSkillLevelID {
-            get => Serialize.IntCsv(upgradeSkillLevelID);
-            set => upgradeSkillLevelID = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("upgradeSkillLevelValue")]
-        public string _upgradeSkillLevelValue {
-            get => Serialize.IntCsv(upgradeSkillLevelValue);
-            set => upgradeSkillLevelValue = Deserialize.IntCsv(value);
-        }
+        [M2dArray] public int[] upgradeSkillLevelID = Array.Empty<int>();
+        [M2dArray] public int[] upgradeSkillLevelValue = Array.Empty<int>();
     }
 }

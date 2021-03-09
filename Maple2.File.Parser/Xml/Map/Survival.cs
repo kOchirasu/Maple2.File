@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Map {
-    public class Survival {
+    public partial class Survival {
         [XmlAttribute] public short defaultMark;
         [XmlAttribute] public int defaultNameTag;
 
@@ -14,21 +14,8 @@ namespace Maple2.File.Parser.Xml.Map {
         [XmlAttribute] public int plusInven;
         [XmlAttribute] public int plusInven_Basic;
         [XmlAttribute] public int plusInven_Zero;
-        [XmlIgnore] public int[] enteranceBuffIDs = Array.Empty<int>();
-        [XmlIgnore] public int[] enteranceBuffLevels = Array.Empty<int>();
+        [M2dArray] public int[] enteranceBuffIDs = Array.Empty<int>();
+        [M2dArray] public int[] enteranceBuffLevels = Array.Empty<int>();
         [XmlAttribute] public bool ExtrafallDamage;
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("enteranceBuffIDs")]
-        public string _enteranceBuffIDs {
-            get => Serialize.IntCsv(enteranceBuffIDs);
-            set => enteranceBuffIDs = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("enteranceBuffLevels")]
-        public string _enteranceBuffLevels {
-            get => Serialize.IntCsv(enteranceBuffLevels);
-            set => enteranceBuffLevels = Deserialize.IntCsv(value);
-        }
     }
 }

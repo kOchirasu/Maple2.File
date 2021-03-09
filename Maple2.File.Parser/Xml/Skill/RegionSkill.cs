@@ -1,10 +1,11 @@
 ﻿using System.Numerics;
 using System;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
-    public class RegionSkill {
+    public partial class RegionSkill {
         [XmlAttribute] public int includeCaster;
         [XmlAttribute] public string rangeType = string.Empty; // box, cylinder, frustum, hole_cylinder
         [XmlAttribute] public float distance;
@@ -28,7 +29,7 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public bool targetSelectGuild;
         [XmlAttribute] public int targetStatCompare;
         [XmlAttribute] public int targetStatCompareFunction;
-        [XmlIgnore] public int[] applyTargetIgnoreNpcRanks = Array.Empty<int>();
+        [M2dArray] public int[] applyTargetIgnoreNpcRanks = Array.Empty<int>();
 
         /* Custom Attribute Serializers */
         [XmlAttribute("rangeAdd")]
@@ -41,12 +42,6 @@ namespace Maple2.File.Parser.Xml.Skill {
         public string _rangeOffset {
             get => Serialize.Vector3(rangeOffset);
             set => rangeOffset = Deserialize.Vector3(value);
-        }
-
-        [XmlAttribute("applyTargetIgnoreNpcRanks")]
-        public string _applyTargetIgnoreNpcRanks {
-            get => Serialize.IntCsv(applyTargetIgnoreNpcRanks);
-            set => applyTargetIgnoreNpcRanks = Deserialize.IntCsv(value);
         }
 
         // Ignored by client.

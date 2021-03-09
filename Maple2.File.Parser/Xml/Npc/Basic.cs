@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Npc {
-    public class Basic {
+    public partial class Basic {
         [XmlAttribute] public string stringID = string.Empty;
         [XmlAttribute] public int friendly;
         [XmlAttribute] public int npcAttackGroup;
@@ -32,8 +32,8 @@ namespace Maple2.File.Parser.Xml.Npc {
         [XmlAttribute] public string npcSoundCombatStart = string.Empty;
         [XmlAttribute] public string npcSoundCombatEnd = string.Empty;
         [XmlAttribute] public string npcSoundDead = string.Empty;
-        [XmlIgnore] public string[] mainTags = Array.Empty<string>();
-        [XmlIgnore] public string[] subTags = Array.Empty<string>();
+        [M2dArray] public string[] mainTags = Array.Empty<string>();
+        [M2dArray] public string[] subTags = Array.Empty<string>();
         [XmlAttribute] public int maxSpawnCount;
         [XmlAttribute] public int groupSpawnCount;
         [XmlAttribute] public int rareDegree;
@@ -59,40 +59,9 @@ namespace Maple2.File.Parser.Xml.Npc {
         [XmlAttribute] public int emotionID;
         [XmlAttribute] public bool installNpc;
         [XmlAttribute] public bool locking;
-        [XmlIgnore] public string[] propertyTags = Array.Empty<string>();
-        [XmlIgnore] public string[] raceString = Array.Empty<string>();
-        [XmlIgnore] public string[] eventTags = Array.Empty<string>();
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("mainTags")]
-        public string _mainTags {
-            get => Serialize.StringCsv(mainTags);
-            set => mainTags = Deserialize.StringCsv(value);
-        }
-
-        [XmlAttribute("subTags")]
-        public string _subTags {
-            get => Serialize.StringCsv(subTags);
-            set => subTags = Deserialize.StringCsv(value);
-        }
-
-        [XmlAttribute("propertyTags")]
-        public string _propertyTags {
-            get => Serialize.StringCsv(propertyTags);
-            set => propertyTags = Deserialize.StringCsv(value);
-        }
-
-        [XmlAttribute("raceString")]
-        public string _raceString {
-            get => Serialize.StringCsv(raceString);
-            set => raceString = Deserialize.StringCsv(value);
-        }
-
-        [XmlAttribute("eventTags")]
-        public string _eventTags {
-            get => Serialize.StringCsv(eventTags);
-            set => eventTags = Deserialize.StringCsv(value);
-        }
+        [M2dArray] public string[] propertyTags = Array.Empty<string>();
+        [M2dArray] public string[] raceString = Array.Empty<string>();
+        [M2dArray] public string[] eventTags = Array.Empty<string>();
 
         // Ignored by client.
         [XmlAttribute] public int webFinder;

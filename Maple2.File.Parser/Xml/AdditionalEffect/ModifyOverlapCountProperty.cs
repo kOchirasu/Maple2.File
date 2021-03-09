@@ -1,23 +1,9 @@
 ﻿using System;
-using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect {
-    public class ModifyOverlapCountProperty {
-        [XmlIgnore] public int[] effectCodes = Array.Empty<int>();
-        [XmlIgnore] public int[] offsetCounts = Array.Empty<int>();
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("effectCodes")]
-        public string _effectCodes {
-            get => Serialize.IntCsv(effectCodes);
-            set => effectCodes = Deserialize.IntCsv(value);
-        }
-
-        [XmlAttribute("offsetCounts")]
-        public string _offsetCounts {
-            get => Serialize.IntCsv(offsetCounts);
-            set => offsetCounts = Deserialize.IntCsv(value);
-        }
+    public partial class ModifyOverlapCountProperty {
+        [M2dArray] public int[] effectCodes = Array.Empty<int>();
+        [M2dArray] public int[] offsetCounts = Array.Empty<int>();
     }
 }

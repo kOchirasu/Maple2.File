@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Item {
-    public class Option {
+    public partial class Option {
         [XmlAttribute] public int title;
         [XmlAttribute("static")] public int @static;
         [XmlAttribute] public int random;
@@ -12,14 +12,7 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public int constantMakeType;
         [XmlAttribute] public int optionRandom;
         [XmlAttribute] public float optionLevelFactor = 1.0f;
-        [XmlIgnore] public float? globalOptionLevelFactor;
+        [M2dNullable] public float? globalOptionLevelFactor;
         [XmlAttribute] public int optionID;
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("globalOptionLevelFactor"), DefaultValue(null)]
-        public string _globalOptionLevelFactor {
-            get => globalOptionLevelFactor?.ToString();
-            set => globalOptionLevelFactor = float.TryParse(value, out float n) ? n : null;
-        }
     }
 }

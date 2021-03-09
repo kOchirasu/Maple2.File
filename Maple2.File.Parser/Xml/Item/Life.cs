@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Item {
-    public class Life {
+    public partial class Life {
         [XmlAttribute] public int usePeriod;
-        [XmlIgnore] public int[] expirationPeriod = Array.Empty<int>();
+        [M2dArray(Delimiter = '-')] public int[] expirationPeriod = Array.Empty<int>();
         [XmlAttribute] public int expirationType;
         [XmlAttribute] public int numberOfWeeksMonths;
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("expirationPeriod")]
-        public string _expirationPeriod {
-            get => Serialize.IntCsv(expirationPeriod, '-');
-            set => expirationPeriod = Deserialize.IntCsv(value, '-');
-        }
     }
 }
