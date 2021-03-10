@@ -1,9 +1,9 @@
 ﻿using System.Numerics;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Item {
-    public class Install {
+    public partial class Install {
         [XmlAttribute] public int placeable;
         [XmlAttribute] public int unchangeable;
         [XmlAttribute] public int cannotStackAttach;
@@ -25,13 +25,6 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlAttribute] public string mapAttribute = string.Empty;
         [XmlAttribute] public string propCollisionGroup = string.Empty;
         [XmlAttribute] public bool useInstancing = true;
-        [XmlIgnore] public Vector3 physXdimension;
-
-        /* Custom Attribute Serializers */
-        [XmlAttribute("physXdimension")]
-        public string _physXdimension {
-            get => Serialize.Vector3(physXdimension);
-            set => physXdimension = Deserialize.Vector3(value);
-        }
+        [M2dVector3] public Vector3 physXdimension;
     }
 }

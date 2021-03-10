@@ -44,8 +44,8 @@ namespace Maple2.File.Parser.Flat {
         private Dictionary<string, FlatTypeNode> ReadTypeNodes(string exportedPath) {
             var reader = new M2dReader(exportedPath);
 
-            Dictionary<string, XmlNode> xmlNodes = new();
-            Dictionary<string, FlatTypeNode> types = new();
+            Dictionary<string, XmlNode> xmlNodes = new Dictionary<string, XmlNode>();
+            Dictionary<string, FlatTypeNode> types = new Dictionary<string, FlatTypeNode>();
             foreach (PackFileEntry entry in reader.Files) {
                 if (!entry.Name.StartsWith(root)) continue;
 
@@ -89,7 +89,7 @@ namespace Maple2.File.Parser.Flat {
                     string propId = propNode.Attributes["id"].Value;
 
                     if (propType.StartsWith("Assoc")) {
-                        List<(string, string)> values = new();
+                        List<(string, string)> values = new List<(string, string)>();
                         foreach (XmlNode setNode in setNodes) {
                             values.Add((setNode.Attributes["index"].Value, setNode.Attributes["value"].Value));
                         }

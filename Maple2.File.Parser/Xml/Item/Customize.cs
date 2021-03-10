@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Item {
-    public class Customize {
+    public partial class Customize {
         [XmlAttribute] public int colorPalette;
         [XmlAttribute] public int color;
         [XmlAttribute] public int ch0;
@@ -38,25 +38,10 @@ namespace Maple2.File.Parser.Xml.Item {
             [XmlElement] public List<Transform> transform;
         }
 
-        public class Transform {
-            [XmlIgnore] public Vector3 position;
-            [XmlIgnore] public Vector3 rotation;
+        public partial class Transform {
+            [M2dVector3] public Vector3 position;
+            [M2dVector3] public Vector3 rotation;
             [XmlAttribute] public float scale;
-
-            /* Custom Attribute Serializers */
-            [XmlAttribute("position")]
-            public string _position {
-                get => Serialize.Vector3(position);
-                set => position = Deserialize.Vector3(value);
-            }
-
-            [XmlAttribute("rotation")]
-            public string _rotation {
-                get => Serialize.Vector3(rotation);
-                set => rotation = Deserialize.Vector3(value);
-            }
         }
     }
-
-
 }

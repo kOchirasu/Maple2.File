@@ -2,14 +2,14 @@
 using System.Numerics;
 using System;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Item {
     public class Slots {
         [XmlElement] public List<Slot> slot;
     }
 
-    public class Slot {
+    public partial class Slot {
         [XmlAttribute] public string name = string.Empty;
 
         [XmlElement] public List<Asset> asset;
@@ -40,18 +40,11 @@ namespace Maple2.File.Parser.Xml.Item {
             [XmlElement] public PhysX physx;
         }
 
-        public class Scale {
-            [XmlIgnore] public float[] values = Array.Empty<float>();
+        public partial class Scale {
+            [M2dArray] public float[] value = Array.Empty<float>();
             [XmlAttribute] public float min;
             [XmlAttribute] public float max;
             [XmlAttribute] public int reverse;
-
-            /* Custom Attribute Serializers */
-            [XmlAttribute("value")]
-            public string _value {
-                get => Serialize.FloatCsv(values);
-                set => values = Deserialize.FloatCsv(value);
-            }
         }
 
         public class Decal {
@@ -67,18 +60,11 @@ namespace Maple2.File.Parser.Xml.Item {
             [XmlAttribute] public string rotation = string.Empty;
         }
 
-        public class UserRotation {
+        public partial class UserRotation {
             [XmlAttribute] public string axis = string.Empty;
             [XmlAttribute] public float min;
             [XmlAttribute] public float max;
-            [XmlIgnore] public float[] @default = Array.Empty<float>();
-
-            /* Custom Attribute Serializers */
-            [XmlAttribute("default")]
-            public string _default {
-                get => Serialize.FloatCsv(@default);
-                set => @default = Deserialize.FloatCsv(value);
-            }
+            [M2dArray] public float[] @default = Array.Empty<float>();
         }
 
         public class JointAngle {
@@ -89,39 +75,19 @@ namespace Maple2.File.Parser.Xml.Item {
             [XmlAttribute] public float negz;
         }
 
-        public class Dummy {
+        public partial class Dummy {
             [XmlAttribute] public int gender;
             [XmlAttribute] public string sequence = string.Empty;
             [XmlAttribute] public string targetnode = string.Empty;
             [XmlAttribute] public bool worldmode;
             [XmlAttribute] public bool worldlerp;
             [XmlAttribute] public float step;
-            [XmlIgnore] public Vector3 rotation;
-            [XmlIgnore] public Vector3 translation;
-
-            /* Custom Attribute Serializers */
-            [XmlAttribute("rotation")]
-            public string _rotation {
-                get => Serialize.Vector3(rotation);
-                set => rotation = Deserialize.Vector3(value);
-            }
-
-            [XmlAttribute("translation")]
-            public string _translation {
-                get => Serialize.Vector3(translation);
-                set => translation = Deserialize.Vector3(value);
-            }
+            [M2dVector3] public Vector3 rotation;
+            [M2dVector3] public Vector3 translation;
         }
 
-        public class PhysX {
-            [XmlIgnore] public string[] action = Array.Empty<string>();
-
-            /* Custom Attribute Serializers */
-            [XmlAttribute("action")]
-            public string _action {
-                get => Serialize.StringCsv(action);
-                set => action = Deserialize.StringCsv(value);
-            }
+        public partial class PhysX {
+            [M2dArray] public string[] action = Array.Empty<string>();
         }
     }
 }

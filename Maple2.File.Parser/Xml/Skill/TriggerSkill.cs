@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
-using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Skill {
     public partial class TriggerSkill {

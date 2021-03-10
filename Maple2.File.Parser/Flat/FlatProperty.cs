@@ -7,11 +7,11 @@ using System.Numerics;
 
 namespace Maple2.File.Parser.Flat {
     public class FlatProperty {
-        public string Name { get; init; }
-        public string Id { get; init; }
+        public string Name { get; set; }
+        public string Id { get; set; }
 
-        public string Type { get; init; }
-        public object Value { get; init; }
+        public string Type { get; set; }
+        public object Value { get; set; }
 
         public static object ParseType(string type, string value) {
             switch (type) {
@@ -54,28 +54,28 @@ namespace Maple2.File.Parser.Flat {
                 case "AssocString":
                 case "AssocEntityRef":
                 case "AssocAttachedNifAsset":
-                    Dictionary<string, string> assocString = new();
+                    Dictionary<string, string> assocString = new Dictionary<string, string>();
                     foreach ((string index, string value) in values) {
                         assocString[index] = (string) ParseType("String", value);
                     }
 
                     return assocString;
                 case "AssocPoint3":
-                    Dictionary<string, Vector3> assocPoint3 = new();
+                    Dictionary<string, Vector3> assocPoint3 = new Dictionary<string, Vector3>();
                     foreach ((string index, string value) in values) {
                         assocPoint3[index] = (Vector3) ParseType("Point3", value);
                     }
 
                     return assocPoint3;
                 case "AssocUInt32":
-                    Dictionary<string, uint> assocUInt32 = new();
+                    Dictionary<string, uint> assocUInt32 = new Dictionary<string, uint>();
                     foreach ((string index, string value) in values) {
                         assocUInt32[index] = (uint) ParseType("UInt32", value);
                     }
 
                     return assocUInt32;
                 case "AssocSInt32":
-                    Dictionary<string, int> assocSInt32 = new();
+                    Dictionary<string, int> assocSInt32 = new Dictionary<string, int>();
                     foreach ((string index, string value) in values) {
                         assocSInt32[index] = (int) ParseType("SInt32", value);
                     }
@@ -97,7 +97,7 @@ namespace Maple2.File.Parser.Flat {
         }
 
         public string ValueString() {
-            if (Value is not IDictionary dict) {
+            if (!(Value is IDictionary dict)) {
                 return $"{Value.GetType().Name}{{{Value}}}";
             }
 

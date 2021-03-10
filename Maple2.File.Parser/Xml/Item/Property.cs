@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
-using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Item {
     public partial class Property {
@@ -50,21 +49,8 @@ namespace Maple2.File.Parser.Xml.Item {
         [XmlElement] public Exp exp;
 
         public partial class Sell {
-            [XmlIgnore] public long[] price = Array.Empty<long>();
-            [XmlIgnore] public long[] priceCustom = Array.Empty<long>();
-
-            /* Custom Attribute Serializers */
-            [XmlAttribute("price")]
-            public string _price {
-                get => Serialize.LongCsv(price);
-                set => price = Deserialize.LongCsv(value);
-            }
-
-            [XmlAttribute("priceCustom")]
-            public string _priceCustom {
-                get => Serialize.LongCsv(priceCustom);
-                set => priceCustom = Deserialize.LongCsv(value);
-            }
+            [M2dArray] public long[] price = Array.Empty<long>();
+            [M2dArray] public long[] priceCustom = Array.Empty<long>();
         }
 
         public class Exp {

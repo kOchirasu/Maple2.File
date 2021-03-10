@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
-using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Skill;
 using Maple2.File.Parser.Xml.Skill.Property;
 

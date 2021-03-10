@@ -33,8 +33,8 @@ namespace Maple2.File.Parser.Flat {
         }
 
         public IEnumerable<FlatProperty> GetInheritedProperties() {
-            HashSet<string> added = new(Properties.Keys);
-            List<FlatProperty> props = new();
+            HashSet<string> added = new HashSet<string>(Properties.Keys);
+            List<FlatProperty> props = new List<FlatProperty>();
             for (int i = Mixin.Count - 1; i >= 0; i--) {
                 foreach (FlatProperty prop in Mixin[i].GetAllProperties()) {
                     if (added.Contains(prop.Name)) {
@@ -49,7 +49,7 @@ namespace Maple2.File.Parser.Flat {
         }
 
         public IEnumerable<FlatProperty> GetAllProperties() {
-            Dictionary<string, FlatProperty> props = new(Properties);
+            Dictionary<string, FlatProperty> props = new Dictionary<string, FlatProperty>(Properties);
             for (int i = Mixin.Count - 1; i >= 0; i--) {
                 foreach (FlatProperty prop in Mixin[i].GetAllProperties()) {
                     props.TryAdd(prop.Name, prop);
