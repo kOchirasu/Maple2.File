@@ -14,6 +14,8 @@
         <EmbeddedResource Include="Resource\M2dArrayAttribute.cs" />
         <Compile Remove="Resource\M2dNullableAttribute.cs" />
         <EmbeddedResource Include="Resource\M2dNullableAttribute.cs" />
+        <Compile Remove="Resource\M2dVector3Attribute.cs" />
+        <EmbeddedResource Include="Resource\M2dVector3Attribute.cs" />
     </ItemGroup>
 
 </Project>

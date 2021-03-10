@@ -8,25 +8,26 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Maple2.File.Generator {
     [Generator]
-    public class XmlArrayGenerator : XmlGenerator {
+    public class XmlVector3Generator : XmlGenerator {
         private static readonly SourceText attributeSource =
-            Assembly.GetExecutingAssembly().LoadSource("M2dArrayAttribute.cs");
+            Assembly.GetExecutingAssembly().LoadSource("M2dVector3Attribute.cs");
         private static readonly DiagnosticDescriptor typeError = new DiagnosticDescriptor(
-            "FG00010",
-            "M2dArrayAttribute can only be applied to value array types",
-            "Invalid type {0} for M2dArrayAttribute in {1}",
+            "FG00030",
+            "M2dVector3Attribute can only be applied to System.Numerics.Vector3",
+            "Invalid type {0} for M2dVector3Attribute in {1}",
             "Maple2.File.Generator",
             DiagnosticSeverity.Error,
             true
         );
 
-        public XmlArrayGenerator() : base(attributeSource, "M2dXmlGenerator", "M2dArray") { }
+        public XmlVector3Generator() : base(attributeSource, "M2dXmlGenerator", "M2dVector3") { }
 
         protected override string ProcessClass(GeneratorExecutionContext context, ISymbol @class,
                 IEnumerable<IFieldSymbol> fields, INamedTypeSymbol attribute) {
             var builder = new SourceBuilder(@class.ContainingNamespace);
             builder.Imports.AddRange(new[] {
                 "System",
+                "System.Numerics",
                 "System.Xml.Serialization",
             });
             builder.Classes.AddRange(@class.ContainingTypes().Select(symbol => symbol.Name));
@@ -39,51 +40,29 @@ namespace Maple2.File.Generator {
         }
 
         private string ProcessField(GeneratorExecutionContext context, IFieldSymbol field, ISymbol attribute) {
-            if (!(field.Type is IArrayTypeSymbol)) {
+            if (field.Type.ToDisplayString() != "System.Numerics.Vector3") {
                 context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type,
                     field.ToDisplayString()));
             }
 
             AttributeData attributeData = field.GetAttribute(attribute);
             string xmlAttributeName = attributeData.GetValueOrDefault("Name", field.Name);
-            char delimiter = attributeData.GetValueOrDefault<char>("Delimiter", ',');
+            string fieldName = $"this.{field.Name}";
 
             var source = new StringBuilder();
             source.Append($@"
 [XmlAttribute(""{xmlAttributeName}"")]
 public string _{xmlAttributeName} {{
-    get {{
-");
-            AddSerializer(source, field, delimiter);
-            source.Append(@"
-    }
-    set {");
-            AddDeserializer(source, field, delimiter);
-            source.AppendLine(@"
-    }
-}");
+    get => $""{{{fieldName}.X}},{{{fieldName}.Y}},{{{fieldName}.Z}}"";
+    set {{
+        string[] split = value.Split(new[] {{',', ' '}}, StringSplitOptions.RemoveEmptyEntries);
+        float x = split.Length > 0 ? float.Parse(split[0]) : 0;
+        float y = split.Length > 1 ? float.Parse(split[1]) : 0;
+        float z = split.Length > 2 ? float.Parse(split[2]) : 0;
+        {fieldName} =  new Vector3(x, y, z);
+    }}
+}}");
             return source.ToString();
-        }
-
-        private void AddSerializer(StringBuilder source, IFieldSymbol field,
-                char delimiter) {
-            string fieldName = $"this.{field.FieldName()}";
-            source.Append($"return {fieldName} != null ? string.Join('{delimiter}', {fieldName}) : null;");
-        }
-
-        private void AddDeserializer(StringBuilder source, IFieldSymbol field,
-                char delimiter) {
-            var arrayType = field.Type as IArrayTypeSymbol;
-
-            string fieldName = $"this.{field.FieldName()}";
-            source.AppendLine($@"
-string[] split = value.Split('{delimiter}', StringSplitOptions.RemoveEmptyEntries);
-{fieldName} = new {arrayType.ElementType}[split.Length];
-for (int i = 0; i < split.Length; i++) {{");
-            source.AppendLine(arrayType.ElementType.IsValueType
-                ? $"{fieldName}[i] = {arrayType.ElementType}.Parse(split[i].Trim());"
-                : $"{fieldName}[i] = split[i].Trim();");
-            source.Append('}');
         }
     }
 }
