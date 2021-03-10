@@ -9,4 +9,11 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.8.0" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Remove="Resource\M2dArrayAttribute.cs" />
+        <EmbeddedResource Include="Resource\M2dArrayAttribute.cs" />
+        <Compile Remove="Resource\M2dNullableAttribute.cs" />
+        <EmbeddedResource Include="Resource\M2dNullableAttribute.cs" />
+    </ItemGroup>
+
 </Project>

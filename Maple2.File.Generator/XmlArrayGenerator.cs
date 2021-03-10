@@ -1,43 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using Maple2.File.Generator.Utils;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Maple2.File.Generator {
     [Generator]
     public class XmlArrayGenerator : ISourceGenerator {
-        private const string ATTRIBUTE_TEXT = @"
-using System;
-using System.Xml.Serialization;
+        private const string ATTRIBUTE_NAMESPACE = "M2dXmlGenerator";
+        private const string ATTRIBUTE_TAG = "M2dArray";
+        private const string ATTRIBUTE_NAME = "M2dArrayAttribute";
 
-namespace M2dXmlGenerator {
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class M2dArrayAttribute : XmlIgnoreAttribute {
-        public char Delimiter { get; set; } = ',';
-    }
-}
-";
+        private static readonly SourceText attributeSource =
+            Assembly.GetExecutingAssembly().LoadSource($"{ATTRIBUTE_NAME}.cs");
+        private static readonly DiagnosticDescriptor typeError = new DiagnosticDescriptor(
+            "FG00010",
+            "M2dArrayAttribute can only be applied to value array types",
+            "Invalid type {0} for M2dArrayAttribute in {1}",
+            "Maple2.File.Generator",
+            DiagnosticSeverity.Error,
+            true
+        );
 
         public void Initialize(GeneratorInitializationContext context) {
             // Register a syntax receiver that will be created for each generation pass
-            context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
+            context.RegisterForSyntaxNotifications(() => new AttributeSyntaxReceiver());
         }
 
         public void Execute(GeneratorExecutionContext context) {
             // Register the attribute source
-            context.AddSource("M2dArrayAttribute", SourceText.From(ATTRIBUTE_TEXT, Encoding.UTF8));
+            context.AddSource(ATTRIBUTE_NAME, attributeSource);
 
-            if (!(context.SyntaxReceiver is SyntaxReceiver receiver)) {
+            if (!(context.SyntaxReceiver is AttributeSyntaxReceiver receiver)) {
                 return;
             }
 
-            Compilation compilation = context.Compilation.AddSource(ATTRIBUTE_TEXT);
+            Compilation compilation = context.Compilation.AddSource(attributeSource.ToString());
             INamedTypeSymbol attributeSymbol =
-                compilation.GetTypeByMetadataName("M2dXmlGenerator.M2dArrayAttribute");
+                compilation.GetTypeByMetadataName($"{ATTRIBUTE_NAMESPACE}.{ATTRIBUTE_NAME}");
 
             IEnumerable<IGrouping<ISymbol, IFieldSymbol>> classGroups = receiver.Fields
                 .Fields(compilation)
@@ -45,102 +47,86 @@ namespace M2dXmlGenerator {
                 .GroupBy(field => field.ContainingType, SymbolEqualityComparer.Default);
 
             foreach (IGrouping<ISymbol, IFieldSymbol> group in classGroups) {
-                string classSource = ProcessClass(group.Key, group, attributeSymbol);
-                string hintName = $"{group.Key.ContainingNamespace.Name}_{group.Key.Name}_M2dArray.cs";
-                context.AddSource(hintName, SourceText.From(classSource, Encoding.UTF8));
+                var hintName = new StringBuilder($"[{group.Key.ContainingNamespace.Name}]");
+                foreach (INamedTypeSymbol containingType in group.Key.ContainingTypes()) {
+                    hintName.Append($"{containingType.Name}.");
+                }
+
+                hintName.Append($"{group.Key.Name}_{ATTRIBUTE_TAG}.cs");
+
+                string classSource = ProcessClass(context, group.Key, group, attributeSymbol);
+                context.AddSource(hintName.ToString(), SourceText.From(classSource, Encoding.UTF8));
             }
         }
 
-        private string ProcessClass(ISymbol classSymbol, IEnumerable<IFieldSymbol> fields, ISymbol attributeSymbol) {
-            if (!classSymbol.ContainingSymbol.Equals(classSymbol.ContainingNamespace, SymbolEqualityComparer.Default)) {
-                return null; //TODO: issue a diagnostic that it must be top level
-            }
-
-            string namespaceName = classSymbol.ContainingNamespace.ToDisplayString();
-
-            // begin building the generated source
-            var source = new StringBuilder();
-            source.AppendLine("using System;");
-            source.AppendLine("using System.Xml.Serialization;");
-            source.Append($@"
-namespace {namespaceName} {{
-    public partial class {classSymbol.Name} {{
-");
+        private string ProcessClass(GeneratorExecutionContext context, ISymbol classSymbol,
+                IEnumerable<IFieldSymbol> fields, ISymbol attributeSymbol) {
+            var builder = new SourceBuilder(classSymbol.ContainingNamespace);
+            builder.Imports.AddRange(new[] {
+                "System",
+                "System.Xml.Serialization",
+            });
+            builder.Classes.AddRange(classSymbol.ContainingTypes().Select(symbol => symbol.Name));
+            builder.Classes.Add(classSymbol.Name);
 
             // create properties for each field
-            foreach (IFieldSymbol fieldSymbol in fields) {
-                ProcessField(source, fieldSymbol, attributeSymbol);
-            }
+            builder.Code.AddRange(fields.Select(field => ProcessField(context, field, attributeSymbol)));
 
-            // Close namespace and class
-            source.AppendLine("}}");
-            return source.ToString();
+            return builder.Build();
         }
 
-        private void ProcessField(StringBuilder source, IFieldSymbol fieldSymbol, ISymbol attributeSymbol) {
-            // get the AutoNotify attribute from the field, and any associated data
+        private string ProcessField(GeneratorExecutionContext context, IFieldSymbol fieldSymbol,
+                ISymbol attributeSymbol) {
             AttributeData attributeData = fieldSymbol.GetAttribute(attributeSymbol);
-            TypedConstant delimiterProperty = attributeData.NamedArguments
-                .SingleOrDefault(pair => pair.Key == "Delimiter").Value;
-            char delimiter = (delimiterProperty.Value as char?) ?? ',';
+            string attributeName = attributeData.GetValueOrDefault("Name", fieldSymbol.Name);
+            char delimiter = attributeData.GetValueOrDefault<char>("Delimiter", ',');
 
+            var source = new StringBuilder();
             source.Append($@"
-[XmlAttribute(""{fieldSymbol.Name}"")]
-public string _{fieldSymbol.Name} {{
+[XmlAttribute(""{attributeName}"")]
+public string _{attributeName} {{
     get {{
 ");
-            AddSerializer(source, fieldSymbol, delimiter);
+            AddSerializer(context, source, fieldSymbol, delimiter);
             source.Append(@"
     }
     set {");
-            AddDeserializer(source, fieldSymbol, delimiter);
+            AddDeserializer(context, source, fieldSymbol, delimiter);
             source.AppendLine(@"
     }
 }");
+            return source.ToString();
         }
 
-        private void AddSerializer(StringBuilder source, IFieldSymbol fieldSymbol, char delimiter) {
-            if (!(fieldSymbol.Type is IArrayTypeSymbol)) {
-                source.Append($"throw new Exception(\"Invalid type: {fieldSymbol.Type}\");");
+        private void AddSerializer(GeneratorExecutionContext context, StringBuilder source, IFieldSymbol field,
+                char delimiter) {
+            if (!(field.Type is IArrayTypeSymbol)) {
+                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type,
+                    field.ToDisplayString()));
                 return;
             }
 
-            string fieldName = fieldSymbol.Name;
+            string fieldName = $"this.{field.FieldName()}";
             source.Append($"return {fieldName} != null ? string.Join('{delimiter}', {fieldName}) : null;");
         }
 
-        private void AddDeserializer(StringBuilder source, IFieldSymbol fieldSymbol, char delimiter) {
-            if (!(fieldSymbol.Type is IArrayTypeSymbol arrayType)) {
-                source.Append($"throw new Exception(\"Invalid type: {fieldSymbol.Type}\");");
+        private void AddDeserializer(GeneratorExecutionContext context, StringBuilder source, IFieldSymbol field,
+                char delimiter) {
+            if (!(field.Type is IArrayTypeSymbol arrayType)) {
+                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type,
+                    field.ToDisplayString()));
                 return;
             }
 
-            string fieldName = fieldSymbol.Name;
-            source.Append($@"
+            string fieldName = $"this.{field.FieldName()}";
+            source.AppendLine($@"
 string[] split = value.Split('{delimiter}', StringSplitOptions.RemoveEmptyEntries);
 {fieldName} = new {arrayType.ElementType}[split.Length];
-for (int i = 0; i < split.Length; i++) {{
-    ");
-
-            if (arrayType.ElementType.IsValueType) {
-                source.AppendLine($@"{fieldName}[i] = {arrayType.ElementType}.Parse(split[i].Trim());");
-            } else {
-                source.AppendLine($@"{fieldName}[i] = split[i].Trim();");
-            }
-
+for (int i = 0; i < split.Length; i++) {{");
+            source.AppendLine(arrayType.ElementType.IsValueType
+                ? $"{fieldName}[i] = {arrayType.ElementType}.Parse(split[i].Trim());"
+                : $"{fieldName}[i] = split[i].Trim();");
             source.Append('}');
-        }
-
-        private class SyntaxReceiver : ISyntaxReceiver {
-            public List<FieldDeclarationSyntax> Fields { get; } = new List<FieldDeclarationSyntax>();
-
-            public void OnVisitSyntaxNode(SyntaxNode syntaxNode) {
-                // any field with at least one attribute is a candidate for property generation
-                if (syntaxNode is FieldDeclarationSyntax fieldDeclarationSyntax
-                    && fieldDeclarationSyntax.AttributeLists.Count > 0) {
-                    Fields.Add(fieldDeclarationSyntax);
-                }
-            }
         }
     }
 }
