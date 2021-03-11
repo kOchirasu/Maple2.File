@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace Maple2.File.Parser.Xml.Enum {
+﻿namespace Maple2.File.Parser.Enum {
     public enum NodeCategory {
         Unknown = 0,
         Head = 1,

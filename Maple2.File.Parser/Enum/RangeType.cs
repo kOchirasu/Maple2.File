@@ -1,4 +1,4 @@
-﻿namespace Maple2.File.Parser.Xml.Enum {
+﻿namespace Maple2.File.Parser.Enum {
     public enum RangeType {
         unknown = 0,
         box = 1,

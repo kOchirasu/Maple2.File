@@ -1,4 +1,4 @@
-﻿namespace Maple2.File.Parser.Xml.Enum {
+﻿namespace Maple2.File.Parser.Enum {
     public enum CompareType {
         Unknown = 0,
         Equals = 1,

@@ -1,4 +1,4 @@
-﻿namespace Maple2.File.Parser.Xml.Enum {
+﻿namespace Maple2.File.Parser.Enum {
     public enum MobType {
         unknown = 0,
         plant = 1,

@@ -1,4 +1,4 @@
-﻿namespace Maple2.File.Parser.Xml.Enum {
+﻿namespace Maple2.File.Parser.Enum {
     public enum ObjectState {
         gosNone = 0,
         gosIdle = 1,
