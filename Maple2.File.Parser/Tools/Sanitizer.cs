@@ -17,7 +17,7 @@ namespace Maple2.File.Parser.Tools {
         }
 
         public static string SanitizeMap(string xml) {
-            xml = Regex.Replace(xml, "\\w+=\"\"", string.Empty);
+            xml = RemoveEmpty(xml);
             xml = xml.Replace("enterreturnid=\"Kritias_Epic03\"", "enterreturnid=\"52100304\"");
             xml = xml.Replace("enterreturnid=\"Develop\"", "enterreturnid=\"99999999\"");
             return xml;
@@ -37,6 +37,10 @@ namespace Maple2.File.Parser.Tools {
             }
 
             return xml;
+        }
+
+        public static string RemoveEmpty(string xml) {
+            return Regex.Replace(xml, "\\w+=\"\"", string.Empty);
         }
 
         // Floats using ',' are converted to '.' (1,2 -> 1.2)
