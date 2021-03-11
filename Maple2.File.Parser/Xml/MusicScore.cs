@@ -1,0 +1,13 @@
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
+
+namespace Maple2.File.Parser.Xml {
+    [XmlRoot("ms2")]
+    public class MusicScoreData {
+        [XmlElement] public List<Harmony> harmony;
+
+        public class Harmony {
+            [XmlAttribute] public string chord = string.Empty;
+        }
+    }
+}

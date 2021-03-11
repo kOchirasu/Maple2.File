@@ -30,7 +30,7 @@ namespace Maple2.File.Parser.Xml {
         [XmlElement] public UCC ucc;
         [XmlElement] public Effect effect;
         [XmlElement] public Fusion fusion;
-        [XmlElement] public Pet pet;
+        [XmlElement] public Item.Pet pet;
         [XmlElement] public Ride ride;
         [XmlElement] public Badge gem;
         [XmlElement] public Item.AdditionalEffect AdditionalEffect;

@@ -5,11 +5,11 @@ using Maple2.File.Parser.Xml.Map;
 // ./data/xml/map/%08d.xml
 namespace Maple2.File.Parser.Xml {
     [XmlRoot("ms2")]
-    public class FieldEnvironmentData {
-        [XmlElement] public List<FieldData> environment;
+    public class MapEnvironmentData {
+        [XmlElement] public List<MapData> environment;
     }
 
-    public class FieldData {
+    public class MapData {
         [XmlAttribute] public string feature = string.Empty;
         [XmlAttribute] public string locale = string.Empty;
 
