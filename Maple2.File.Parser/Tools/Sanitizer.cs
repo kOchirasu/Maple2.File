@@ -39,6 +39,13 @@ namespace Maple2.File.Parser.Tools {
             return xml;
         }
 
+        public static string SanitizeQuest(string xml) {
+            xml = RemoveEmpty(xml);
+            xml = xml.Replace("TRUE", "true");
+            xml = xml.Replace("FALSE", "false");
+            return xml;
+        }
+
         public static string RemoveEmpty(string xml) {
             return Regex.Replace(xml, "\\w+=\"\"", string.Empty);
         }

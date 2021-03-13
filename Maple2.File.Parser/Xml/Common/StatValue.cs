@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
 
-namespace Maple2.File.Parser.Xml.Stat {
+namespace Maple2.File.Parser.Xml.Common {
+    [XmlType(Namespace="Common")]
     public class StatValue {
         [XmlAttribute] public long str;
         [XmlAttribute] public long dex;
