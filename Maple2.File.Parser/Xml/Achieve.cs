@@ -5,6 +5,7 @@ using M2dXmlGenerator;
 using Maple2.File.Parser.Xml.Achieve;
 
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/achieve/%08d.xml
     [XmlRoot("ms2")]
     public class AchievesData {
         [XmlElement] public List<AchieveData> achieves;

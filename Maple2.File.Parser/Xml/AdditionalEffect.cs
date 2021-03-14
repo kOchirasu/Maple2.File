@@ -3,8 +3,8 @@ using System.Xml.Serialization;
 using Maple2.File.Parser.Xml.AdditionalEffect;
 using Maple2.File.Parser.Xml.Skill;
 
-// ./data/xml/additionaleffect/%08d.xml
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/additionaleffect/%08d.xml
     [XmlRoot("ms2")]
     public class AdditionalEffectLevelData {
         [XmlElement] public List<AdditionalEffectData> level;

@@ -5,13 +5,12 @@ using M2dXmlGenerator;
 using Maple2.File.Parser.Xml.Pet;
 
 namespace Maple2.File.Parser.Xml {
-    // petproperty.xml
+    // ./data/xml/table/petproperty.xml
     [XmlRoot("ms2")]
     public class PetPropertyRoot {
         [XmlElement] public List<PetProperty> pets;
     }
 
-    // petproperty.xml
     public partial class PetProperty {
         [XmlAttribute] public string feature = string.Empty;
         [XmlAttribute] public string locale = string.Empty;
@@ -46,6 +45,7 @@ namespace Maple2.File.Parser.Xml {
         }
     }
 
+    // ./data/xml/pet/%08d.xml
     [XmlRoot("ms2")]
     public class PetDataRoot {
         [XmlElement] public PetData pet;

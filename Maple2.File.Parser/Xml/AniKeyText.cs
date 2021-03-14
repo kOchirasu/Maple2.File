@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-// ./data/xml/anikeytext.xml
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/anikeytext.xml
     [XmlRoot("ms2ani")]
     public class AnimationData {
         [XmlElement] public List<KeyFrameMotion> kfm;

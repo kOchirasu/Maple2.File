@@ -5,8 +5,8 @@ using M2dXmlGenerator;
 using Maple2.File.Parser.Xml.Skill;
 using Maple2.File.Parser.Xml.Skill.Property;
 
-// ./data/xml/skill/%02d/%08u.xml
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/skill/%02d/%08u.xml
     [XmlRoot("ms2")]
     public class SkillData {
         [XmlAttribute] public string feature = string.Empty;

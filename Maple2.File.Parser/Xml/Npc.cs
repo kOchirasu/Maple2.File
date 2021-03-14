@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 using Maple2.File.Parser.Xml.Npc;
 
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/npc/%02d/%08d.xml
     [XmlRoot("ms2")]
     public class NpcEnvironmentData {
         [XmlElement] public List<NpcData> environment;

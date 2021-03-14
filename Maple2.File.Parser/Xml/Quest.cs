@@ -4,9 +4,9 @@ using System.Xml.Serialization;
 using M2dXmlGenerator;
 using Maple2.File.Parser.Enum;
 using Maple2.File.Parser.Xml.Quest;
-using EventMission = Maple2.File.Parser.Xml.Quest.EventMission;
 
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/quest/%08d.xml
     [XmlRoot("ms2")]
     public class QuestEnvironmentData {
         [XmlElement] public List<QuestDataRoot> environment;

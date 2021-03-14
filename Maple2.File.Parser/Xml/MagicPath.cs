@@ -3,8 +3,8 @@ using System.Numerics;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-// ./data/xml/table/magicPath.xml
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/table/magicPath.xml
     [XmlRoot("ms2")]
     public class MagicPath {
         [XmlElement] public List<MagicType> type;

@@ -1,5 +1,5 @@
 ﻿namespace Maple2.File.Parser.Enum {
-    public enum EventMission {
+    public enum EventMissionType {
         unknown = 0,
         levelup_package = 1,
         stamp = 2,

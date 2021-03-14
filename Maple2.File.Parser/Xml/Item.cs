@@ -2,10 +2,10 @@
 using System.Xml.Serialization;
 using Maple2.File.Parser.Xml.Item;
 
-// ./data/xml/item/%01d/%02d/%08u.xml
 namespace Maple2.File.Parser.Xml {
+    // ./data/xml/item/%01d/%02d/%08u.xml
     [XmlRoot("ms2")]
-    public class ItemEnvironmentData {
+    public class ItemDataRoot {
         [XmlElement] public List<ItemData> environment;
     }
 
