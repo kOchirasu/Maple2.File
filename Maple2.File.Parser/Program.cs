@@ -72,6 +72,23 @@ namespace Maple2.File.Parser {
                             }
                         }
                         break;
+                    case "ls":
+                        try {
+                            bool recursive = input.Contains("-r");
+                            string path = input.FirstOrDefault(arg => arg != "ls" && arg != "-r");
+                            Console.WriteLine(string.Join(", ", index.Hierarchy.List(path, recursive).Select(type => type.Name)));
+                        } catch (DirectoryNotFoundException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case "lsdir":
+                        try {
+                            string path = input.FirstOrDefault(arg => arg != "lsdir");
+                            Console.WriteLine(string.Join(", ", index.Hierarchy.ListDirectories(path)));
+                        } catch (DirectoryNotFoundException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
                     default:
                         Console.WriteLine($"Unknown command: {string.Join(' ', input)}");
                         break;

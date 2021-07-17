@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
+using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Flat {
     public class FlatTypeIndex {
+        public readonly HierarchyMap<FlatType> Hierarchy;
+        
         private readonly string root; // flat, flat/library, flat/presets
         private readonly Dictionary<string, FlatTypeNode> typeNodes;
 
         public FlatTypeIndex(string exportedPath, string root = "flat") {
             this.root = root;
+            Hierarchy = new HierarchyMap<FlatType>();
             typeNodes = ReadTypeNodes(exportedPath);
 
             foreach (FlatTypeNode typeNode in typeNodes.Values) {
@@ -62,7 +67,9 @@ namespace Maple2.File.Parser.Flat {
 
                 string name = node.Attributes["name"].Value;
                 xmlNodes[name] = node;
-                types[name.ToLower()] = new FlatTypeNode(new FlatType(name));
+                var type = new FlatType(name);
+                Hierarchy.Add(entry.Name, type);
+                types[name.ToLower()] = new FlatTypeNode(type);
                 //Console.WriteLine($"Created type: {type.Name}");
             }
 
