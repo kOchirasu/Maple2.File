@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -50,72 +51,83 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         public string GenerateInterface(string @namespace, FlatType type) {
-            var builder = new StringBuilder();
-
-            builder.AppendLine($"namespace Maple2.File.Flat.Library.{@namespace} {{");
-            List<string> mixinTypes = type.Mixin.Select(mixin => mixin.Name).ToList();
-            foreach (string mixin in mixinTypes.ToList()) {
-                foreach (FlatType subtype in index.GetSubTypes(mixin.ToLower())) {
-                    mixinTypes.Remove(subtype.Name);
-                }
-            }
-            List<string> mixinInterfaces = mixinTypes.Select(mixin => $"I{mixin}").ToList();
-            if (mixinInterfaces.Count > 0) {
-                builder.AppendLine($"public interface I{type.Name} : {string.Join(",", mixinInterfaces)} {{");
-            } else {
-                builder.AppendLine($"public interface I{type.Name} {{");
-            }
-
-            var inheritedProperties = new HashSet<string>();
+            List<string> mixinTypes = type.Mixin.Where(mixin => !type.IsRedundantMixin(mixin))
+                .Select(mixin => mixin.Name)
+                .ToList();
+            var inheritedProperties = new Dictionary<string, object>();
             foreach (string mixinType in mixinTypes) {
                 foreach (FlatProperty property in index.GetType(mixinType).GetAllProperties()) {
-                    inheritedProperties.Add(property.Name);
+                    if (inheritedProperties.ContainsKey(property.Name)) {
+                        inheritedProperties[property.Name] = null;
+                    } else {
+                        inheritedProperties.Add(property.Name, property.Value);
+                    }
                 }
             }
-            foreach (FlatProperty property in type.GetProperties()) {
-                // Inherited properties don't need to be declared on interface
-                if (inheritedProperties.Contains(property.Name)) {
-                    continue;
-                }
-                string typeStr = NormalizeType(property.Value.GetType().ToString());
-                builder.AppendLine($"{typeStr} {property.Name} {{ get; set; }}");
+            
+            var builder = new StringBuilder();
+
+            builder.AppendLine($"namespace Maple2.File.Flat.{@namespace} {{");
+
+            List<string> mixinInterfaces = mixinTypes.Select(mixin => $"I{mixin}").ToList();
+            if (mixinInterfaces.Count > 0) {
+                builder.AppendLine($"\tpublic interface I{type.Name} : {string.Join(",", mixinInterfaces)} {{");
+            } else {
+                builder.AppendLine($"\tpublic interface I{type.Name} {{");
             }
 
-            builder.AppendLine("}"); // class
+            foreach (FlatProperty property in type.GetProperties()) {
+                // Inherited properties don't need to be declared on interface
+                if (inheritedProperties.TryGetValue(property.Name, out object propertyValue)) {
+                    if (propertyValue != null) {
+                        if (Equals(propertyValue, property.Value)) {
+                            continue;
+                        }
+
+                        // Since the dictionaries are always empty, just doing count comparison to shortcut
+                        if (propertyValue is IDictionary dict1 && property.Value is IDictionary dict2 && dict1.Count == dict2.Count) {
+                            continue;
+                        }
+                    }
+                }
+                string typeStr = NormalizeType(property.Value.GetType().ToString());
+                string typeValue = NormalizeTypeValue(property);
+                builder.AppendLine($"\t\t{typeStr} {property.Name} => {typeValue};");
+            }
+
+            builder.AppendLine("\t}"); // class
             builder.AppendLine("}"); // namespace
             
             return builder.ToString();
         }
 
         public string GenerateClass(string @namespace, FlatType type) {
+            List<string> mixinTypes = type.Mixin.Where(mixin => !type.IsRedundantMixin(mixin))
+                .Select(mixin => mixin.Name)
+                .ToList();
+
             var builder = new StringBuilder();
 
-            builder.AppendLine($"namespace Maple2.File.Flat.Library.{@namespace} {{");
-            List<string> mixinTypes = type.Mixin.Select(mixin => mixin.Name).ToList();
-            foreach (string mixin in mixinTypes.ToList()) {
-                foreach (FlatType subtype in index.GetSubTypes(mixin.ToLower())) {
-                    mixinTypes.Remove(subtype.Name);
-                }
-            }
+            builder.AppendLine($"namespace Maple2.File.Flat.{@namespace} {{");
             List<string> mixinInterfaces = mixinTypes.Select(mixin => $"I{mixin}").ToList();
             if (mixinInterfaces.Count > 0) {
-                builder.AppendLine($"public class {type.Name} : {string.Join(",", mixinInterfaces)} {{");
+                builder.AppendLine($"\tpublic class {type.Name} : {string.Join(",", mixinInterfaces)} {{");
             } else {
-                builder.AppendLine($"public class {type.Name} {{");
+                builder.AppendLine($"\tpublic class {type.Name} {{");
             }
 
             foreach (FlatProperty property in type.GetProperties()) {
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
                 string typeValue = NormalizeTypeValue(property);
-                builder.AppendLine($"public {typeStr} {property.Name} {{ get; set; }} = {typeValue};");
+                builder.AppendLine($"\t\tpublic {typeStr} {property.Name} {{ get; set; }} = {typeValue};");
             }
             foreach (FlatProperty property in type.GetInheritedProperties()) {
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
                 string typeValue = NormalizeTypeValue(property);
-                builder.AppendLine($"{typeStr} {property.Name} {{ get; set; }} = {typeValue};");
+                builder.AppendLine($"\t\t{typeStr} {property.Name} {{ get; set; }} = {typeValue};");
             }
 
-            builder.AppendLine("}"); // class
+            builder.AppendLine("\t}"); // class
             builder.AppendLine("}"); // namespace
             
             return builder.ToString();
@@ -133,13 +145,16 @@ namespace Maple2.File.Parser.MapXBlock {
             if (property.Value is Vector3) {
                 value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector3($1, $2, $3)");
                 value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
+                value = value.Replace("new Vector3(0, 0, 0)", "default");
             }
             if (property.Value is Vector2) {
                 value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector2($1, $2)");
                 value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
+                value = value.Replace("new Vector2(0, 0)", "default");
             }
             if (property.Value is Color) {
                 value = Regex.Replace(value, "Color \\[A=(\\d+), R=(\\d+), G=(\\d+), B=(\\d+)\\]", "Color.FromArgb($1, $2, $3, $4)");
+                value = value.Replace("Color.FromArgb(0, 0, 0, 0)", "default");
             }
             if (property.Value is string) {
                 value = $"\"{value}\"";

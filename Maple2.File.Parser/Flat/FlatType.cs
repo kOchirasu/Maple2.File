@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Maple2.File.Parser.Flat {
@@ -57,6 +58,38 @@ namespace Maple2.File.Parser.Flat {
             }
 
             return props.Values;
+        }
+
+        public bool IsRedundantMixin(FlatType type) {
+            foreach (FlatType mixinType in Mixin) {
+                if (mixinType.Equals(type)) {
+                    continue;
+                }
+
+                if (mixinType.Mixin.Contains(type)) {
+                    return true;
+                }
+                if (mixinType.IsRedundantMixin(type)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        protected bool Equals(FlatType other) {
+            return Name == other.Name && Properties.Count == other.Properties.Count && !Properties.Except(other.Properties).Any();
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((FlatType) obj);
+        }
+
+        public override int GetHashCode() {
+            return HashCode.Combine(Name, Properties);
         }
 
         public override string ToString() {
