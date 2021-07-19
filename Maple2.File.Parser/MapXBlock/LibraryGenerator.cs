@@ -108,7 +108,7 @@ namespace Maple2.File.Parser.MapXBlock {
                     }
                 }
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
-                string typeValue = NormalizeTypeValue(property);
+                string typeValue = property.ValueCodeString();
                 builder.AppendLine($"\t\t{typeStr} {property.Name} => {typeValue};");
             }
 
@@ -136,12 +136,12 @@ namespace Maple2.File.Parser.MapXBlock {
             builder.AppendLine($"\t\tstring ModelName => \"{type.Name}\";");
             foreach (FlatProperty property in type.GetProperties()) {
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
-                string typeValue = NormalizeTypeValue(property);
+                string typeValue = property.ValueCodeString();
                 builder.AppendLine($"\t\tpublic {typeStr} {property.Name} {{ get; set; }} = {typeValue};");
             }
             foreach (FlatProperty property in type.GetInheritedProperties()) {
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
-                string typeValue = NormalizeTypeValue(property);
+                string typeValue = property.ValueCodeString();
                 builder.AppendLine($"\t\t{typeStr} {property.Name} {{ get; set; }} = {typeValue};");
             }
 
@@ -153,35 +153,6 @@ namespace Maple2.File.Parser.MapXBlock {
 
         private string NormalizeType(string type) {
             return Regex.Replace(type, "Dictionary`2\\[(.+)\\]", "IDictionary<$1>");
-        }
-
-        private string NormalizeTypeValue(FlatProperty property) {
-            string value = property.Value.ToString();
-            if (property.Value is float) {
-                value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
-            }
-            if (property.Value is Vector3) {
-                value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector3($1, $2, $3)");
-                value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
-                value = value.Replace("new Vector3(0, 0, 0)", "default");
-            }
-            if (property.Value is Vector2) {
-                value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector2($1, $2)");
-                value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
-                value = value.Replace("new Vector2(0, 0)", "default");
-            }
-            if (property.Value is Color) {
-                value = Regex.Replace(value, "Color \\[A=(\\d+), R=(\\d+), G=(\\d+), B=(\\d+)\\]", "Color.FromArgb($1, $2, $3, $4)");
-                value = value.Replace("Color.FromArgb(0, 0, 0, 0)", "default");
-            }
-            if (property.Value is string) {
-                value = $"\"{value}\"";
-            }
-            value = Regex.Replace(value, "System\\.Collections\\.Generic\\.Dictionary`2\\[(.+)\\]", "new Dictionary<$1>()");
-            if (property.Value is bool) {
-                value = value.ToLower();
-            }
-            return value;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace Maple2.File.Parser.Flat {
     public class FlatProperty {
@@ -104,6 +105,35 @@ namespace Maple2.File.Parser.Flat {
             IEnumerable<string> entries = CastDict(dict)
                 .Select(entry => $"{entry.Key}: {entry.Value.GetType().Name}({entry.Value})");
             return $"Dictionary{{{string.Join(',', entries)}}}";
+        }
+
+        public string ValueCodeString() {
+            string value = Value.ToString();
+            if (Value is float) {
+                value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
+            }
+            if (Value is Vector3) {
+                value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector3($1, $2, $3)");
+                value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
+                value = value.Replace("new Vector3(0, 0, 0)", "default");
+            }
+            if (Value is Vector2) {
+                value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector2($1, $2)");
+                value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
+                value = value.Replace("new Vector2(0, 0)", "default");
+            }
+            if (Value is Color) {
+                value = Regex.Replace(value, "Color \\[A=(\\d+), R=(\\d+), G=(\\d+), B=(\\d+)\\]", "Color.FromArgb($1, $2, $3, $4)");
+                value = value.Replace("Color.FromArgb(0, 0, 0, 0)", "default");
+            }
+            if (Value is string) {
+                value = $"\"{value}\"";
+            }
+            value = Regex.Replace(value, "System\\.Collections\\.Generic\\.Dictionary`2\\[(.+)\\]", "new Dictionary<$1>()");
+            if (Value is bool) {
+                value = value.ToLower();
+            }
+            return value;
         }
 
         private IEnumerable<DictionaryEntry> CastDict(IDictionary dictionary) {
