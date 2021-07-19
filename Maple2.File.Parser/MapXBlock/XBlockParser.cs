@@ -83,8 +83,10 @@ namespace Maple2.File.Parser.MapXBlock {
             );
             classBuilder.DefineDefaultConstructor(MethodAttributes.Public);
 
+            List<(FlatProperty, FieldInfo)> backingFields = new List<(FlatProperty, FieldInfo)>();
+            
             // Override ModelName to this model's name.
-            {
+            /*{
                 (MethodInfo methodInfo, MethodBuilder methodBuilder) = OverrideMethod(classBuilder, mixinType, "get_ModelName");
                 ILGenerator? ilGenerator = methodBuilder.GetILGenerator();
                 if (ilGenerator == null) {
@@ -93,25 +95,48 @@ namespace Maple2.File.Parser.MapXBlock {
                 ilGenerator.EmitValue(modelName);
                 ilGenerator.Emit(OpCodes.Ret);
                 classBuilder.DefineMethodOverride(methodBuilder, methodInfo);
+            }*/
+            {
+                FlatProperty property = new FlatProperty {
+                    Name = "ModelName", 
+                    Type = "String",
+                    Value = modelName,
+                };
+                FieldInfo backing = CreateBacking(classBuilder, property);
+                backingFields.Add((property, backing));
+                OverrideGetter(classBuilder, backing, mixinType, property);
+                CreateSetter(classBuilder, backing, property);
             }
             
             // Define class with property values
             foreach (FlatProperty property in entityType.GetProperties()) {
-                string methodName = $"get_{property.Name}";
-                //Console.WriteLine(methodName + " = " + property.ValueString());
+                /*string methodName = $"get_{property.Name}";
                 (MethodInfo methodInfo, MethodBuilder methodBuilder) = OverrideMethod(classBuilder, mixinType, methodName);
                 ILGenerator? ilGenerator = methodBuilder.GetILGenerator();
                 if (ilGenerator == null) {
                     throw new InvalidOperationException($"{mixinType.Name} could not create ILGenerator.");
                 }
-                
+
                 ilGenerator.EmitValue(property.Value);
                 ilGenerator.Emit(OpCodes.Ret);
-                classBuilder.DefineMethodOverride(methodBuilder, methodInfo);
+                classBuilder.DefineMethodOverride(methodBuilder, methodInfo);*/
+
+                FieldInfo backing = CreateBacking(classBuilder, property);
+                backingFields.Add((property, backing));
+                OverrideGetter(classBuilder, backing, mixinType, property);
+                CreateSetter(classBuilder, backing, property);
             }
+            
+            CreateConstructor(classBuilder, backingFields);
 
             Type? createdType = classBuilder.CreateType();
-            return (IMapEntity)Activator.CreateInstance(createdType);
+            var result = (IMS2RegionSpawn)Activator.CreateInstance(createdType);
+            Console.WriteLine(result.ModelName);
+            Console.WriteLine(result.ProxyNifAsset);
+            Console.WriteLine(result.BattleFieldColor);
+            Console.WriteLine(result.VisualizeCube);
+
+            return result;
         }
 
         private (MethodInfo, MethodBuilder) OverrideMethod(TypeBuilder classBuilder, Type mixinType, string methodName) {
@@ -131,7 +156,91 @@ namespace Maple2.File.Parser.MapXBlock {
             }
             return (methodInfo, methodBuilder);
         }
+
+        private void CreateConstructor(TypeBuilder classBuilder, IEnumerable<(FlatProperty, FieldInfo)> fields) {
+            ConstructorBuilder ctorBuilder = classBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
+            ILGenerator? ilGenerator = ctorBuilder.GetILGenerator();
+            if (ilGenerator == null) {
+                throw new InvalidOperationException($"Could not create ILGenerator for constructor.");
+            }
+            
+            foreach ((FlatProperty property, FieldInfo field) in fields) {
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.EmitValue(property.Value);
+                ilGenerator.Emit(OpCodes.Stfld, field);
+            }
+            
+            ilGenerator.Emit(OpCodes.Ldarg_0);
+            ilGenerator.Emit(OpCodes.Call, typeof(Object).GetConstructor(Type.EmptyTypes));
+            ilGenerator.Emit(OpCodes.Ret);
+        }
+
+        private FieldInfo CreateBacking(TypeBuilder classBuilder, FlatProperty property) {
+            string fieldName = $"_{property.Name}";
+            FieldBuilder? fieldBuilder = classBuilder.DefineField(
+                fieldName,
+                property.Value.GetType(),
+                FieldAttributes.Private
+            );
+            if (fieldBuilder == null) {
+                throw new InvalidOperationException($"{property.Name} could not create FieldBuilder.");
+            }
+
+            return fieldBuilder;
+        }
         
+        private void OverrideGetter(TypeBuilder classBuilder, FieldInfo backing, Type mixinType, FlatProperty property) {
+            string methodName = $"get_{property.Name}";
+            MethodInfo? methodInfo = GetMethod(mixinType, methodName);
+            if (methodInfo == null) {
+                throw new InvalidOperationException($"{mixinType.Name} does not have method {methodName}.");
+            }
+                
+            MethodBuilder? methodBuilder = classBuilder.DefineMethod(
+                methodName, 
+                MethodAttributes.Public | MethodAttributes.Virtual, 
+                methodInfo.ReturnType, 
+                Type.EmptyTypes
+            );
+            if (methodBuilder == null) {
+                throw new InvalidOperationException($"{mixinType.Name} could not create MethodBuilder.");
+            }
+            
+            ILGenerator? ilGenerator = methodBuilder.GetILGenerator();
+            if (ilGenerator == null) {
+                throw new InvalidOperationException($"{mixinType.Name} could not create ILGenerator.");
+            }
+            
+            ilGenerator.Emit(OpCodes.Ldarg_0);
+            ilGenerator.Emit(OpCodes.Ldfld, backing);
+            ilGenerator.Emit(OpCodes.Ret);
+            
+            classBuilder.DefineMethodOverride(methodBuilder, methodInfo);
+        }
+
+        private void CreateSetter(TypeBuilder classBuilder, FieldInfo backing, FlatProperty property) {
+            string methodName = $"set_{property.Name}";
+            MethodBuilder? methodBuilder = classBuilder.DefineMethod(
+                methodName, 
+                MethodAttributes.Public, 
+                typeof(void), 
+                new [] {property.Value.GetType()}
+            );
+            if (methodBuilder == null) {
+                throw new InvalidOperationException($"{property.Name} could not create MethodBuilder.");
+            }
+            
+            ILGenerator? ilGenerator = methodBuilder.GetILGenerator();
+            if (ilGenerator == null) {
+                throw new InvalidOperationException($"{property.Name} could not create ILGenerator.");
+            }
+            
+            ilGenerator.Emit(OpCodes.Ldarg_0);
+            ilGenerator.Emit(OpCodes.Ldarg_1);
+            ilGenerator.Emit(OpCodes.Stfld, backing);
+            ilGenerator.Emit(OpCodes.Ret);
+        }
+
         // GetType that searches in Maple2.File.Flat assembly
         private static Type? GetType(string name) {
             const string assemblyName = "Maple2.File.Flat";
