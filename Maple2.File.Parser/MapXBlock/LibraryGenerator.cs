@@ -49,9 +49,25 @@ namespace Maple2.File.Parser.MapXBlock {
                 }
             }
         }
+        
+        public void ValidatePresets() {
+            const string root = "flat/presets";
+            IEnumerable<string> directories = index.Hierarchy.ListDirectories(root);
+            foreach (string directory in directories) {
+                IEnumerable<FlatType> types = index.Hierarchy.List($"{root}/{directory}");
+                foreach (FlatType type in types) {
+                    // We expect all presets to be derivable from a library type.
+                    if (type.RequiredMixin().Count() <= 1) {
+                        continue;
+                    }
+
+                    Console.WriteLine($"Invalid type {type.Name} is not derived from library.");
+                }
+            }
+        }
 
         public string GenerateInterface(string @namespace, FlatType type) {
-            List<string> mixinTypes = type.Mixin.Where(mixin => !type.IsRedundantMixin(mixin))
+            List<string> mixinTypes = type.RequiredMixin()
                 .Select(mixin => mixin.Name)
                 .ToList();
             var inheritedProperties = new Dictionary<string, object>();
@@ -103,7 +119,7 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         public string GenerateClass(string @namespace, FlatType type) {
-            List<string> mixinTypes = type.Mixin.Where(mixin => !type.IsRedundantMixin(mixin))
+            List<string> mixinTypes = type.RequiredMixin()
                 .Select(mixin => mixin.Name)
                 .ToList();
 

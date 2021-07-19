@@ -76,6 +76,11 @@ namespace Maple2.File.Parser.Flat {
 
             return false;
         }
+
+        // Removes any mixins that are already satisfied by another.
+        public IEnumerable<FlatType> RequiredMixin() {
+            return Mixin.Where(mixin => !IsRedundantMixin(mixin));
+        }
         
         protected bool Equals(FlatType other) {
             return Name == other.Name && Properties.Count == other.Properties.Count && !Properties.Except(other.Properties).Any();
