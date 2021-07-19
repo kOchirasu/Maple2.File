@@ -1,7 +1,8 @@
 using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
-    public interface IMS2Breakable {
+    public interface IMS2Breakable : IMapEntity {
+        string ModelName => "MS2Breakable";
         int hideTimer => 3000;
         int resetTimer => 40000;
         string reactionSequenceName => "Dead_A";

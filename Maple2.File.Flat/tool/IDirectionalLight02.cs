@@ -3,6 +3,7 @@ using Maple2.File.Flat.beastmodellibrary;
 
 namespace Maple2.File.Flat.tool {
     public interface IDirectionalLight02 : IBeastDirectionalLight {
+        string ModelName => "DirectionalLight02";
         float Dimmer => 0.3f;
         float Range => 12000;
         float ProxyScale => 1;

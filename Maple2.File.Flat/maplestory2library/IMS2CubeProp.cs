@@ -2,6 +2,7 @@ using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2CubeProp : IMS2PhysXProp, ICubeBrushable {
+        string ModelName => "MS2CubeProp";
         int skillID => 0;
         int skillLevel => 0;
         ushort PropCollisionGroup => 9;

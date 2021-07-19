@@ -1,7 +1,8 @@
 using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
-    public interface IMS2Reaction {
+    public interface IMS2Reaction : IMapEntity {
+        string ModelName => "MS2Reaction";
         bool reactionEnter => false;
         bool reactionArrow => false;
         bool Enabled => true;

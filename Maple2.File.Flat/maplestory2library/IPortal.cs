@@ -2,6 +2,7 @@ using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IPortal : IEffectMesh {
+        string ModelName => "Portal";
         int TargetFieldSN => 0;
         int TargetPortalID => 0;
         int PortalID => 0;

@@ -1,7 +1,8 @@
 using System.Drawing;
 
 namespace Maple2.File.Flat.beastmodellibrary {
-    public interface IBeastEnvironmentSettings {
+    public interface IBeastEnvironmentSettings : IMapEntity {
+        string ModelName => "BeastEnvironmentSettings";
         string ilbEnvironment => "None";
         string ilbHDRFile => "";
         float ilbHDRBlur => 0;

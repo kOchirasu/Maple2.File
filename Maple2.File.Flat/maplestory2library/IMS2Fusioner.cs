@@ -4,6 +4,7 @@ using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2Fusioner : IMS2PhysXProp, IMS2FunctionCube {
+        string ModelName => "MS2Fusioner";
         float Temperature => 0;
         bool Projectable => true;
         bool Transparency => false;

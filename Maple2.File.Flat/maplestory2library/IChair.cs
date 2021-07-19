@@ -4,6 +4,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IChair : IWhitebox {
+        string ModelName => "Chair";
         bool FrontSideOnly => false;
         float Range => 100;
         string StandUpType => "InitialPosition";

@@ -2,6 +2,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IEffectMesh : IMesh, IMS2TimeShowSetting {
+        string ModelName => "EffectMesh";
         bool MinimapInVisible => true;
         float ClippingDistance => 3000;
         bool UseInstancing => false;

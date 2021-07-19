@@ -2,6 +2,7 @@ using Maple2.File.Flat.beastmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IEffectPointLight : IBeastPointLight {
+        string ModelName => "EffectPointLight";
         bool LightPCLObjectsAtRuntime => true;
         bool UseForPrecomputedLighting => false;
         float Range => 1000;

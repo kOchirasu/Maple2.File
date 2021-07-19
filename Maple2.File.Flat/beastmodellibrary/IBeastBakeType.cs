@@ -1,5 +1,6 @@
 namespace Maple2.File.Flat.beastmodellibrary {
-    public interface IBeastBakeType {
+    public interface IBeastBakeType : IMapEntity {
+        string ModelName => "BeastBakeType";
         string ilbBakeTarget => "InheritFromQualitySettings";
     }
 }

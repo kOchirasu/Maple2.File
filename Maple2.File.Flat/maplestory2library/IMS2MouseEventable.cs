@@ -1,5 +1,6 @@
 namespace Maple2.File.Flat.maplestory2library {
-    public interface IMS2MouseEventable {
+    public interface IMS2MouseEventable : IMapEntity {
+        string ModelName => "MS2MouseEventable";
         bool LButtonDown => false;
         bool LButtonDblClk => false;
         bool LButtonUp => false;

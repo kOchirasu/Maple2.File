@@ -1,5 +1,6 @@
 namespace Maple2.File.Flat.standardmodellibrary {
-    public interface IShadowGenerator {
+    public interface IShadowGenerator : IMapEntity {
+        string ModelName => "ShadowGenerator";
         bool CastShadows => false;
         bool RenderBackfaces => true;
         string ShadowTechnique => "NiStandardShadowTechnique";

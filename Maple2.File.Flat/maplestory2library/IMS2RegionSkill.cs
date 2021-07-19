@@ -3,6 +3,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2RegionSkill : I3DProxy {
+        string ModelName => "MS2RegionSkill";
         int skillID => 0;
         int skillLevel => 0;
         int Interval => 0;

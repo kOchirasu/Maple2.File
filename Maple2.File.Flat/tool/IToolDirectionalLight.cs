@@ -2,6 +2,7 @@ using Maple2.File.Flat.beastmodellibrary;
 
 namespace Maple2.File.Flat.tool {
     public interface IToolDirectionalLight : IBeastDirectionalLight {
+        string ModelName => "ToolDirectionalLight";
         float ilbShadowAngle => 3;
         bool LightPCLObjectsAtRuntime => true;
         float Dimmer => 0.3f;

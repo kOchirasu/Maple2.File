@@ -2,6 +2,7 @@ using System.Drawing;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2Telescope : IMS2PhysXProp, IMS2InteractObject {
+        string ModelName => "MS2Telescope";
         string CameraIDs => "";
         bool EnableFog => false;
         float FogNear => 0;

@@ -1,5 +1,6 @@
 namespace Maple2.File.Flat.maplestory2library {
-    public interface IPostProcessSetting {
+    public interface IPostProcessSetting : IMapEntity {
+        string ModelName => "PostProcessSetting";
         float Common_NearToFar => 1000;
         float AA_EdgeSmoothDepthWeight => 1000;
         float DOF_Dist => 0.01f;

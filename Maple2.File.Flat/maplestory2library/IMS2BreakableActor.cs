@@ -3,6 +3,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2BreakableActor : IActor, IMS2TextKeyCallback, IMS2Breakable {
+        string ModelName => "MS2BreakableActor";
         Vector3 moveDirection => default;
         float moveTimeOffset => 0;
         float moveDistance => 0;

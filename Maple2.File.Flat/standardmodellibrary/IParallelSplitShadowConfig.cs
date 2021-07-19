@@ -1,5 +1,6 @@
 namespace Maple2.File.Flat.standardmodellibrary {
-    public interface IParallelSplitShadowConfig {
+    public interface IParallelSplitShadowConfig : IMapEntity {
+        string ModelName => "ParallelSplitShadowConfig";
         bool PSSMEnabled => true;
         bool SceneDependentFrustums => false;
         uint SliceCount => 4;

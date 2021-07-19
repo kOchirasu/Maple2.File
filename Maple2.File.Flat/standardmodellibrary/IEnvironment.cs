@@ -2,6 +2,7 @@ using System.Drawing;
 
 namespace Maple2.File.Flat.standardmodellibrary {
     public interface IEnvironment : ITimeOfDayEditable {
+        string ModelName => "Environment";
         string EnvironmentSunEntity => "00000000-0000-0000-0000-000000000000";
         bool EnvironmentAutoFogColor => true;
         bool EnvironmentUseSunAnlges => true;

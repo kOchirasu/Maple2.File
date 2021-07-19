@@ -4,6 +4,7 @@ using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface ISpawnPointNPC : ISpawnPoint {
+        string ModelName => "SpawnPointNPC";
         int SpawnPointID => 0;
         float SpawnRadius => 0;
         uint NpcCount => 0;

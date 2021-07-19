@@ -1,7 +1,8 @@
 using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
-    public interface IMS2Vibrate {
+    public interface IMS2Vibrate : IMapEntity {
+        string ModelName => "MS2Vibrate";
         float amp => 2;
         float frequency => 12;
         float duration => 0.3f;

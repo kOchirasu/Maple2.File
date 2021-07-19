@@ -3,6 +3,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2TombStoneDark : IActor, IMS2TextKeyCallback, IMS2Breakable {
+        string ModelName => "MS2TombStoneDark";
         uint OwnerGameOID => 0;
         string SpawnAnimation => "co_obj_brk_tomb_ani_Regen_A";
         string HitAnimation => "co_obj_brk_tomb_ani_Damg_A";

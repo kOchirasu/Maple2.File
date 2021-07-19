@@ -2,6 +2,7 @@ using System.Numerics;
 
 namespace Maple2.File.Flat.standardmodellibrary {
     public interface IPointLight : ILight, IShadowGenerator {
+        string ModelName => "PointLight";
         float ConstantAttenuation => 1;
         float LinearAttenuation => 0;
         float QuadraticAttenuation => 0;

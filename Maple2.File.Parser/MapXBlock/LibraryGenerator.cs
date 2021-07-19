@@ -73,9 +73,10 @@ namespace Maple2.File.Parser.MapXBlock {
             if (mixinInterfaces.Count > 0) {
                 builder.AppendLine($"\tpublic interface I{type.Name} : {string.Join(",", mixinInterfaces)} {{");
             } else {
-                builder.AppendLine($"\tpublic interface I{type.Name} {{");
+                builder.AppendLine($"\tpublic interface I{type.Name} : IMapEntity {{");
             }
 
+            builder.AppendLine($"\t\tstring ModelName => \"{type.Name}\";");
             foreach (FlatProperty property in type.GetProperties()) {
                 // Inherited properties don't need to be declared on interface
                 if (inheritedProperties.TryGetValue(property.Name, out object propertyValue)) {
@@ -113,9 +114,10 @@ namespace Maple2.File.Parser.MapXBlock {
             if (mixinInterfaces.Count > 0) {
                 builder.AppendLine($"\tpublic class {type.Name} : {string.Join(",", mixinInterfaces)} {{");
             } else {
-                builder.AppendLine($"\tpublic class {type.Name} {{");
+                builder.AppendLine($"\tpublic class {type.Name} : IMapEntity {{");
             }
 
+            builder.AppendLine($"\t\tstring ModelName => \"{type.Name}\";");
             foreach (FlatProperty property in type.GetProperties()) {
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
                 string typeValue = NormalizeTypeValue(property);

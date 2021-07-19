@@ -5,6 +5,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.beastmodellibrary {
     public interface IBeastSpotLight : IPCLSpotLight, IBeastPointLight {
+        string ModelName => "BeastSpotLight";
         float ConstantAttenuation => 1;
         float LinearAttenuation => 0;
         float QuadraticAttenuation => 0;

@@ -2,6 +2,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2TriggerCamera : IMS2TriggerObject, ICamera {
+        string ModelName => "MS2TriggerCamera";
         string XmlFilePath => "";
         bool Enabled => false;
         float StartInterpolationTime => 0;

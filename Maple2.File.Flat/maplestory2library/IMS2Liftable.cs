@@ -1,5 +1,6 @@
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2Liftable : IMS2PhysXProp {
+        string ModelName => "MS2Liftable";
         uint ItemID => 0;
         int ItemStackCount => 0;
         int ItemLifeTime => 0;

@@ -2,6 +2,7 @@ using System.Numerics;
 
 namespace Maple2.File.Flat.standardmodellibrary {
     public interface ICamera : I3DProxy {
+        string ModelName => "Camera";
         float FOV => 60;
         float NearPlane => 1;
         float FarPlane => 10000;

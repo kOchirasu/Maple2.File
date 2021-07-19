@@ -3,6 +3,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2LocalTargetCamera : ICamera {
+        string ModelName => "MS2LocalTargetCamera";
         uint Operate => 0;
         float Scope => 0;
         uint LocalCameraID => 0;

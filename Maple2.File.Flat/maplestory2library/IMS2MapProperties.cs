@@ -3,7 +3,8 @@ using System.Drawing;
 using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
-    public interface IMS2MapProperties {
+    public interface IMS2MapProperties : IMapEntity {
+        string ModelName => "MS2MapProperties";
         bool Projectable => true;
         bool Transparency => false;
         bool MinimapInVisible => false;

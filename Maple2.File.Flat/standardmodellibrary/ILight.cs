@@ -4,6 +4,7 @@ using System.Numerics;
 
 namespace Maple2.File.Flat.standardmodellibrary {
     public interface ILight : I3DProxy, IBakeable {
+        string ModelName => "Light";
         Color AmbientColor => Color.FromArgb(255, 0, 0, 0);
         Color DiffuseColor => Color.FromArgb(255, 255, 255, 255);
         Color SpecularColor => Color.FromArgb(255, 255, 255, 255);

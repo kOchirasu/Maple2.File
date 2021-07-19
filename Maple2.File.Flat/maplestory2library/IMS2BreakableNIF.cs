@@ -3,6 +3,7 @@ using Maple2.File.Flat.standardmodellibrary;
 
 namespace Maple2.File.Flat.maplestory2library {
     public interface IMS2BreakableNIF : IMS2Breakable, IMS2MapProperties, IMesh {
+        string ModelName => "MS2BreakableNIF";
         Vector3 moveDirection => default;
         float moveTimeOffset => 0;
         float moveDistance => 0;
