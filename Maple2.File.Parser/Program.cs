@@ -21,7 +21,8 @@ namespace Maple2.File.Parser {
         }
 
         private static void FlatIndexExplorer() {
-            var index = new FlatTypeIndex(EXPORTED_PATH);
+            using var reader = new M2dReader(EXPORTED_PATH);
+            var index = new FlatTypeIndex(reader);
             Console.WriteLine("Index is ready!");
 
             while (true) {

@@ -21,7 +21,7 @@ namespace Maple2.File.Parser.MapXBlock {
             this.reader = reader;
             this.index = index ?? new FlatTypeIndex(reader);
 
-            serializer = Program.MakeSerializer<GameXBlock>();
+            serializer = new XmlSerializer(typeof(GameXBlock));
             lookup = new XBlockClassLookup(index);
             keepEntities = new HashSet<Type>();
         }
