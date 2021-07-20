@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Text;
@@ -8,7 +9,7 @@ using Maple2.File.IO.Crypto.Common;
 using Maple2.File.IO.Crypto.Stream;
 
 namespace Maple2.File.IO {
-    public class M2dReader {
+    public class M2dReader : IDisposable {
         private readonly MemoryMappedFile m2dFile;
         public readonly IReadOnlyList<PackFileEntry> Files;
 
@@ -58,6 +59,10 @@ namespace Maple2.File.IO {
         public string GetString(PackFileEntry entry) {
             byte[] data = CryptoManager.DecryptData(entry.FileHeader, m2dFile);
             return Encoding.Default.GetString(data);
+        }
+
+        public void Dispose() {
+            m2dFile?.Dispose();
         }
     }
 }

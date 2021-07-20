@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Xml;
 using Maple2.File.IO;
@@ -15,10 +14,10 @@ namespace Maple2.File.Parser.Flat {
         private readonly string root; // flat, flat/library, flat/presets
         private readonly Dictionary<string, FlatTypeNode> typeNodes;
 
-        public FlatTypeIndex(string exportedPath, string root = "flat") {
+        public FlatTypeIndex(M2dReader reader, string root = "flat") {
             this.root = root;
             Hierarchy = new HierarchyMap<FlatType>();
-            typeNodes = ReadTypeNodes(exportedPath);
+            typeNodes = ReadTypeNodes(reader);
 
             foreach (FlatTypeNode typeNode in typeNodes.Values) {
                 foreach (FlatType mixin in typeNode.Value.Mixin) {
@@ -46,9 +45,7 @@ namespace Maple2.File.Parser.Flat {
         }
 
         // Builds Index
-        private Dictionary<string, FlatTypeNode> ReadTypeNodes(string exportedPath) {
-            var reader = new M2dReader(exportedPath);
-
+        private Dictionary<string, FlatTypeNode> ReadTypeNodes(M2dReader reader) {
             Dictionary<string, XmlNode> xmlNodes = new Dictionary<string, XmlNode>();
             Dictionary<string, FlatTypeNode> types = new Dictionary<string, FlatTypeNode>();
             foreach (PackFileEntry entry in reader.Files) {

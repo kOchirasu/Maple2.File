@@ -12,13 +12,13 @@ namespace Maple2.File.Parser.Tools {
             if (value is IDictionary dictionary) {
                 il.Emit(OpCodes.Newobj, value.GetType().GetConstructor(Type.EmptyTypes));
                 foreach (DictionaryEntry entry in dictionary) {
+                    // 0th arg to Add is "this"
+                    il.Emit(OpCodes.Dup);
                     EmitValue(il, entry.Key);
                     EmitValue(il, entry.Value);
                     il.Emit(OpCodes.Callvirt, value.GetType().GetMethod("Add"));
                 }
-            }
-
-            if (value is bool boolValue) {
+            } else if (value is bool boolValue) {
                 il.Emit(boolValue ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0);
             } else if (value is ushort ushortValue) {
                 il.Emit(OpCodes.Ldc_I4, ushortValue);
