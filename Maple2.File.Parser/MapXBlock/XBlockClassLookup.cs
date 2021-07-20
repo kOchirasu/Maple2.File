@@ -86,11 +86,16 @@ namespace Maple2.File.Parser.MapXBlock {
                 ilGenerator.Emit(OpCodes.Ret);
                 classBuilder.DefineMethodOverride(methodBuilder, methodInfo);
             }*/
-            {
-                FlatProperty property = new FlatProperty {
-                    Name = "ModelName",
+            (string, string)[] baseProps = {
+                ("ModelName", modelName),
+                ("EntityId", string.Empty),
+                ("EntityName", string.Empty)
+            };
+            foreach ((string name, string value) in baseProps) {
+                var property = new FlatProperty {
+                    Name = name,
                     Type = "String",
-                    Value = modelName,
+                    Value = value,
                 };
                 FieldInfo backing = CreateBacking(classBuilder, property);
                 backingFields.Add((property, backing));

@@ -78,6 +78,7 @@ namespace Maple2.File.Parser.MapXBlock {
                 throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
             }
 
+            var setPropertyValue = new List<(string, object)>();
             foreach (var property in entity.property) {
                 // Not setting any values
                 if (property.set.Count == 0) {
@@ -95,10 +96,16 @@ namespace Maple2.File.Parser.MapXBlock {
                     value = FlatProperty.ParseType(modelProperty.Type, property.set[0].value);
                 }
 
+                setPropertyValue.Add((property.name, value));
+            }
 
-                MethodInfo setter = entityType.GetMethod($"set_{property.name}");
+            setPropertyValue.Add(("EntityId", entity.id));
+            setPropertyValue.Add(("EntityName", entity.name));
+
+            foreach ((string name, object value) in setPropertyValue) {
+                MethodInfo setter = entityType.GetMethod($"set_{name}");
                 if (setter == null) {
-                    throw new InvalidOperationException($"No function set_{property.name} on {entity.modelName}");
+                    throw new InvalidOperationException($"No function set_{name} on {entity.modelName}");
                 }
 
                 setter.Invoke(mapEntity, new[] {value});
