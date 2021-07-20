@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
+using Maple2.File.Parser.MapXBlock;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Flat {

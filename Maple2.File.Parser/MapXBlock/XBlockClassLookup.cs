@@ -38,6 +38,9 @@ namespace Maple2.File.Parser.MapXBlock {
 
         public Type GetMixinType(string modelName) {
             FlatType entityType = index.GetType(modelName);
+            if (entityType == null) {
+                throw new UnknownModelTypeException(modelName);
+            }
             // First try to directly lookup type as a library type
             Type mixinType = GetType($"I{modelName}");
             if (mixinType != null) {
@@ -52,7 +55,7 @@ namespace Maple2.File.Parser.MapXBlock {
             FlatType requiredMixin = requiredMixins.First();
             mixinType = GetType($"I{requiredMixin.Name}");
             if (mixinType == null) {
-                throw new InvalidOperationException($"Mixin type: I{requiredMixin.Name} does not exist.");
+                throw new UnknownModelTypeException($"I{requiredMixin.Name}");
             }
 
             return mixinType;
@@ -64,8 +67,10 @@ namespace Maple2.File.Parser.MapXBlock {
             }
 
             FlatType entityType = index.GetType(modelName);
+            if (entityType == null) {
+                throw new UnknownModelTypeException(modelName);
+            }
             Type mixinType = GetMixinType(modelName);
-
             TypeBuilder classBuilder = moduleBuilder.DefineType(
                 modelName,
                 TypeAttributes.Class | TypeAttributes.Public,
@@ -98,9 +103,9 @@ namespace Maple2.File.Parser.MapXBlock {
                     Value = value,
                 };
                 FieldInfo backing = CreateBacking(classBuilder, property);
-                backingFields.Add((property, backing));
                 OverrideGetter(classBuilder, backing, mixinType, property);
                 CreateSetter(classBuilder, backing, property);
+                backingFields.Add((property, backing));
             }
 
             // Define class with property values
@@ -119,11 +124,17 @@ namespace Maple2.File.Parser.MapXBlock {
                 ilGenerator.EmitValue(property.Value);
                 ilGenerator.Emit(OpCodes.Ret);
                 classBuilder.DefineMethodOverride(methodBuilder, methodInfo);*/
+                
+                if (GetMethod(mixinType, $"get_{property.Name}") == null) {
+                    // No such getter exists
+                    Console.WriteLine($"Ignored unknown property {property.Name} on {mixinType.Name}");
+                    continue;
+                }
 
                 FieldInfo backing = CreateBacking(classBuilder, property);
-                backingFields.Add((property, backing));
                 OverrideGetter(classBuilder, backing, mixinType, property);
                 CreateSetter(classBuilder, backing, property);
+                backingFields.Add((property, backing));
             }
 
             CreateConstructor(classBuilder, backingFields);
@@ -137,11 +148,10 @@ namespace Maple2.File.Parser.MapXBlock {
             return createdType;
         }
 
-        private (MethodInfo, MethodBuilder)
-            OverrideMethod(TypeBuilder classBuilder, Type mixinType, string methodName) {
+        private (MethodInfo, MethodBuilder) OverrideMethod(TypeBuilder classBuilder, Type mixinType, string methodName) {
             MethodInfo methodInfo = GetMethod(mixinType, methodName);
             if (methodInfo == null) {
-                throw new InvalidOperationException($"{mixinType.Name} does not have method {methodName}.");
+                throw new UnknownPropertyException(mixinType, methodName);
             }
 
             MethodBuilder methodBuilder = classBuilder.DefineMethod(
@@ -195,7 +205,7 @@ namespace Maple2.File.Parser.MapXBlock {
             string methodName = $"get_{property.Name}";
             MethodInfo methodInfo = GetMethod(mixinType, methodName);
             if (methodInfo == null) {
-                throw new InvalidOperationException($"{mixinType.Name} does not have method {methodName}.");
+                throw new UnknownPropertyException(mixinType, methodName);
             }
 
             MethodBuilder methodBuilder = classBuilder.DefineMethod(

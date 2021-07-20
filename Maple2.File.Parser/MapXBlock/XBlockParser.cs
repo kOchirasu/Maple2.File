@@ -36,11 +36,17 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         public void Parse(Action<string, IEnumerable<IMapEntity>> callback) {
-            foreach (PackFileEntry file in reader.Files) {
-                if (!file.Name.StartsWith("xblock/")) continue;
-
-                string xblock = Path.GetFileNameWithoutExtension(file.Name);
-                callback(xblock, ParseEntities(file));
+            IEnumerable<(string, IEnumerable<IMapEntity>)> results = reader.Files
+                .Where(file => file.Name.StartsWith("xblock/"))
+                .AsParallel()
+                .Select(file => {
+                    string xblock = Path.GetFileNameWithoutExtension(file.Name);
+                    return (xblock, ParseEntities(file));
+                })
+                .AsSequential();
+            
+            foreach ((string xblock, IEnumerable<IMapEntity> entities) in results) {
+                callback(xblock, entities);
             }
         }
 
@@ -62,17 +68,29 @@ namespace Maple2.File.Parser.MapXBlock {
 
                 return block.entitySet.entity
                     .Where(entity => {
-                        Type mixinType = lookup.GetMixinType(entity.modelName);
-                        return keepEntities.Any(keep => keep.IsAssignableFrom(mixinType));
+                        try {
+                            Type mixinType = lookup.GetMixinType(entity.modelName);
+                            return keepEntities.Any(keep => keep.IsAssignableFrom(mixinType));
+                        } catch {
+                            return false;
+                        }
                     })
-                    .Select(CreateInstance);
+                    .Select(CreateInstance)
+                    .Where(entity => entity != null);
             }
 
             return Array.Empty<IMapEntity>();
         }
 
         private IMapEntity CreateInstance(Entity entity) {
-            Type entityType = lookup.GetClass(entity.modelName);
+            Type entityType;
+            try {
+                entityType = lookup.GetClass(entity.modelName);
+            } catch (UnknownModelTypeException ex) {
+                Console.WriteLine(ex);
+                return null;
+            }
+            
             var mapEntity = (IMapEntity) Activator.CreateInstance(entityType);
             if (mapEntity == null) {
                 throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
@@ -87,6 +105,10 @@ namespace Maple2.File.Parser.MapXBlock {
 
                 FlatType modelType = index.GetType(entity.modelName);
                 FlatProperty modelProperty = modelType.GetProperty(property.name);
+                if (modelProperty == null) {
+                    Console.WriteLine($"Ignored unknown property {property.name} on {modelType.Name}");
+                    continue;
+                }
 
                 object value;
                 if (modelProperty.Type.StartsWith("Assoc")) {
@@ -105,7 +127,7 @@ namespace Maple2.File.Parser.MapXBlock {
             foreach ((string name, object value) in setPropertyValue) {
                 MethodInfo setter = entityType.GetMethod($"set_{name}");
                 if (setter == null) {
-                    throw new InvalidOperationException($"No function set_{name} on {entity.modelName}");
+                    throw new UnknownPropertyException(entityType, $"set_{name}");
                 }
 
                 setter.Invoke(mapEntity, new[] {value});
