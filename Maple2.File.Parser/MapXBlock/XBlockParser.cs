@@ -15,27 +15,40 @@ namespace Maple2.File.Parser.MapXBlock {
         private readonly XmlSerializer serializer;
         private readonly XBlockClassLookup lookup;
         private readonly FlatTypeIndex index;
-        private readonly HashSet<Type> keepEntities;
+        private readonly HashSet<Type> includeEntities;
 
-        public XBlockParser(M2dReader reader, FlatTypeIndex index = null) {
+        public XBlockParser(M2dReader reader, FlatTypeIndex index) {
             this.reader = reader;
             this.index = index ?? new FlatTypeIndex(reader);
 
             serializer = new XmlSerializer(typeof(GameXBlock));
-            lookup = new XBlockClassLookup(index);
-            keepEntities = new HashSet<Type>();
+            lookup = new XBlockClassLookup(this.index);
+            includeEntities = new HashSet<Type>();
         }
 
-        public bool Keep(Type type) {
+        public bool Include(Type type) {
             if (!typeof(IMapEntity).IsAssignableFrom(type)) {
                 return false;
             }
 
-            keepEntities.Add(type);
+            includeEntities.Add(type);
             return true;
         }
 
         public void Parse(Action<string, IEnumerable<IMapEntity>> callback) {
+            IEnumerable<(string, IEnumerable<IMapEntity>)> results = reader.Files
+                .Where(file => file.Name.StartsWith("xblock/"))
+                .Select(file => {
+                    string xblock = Path.GetFileNameWithoutExtension(file.Name);
+                    return (xblock, ParseEntities(file));
+                });
+            
+            foreach ((string xblock, IEnumerable<IMapEntity> entities) in results) {
+                callback(xblock, entities);
+            }
+        }
+
+        public void ParseParallel(Action<string, IEnumerable<IMapEntity>> callback) {
             IEnumerable<(string, IEnumerable<IMapEntity>)> results = reader.Files
                 .Where(file => file.Name.StartsWith("xblock/"))
                 .AsParallel()
@@ -62,20 +75,27 @@ namespace Maple2.File.Parser.MapXBlock {
 
         private IEnumerable<IMapEntity> ParseEntities(PackFileEntry file) {
             if (serializer.Deserialize(reader.GetXmlReader(file)) is GameXBlock block) {
-                if (keepEntities.Count == 0) {
-                    return block.entitySet.entity.Select(CreateInstance);
-                }
-
+                var unknownModels = new HashSet<string>();
                 return block.entitySet.entity
                     .Where(entity => {
                         try {
                             Type mixinType = lookup.GetMixinType(entity.modelName);
-                            return keepEntities.Any(keep => keep.IsAssignableFrom(mixinType));
+                            return includeEntities.Count == 0 || includeEntities.Any(keep => keep.IsAssignableFrom(mixinType));
                         } catch {
                             return false;
                         }
                     })
-                    .Select(CreateInstance)
+                    .Select(entity => {
+                        try {
+                            return CreateInstance(entity);
+                        } catch (UnknownModelTypeException ex) {
+                            // Reduce noise from this exception to once per file
+                            if (unknownModels.Add(entity.modelName)) {
+                                Console.WriteLine(ex);
+                            }
+                            return null;
+                        }
+                    })
                     .Where(entity => entity != null);
             }
 
@@ -83,14 +103,7 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         private IMapEntity CreateInstance(Entity entity) {
-            Type entityType;
-            try {
-                entityType = lookup.GetClass(entity.modelName);
-            } catch (UnknownModelTypeException ex) {
-                Console.WriteLine(ex);
-                return null;
-            }
-            
+            Type entityType = lookup.GetClass(entity.modelName);
             var mapEntity = (IMapEntity) Activator.CreateInstance(entityType);
             if (mapEntity == null) {
                 throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");

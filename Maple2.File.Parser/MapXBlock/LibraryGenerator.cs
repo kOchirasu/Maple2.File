@@ -55,11 +55,16 @@ namespace Maple2.File.Parser.MapXBlock {
                 IEnumerable<FlatType> types = index.Hierarchy.List($"{root}/{directory}");
                 foreach (FlatType type in types) {
                     // We expect all presets to be derivable from a library type.
-                    if (type.RequiredMixin().Count() <= 1) {
-                        continue;
+                    List<FlatType> requiredMixins = type.RequiredMixin().ToList();
+                    if (requiredMixins.Count != 1) {
+                        throw new InvalidOperationException($"Cannot find single mixin for \"{type}\"");
                     }
 
-                    Console.WriteLine($"Invalid type {type.Name} is not derived from library.");
+                    FlatType requiredMixin = requiredMixins.First();
+                    Type mixinType = XBlockClassLookup.GetType($"I{requiredMixin.Name}");
+                    if (mixinType == null) {
+                        Console.WriteLine($"Invalid type {type.Name} is not derived from library. Expected: {requiredMixin.Name}");
+                    }
                 }
             }
         }

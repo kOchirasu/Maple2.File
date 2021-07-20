@@ -6,9 +6,9 @@ Strongly typed MapleStory2 m2d file parsing
 ```csharp
 using var reader = new M2dReader(EXPORTED_PATH);
 var parser = new XBlockParser(reader, index);
-parser.Keep(typeof(ISpawnPoint));
-parser.Keep(typeof(IMS2TriggerObject));
-parser.Keep(typeof(IPortal));
+parser.Include(typeof(ISpawnPoint));
+parser.Include(typeof(IMS2TriggerObject));
+parser.Include(typeof(IPortal));
 ...
 
 var results = new Dictionary<string, MapEntityMetadata>();

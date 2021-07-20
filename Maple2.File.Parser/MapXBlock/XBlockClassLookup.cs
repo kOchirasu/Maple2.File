@@ -19,7 +19,8 @@ namespace Maple2.File.Parser.MapXBlock {
             "physxmodellibrary",
             "standardmodellibrary",
             "tool",
-            "triggerslibrary"
+            "triggerslibrary",
+            "presets",
         };
 
         public XBlockClassLookup(FlatTypeIndex index) {
@@ -254,7 +255,7 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         // GetType that searches in Maple2.File.Flat assembly
-        private static Type GetType(string name) {
+        public static Type GetType(string name) {
             const string assemblyName = "Maple2.File.Flat";
             foreach (string @namespace in namespaces) {
                 Type type;
