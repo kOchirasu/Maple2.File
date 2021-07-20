@@ -71,7 +71,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public long marvalue;
         [XmlAttribute] public long wapminvalue;
         [XmlAttribute] public long wapmaxvalue;
+
         [XmlAttribute] public long dmgvalue;
+
         //[XmlAttribute] public long dmgvalue;
         [XmlAttribute] public long penvalue;
         [XmlAttribute] public long rmspvalue;
@@ -107,7 +109,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public float marrate;
         [XmlAttribute] public float wapminrate;
         [XmlAttribute] public float wapmaxrate;
+
         [XmlAttribute] public float dmgrate;
+
         //[XmlAttribute] public float dmgrate;
         [XmlAttribute] public float penrate;
         [XmlAttribute] public float rmsprate;

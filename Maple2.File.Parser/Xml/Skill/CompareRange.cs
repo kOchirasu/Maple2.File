@@ -31,7 +31,9 @@ namespace Maple2.File.Parser.Xml.Skill {
         [XmlAttribute] public float mar;
         [XmlAttribute] public float wapmin;
         [XmlAttribute] public float wapmax;
+
         [XmlAttribute] public float dmg;
+
         //[XmlAttribute] public float dmg;
         [XmlAttribute] public float pen;
         [XmlAttribute] public float rmsp;

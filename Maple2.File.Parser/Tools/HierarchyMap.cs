@@ -23,7 +23,7 @@ namespace Maple2.File.Parser.Tools {
         // Example: Add("a/b/c/key", T)
         public void Add(string path, T value) {
             path ??= ""; // Default to empty string if null
-            string[] split = path.Split(new []{'/', '\\'}, 2, StringSplitOptions.RemoveEmptyEntries);
+            string[] split = path.Split(new[] {'/', '\\'}, 2, StringSplitOptions.RemoveEmptyEntries);
             if (split.Length == 1) {
                 values.Add(split[0], value);
                 return;
@@ -32,7 +32,7 @@ namespace Maple2.File.Parser.Tools {
             if (!directories.ContainsKey(split[0])) {
                 directories.Add(split[0], new HierarchyMap<T>());
             }
-            
+
             directories[split[0]].Add(split[1], value);
         }
 
@@ -42,7 +42,7 @@ namespace Maple2.File.Parser.Tools {
         // Example: TryGet("a/b/c/key", T)
         public bool TryGet(string path, out T value) {
             path ??= ""; // Default to empty string if null
-            string[] split = path.Split(new []{'/', '\\'}, 2, StringSplitOptions.RemoveEmptyEntries);
+            string[] split = path.Split(new[] {'/', '\\'}, 2, StringSplitOptions.RemoveEmptyEntries);
             if (split.Length == 1) {
                 if (values.ContainsKey(split[0])) {
                     value = values[split[0]];
@@ -56,10 +56,9 @@ namespace Maple2.File.Parser.Tools {
             if (directories.ContainsKey(split[0])) {
                 return directories[split[0]].TryGet(split[1], out value);
             }
-            
+
             value = default;
             return false;
-
         }
 
         // Finds the first value with a specified key.
@@ -93,7 +92,7 @@ namespace Maple2.File.Parser.Tools {
             if (!recursive) {
                 return list;
             }
-            
+
             foreach (HierarchyMap<T> map in current.directories.Values) {
                 list = list.Concat(map.List(path, true));
             }
@@ -103,7 +102,7 @@ namespace Maple2.File.Parser.Tools {
 
         private HierarchyMap<T> NavigateTo(string path) {
             path ??= ""; // Default to empty string if null
-            string[] split = path.Split(new []{'/', '\\'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] split = path.Split(new[] {'/', '\\'}, StringSplitOptions.RemoveEmptyEntries);
 
             HierarchyMap<T> current = this;
             foreach (string directory in split) {

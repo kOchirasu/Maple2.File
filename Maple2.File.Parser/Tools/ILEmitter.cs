@@ -33,7 +33,7 @@ namespace Maple2.File.Parser.Tools {
             } else if (value is string stringValue) {
                 il.Emit(OpCodes.Ldstr, stringValue);
             } else if (value is Vector3 vector3Value) {
-                ConstructorInfo constructor = 
+                ConstructorInfo constructor =
                     typeof(Vector3).GetConstructor(new[] {typeof(float), typeof(float), typeof(float)});
 
                 il.Emit(OpCodes.Ldc_R4, vector3Value.X);
@@ -48,12 +48,12 @@ namespace Maple2.File.Parser.Tools {
                 il.Emit(OpCodes.Newobj, constructor);
             } else if (value is Color colorValue) {
                 MethodInfo method =
-                    typeof(Color).GetMethod("FromArgb", new [] {typeof(int), typeof(int), typeof(int), typeof(int)});
+                    typeof(Color).GetMethod("FromArgb", new[] {typeof(int), typeof(int), typeof(int), typeof(int)});
 
-                il.Emit(OpCodes.Ldc_I4, (int)colorValue.A);
-                il.Emit(OpCodes.Ldc_I4, (int)colorValue.R);
-                il.Emit(OpCodes.Ldc_I4, (int)colorValue.G);
-                il.Emit(OpCodes.Ldc_I4, (int)colorValue.B);
+                il.Emit(OpCodes.Ldc_I4, (int) colorValue.A);
+                il.Emit(OpCodes.Ldc_I4, (int) colorValue.R);
+                il.Emit(OpCodes.Ldc_I4, (int) colorValue.G);
+                il.Emit(OpCodes.Ldc_I4, (int) colorValue.B);
                 il.Emit(OpCodes.Call, method);
             } else {
                 throw new NotImplementedException($"Unable to generate IL for {value.GetType().FullName}");

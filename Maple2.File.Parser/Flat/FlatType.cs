@@ -41,6 +41,7 @@ namespace Maple2.File.Parser.Flat {
                     if (added.Contains(prop.Name)) {
                         continue;
                     }
+
                     added.Add(prop.Name);
                     props.Add(prop);
                 }
@@ -69,6 +70,7 @@ namespace Maple2.File.Parser.Flat {
                 if (mixinType.Mixin.Contains(type)) {
                     return true;
                 }
+
                 if (mixinType.IsRedundantMixin(type)) {
                     return true;
                 }
@@ -81,9 +83,10 @@ namespace Maple2.File.Parser.Flat {
         public IEnumerable<FlatType> RequiredMixin() {
             return Mixin.Where(mixin => !IsRedundantMixin(mixin));
         }
-        
+
         protected bool Equals(FlatType other) {
-            return Name == other.Name && Properties.Count == other.Properties.Count && !Properties.Except(other.Properties).Any();
+            return Name == other.Name && Properties.Count == other.Properties.Count &&
+                   !Properties.Except(other.Properties).Any();
         }
 
         public override bool Equals(object obj) {

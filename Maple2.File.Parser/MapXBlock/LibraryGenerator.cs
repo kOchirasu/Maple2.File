@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using Maple2.File.Parser.Flat;
@@ -23,7 +21,7 @@ namespace Maple2.File.Parser.MapXBlock {
             foreach (string directory in directories) {
                 string path = $"Library/{directory}";
                 Directory.CreateDirectory(path);
-                
+
                 IEnumerable<FlatType> types = index.Hierarchy.List($"{root}/{directory}");
                 foreach (FlatType type in types) {
                     /*string filePath;
@@ -39,17 +37,17 @@ namespace Maple2.File.Parser.MapXBlock {
                     // Generating all interfaces for now
                     string filePath = Path.Combine(path, $"I{type.Name}.cs");
                     string code = GenerateInterface(directory, type);
-                    
+
                     if (System.IO.File.Exists(filePath)) {
                         throw new InvalidOperationException("Attempting to overwrite file: " + filePath);
                     }
-                    
+
                     System.IO.File.WriteAllText(filePath, code);
                     Console.WriteLine("Created file at: " + filePath);
                 }
             }
         }
-        
+
         public void ValidatePresets() {
             const string root = "flat/presets";
             IEnumerable<string> directories = index.Hierarchy.ListDirectories(root);
@@ -80,7 +78,7 @@ namespace Maple2.File.Parser.MapXBlock {
                     }
                 }
             }
-            
+
             var builder = new StringBuilder();
 
             builder.AppendLine($"namespace Maple2.File.Flat.{@namespace} {{");
@@ -102,11 +100,13 @@ namespace Maple2.File.Parser.MapXBlock {
                         }
 
                         // Since the dictionaries are always empty, just doing count comparison to shortcut
-                        if (propertyValue is IDictionary dict1 && property.Value is IDictionary dict2 && dict1.Count == dict2.Count) {
+                        if (propertyValue is IDictionary dict1 && property.Value is IDictionary dict2 &&
+                            dict1.Count == dict2.Count) {
                             continue;
                         }
                     }
                 }
+
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
                 string typeValue = property.ValueCodeString();
                 builder.AppendLine($"\t\t{typeStr} {property.Name} => {typeValue};");
@@ -114,7 +114,7 @@ namespace Maple2.File.Parser.MapXBlock {
 
             builder.AppendLine("\t}"); // class
             builder.AppendLine("}"); // namespace
-            
+
             return builder.ToString();
         }
 
@@ -139,6 +139,7 @@ namespace Maple2.File.Parser.MapXBlock {
                 string typeValue = property.ValueCodeString();
                 builder.AppendLine($"\t\tpublic {typeStr} {property.Name} {{ get; set; }} = {typeValue};");
             }
+
             foreach (FlatProperty property in type.GetInheritedProperties()) {
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
                 string typeValue = property.ValueCodeString();
@@ -147,7 +148,7 @@ namespace Maple2.File.Parser.MapXBlock {
 
             builder.AppendLine("\t}"); // class
             builder.AppendLine("}"); // namespace
-            
+
             return builder.ToString();
         }
 

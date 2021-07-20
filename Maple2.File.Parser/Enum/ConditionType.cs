@@ -1,8 +1,10 @@
 ﻿namespace Maple2.File.Parser.Enum {
     public enum ConditionType {
         unknown = 0,
+
         // group 0
         empty = 1,
+
         // group 1
         npc = 11,
         npc_no_damage = 12,
@@ -13,14 +15,18 @@
         npc_field_elite = 21,
         npc_dungeon_boss = 22,
         npc_event_tag = 24,
+
         // group 2
         npc_lasthit = 14,
         npc_lasthit_buff = 15,
         npc_lasthit_time = 16,
+
         // group 3
         killcount = 19,
+
         // group 4
         npc_assist_bonus = 23,
+
         // group 7
         level = 40,
         level_up = 41,
@@ -28,6 +34,7 @@
         exp_rate = 43,
         adventure_level = 44,
         adventure_level_up = 45,
+
         // group 8
         item_pickup = 2,
         item_exist = 3,
@@ -38,11 +45,13 @@
         item_collect = 8,
         item_gear_score = 9,
         item_collect_revise = 10,
+
         // group 9
         map = 36,
         explore = 37,
         continent = 38,
         explore_continent = 39,
+
         // group 10
         meso_donation = 72,
         meso = 73,
@@ -55,6 +64,7 @@
         get_mentee_token = 81,
         get_star_point = 82,
         use_merat = 83,
+
         // group 11
         quest_clear = 46,
         quest = 47,
@@ -74,14 +84,17 @@
         mission_attack_system = 61,
         skyfortress_system = 62,
         repeat_quest_clear = 63,
+
         // group 12
         job = 69,
         job_change = 70,
         subjob_change = 71,
+
         // group 13
         change_equip = 170,
         change_ugc_equip = 171,
         equip_exist = 172,
+
         // group 14
         holdtime = 146,
         ropetime = 147,
@@ -90,6 +103,7 @@
         swimtime = 150,
         playinstrument_time = 151,
         play_ensenble_time = 152,
+
         // group 15
         run = 139,
         swim = 140,
@@ -98,32 +112,39 @@
         riding = 143,
         crawl = 144,
         fall = 145,
+
         // group 16
         jump = 203,
+
         // group 17
         playtime = 64,
         stay_map = 65,
         survive_map = 66,
         stay_cube = 67,
         survive_cube = 68,
+
         // group 18
         skill = 84,
         skill_die = 85,
         skill_damage_npc = 86,
+
         // group 19
         buff = 87,
+
         // group 21
         taxifind = 88,
         taxiuse = 89,
         taxifee = 90,
         best_taxi_use = 91,
         best_taxi_fee = 92,
+
         // group 22
         trophy_point = 94,
         hero_achieve_grade = 95,
         hero_achieve = 93,
         revise_achieve_single_grade = 96,
         revise_achieve_multi_grade = 97,
+
         // group 23
         shop_buy = 100,
         shop_buy_karma_token = 101,
@@ -136,9 +157,11 @@
         shop_buy_mentee_token = 108,
         shop_buy_star_point = 109,
         limited_bundle_buy = 110,
+
         // group 24
         revival = 98,
         hit_tombstone = 99,
+
         // group 25
         pvp_win = 111,
         pvp_kill = 112,
@@ -152,12 +175,15 @@
         pvp_win_with_buff = 228,
         pvp_win_with_grade = 229,
         pvp_win_perfect = 230,
+
         // group 26
         shadow_world_kill = 120,
         shadow_world_die = 121,
+
         // group 27
         enchant_result = 122,
         unlimited_enchant = 321,
+
         // group 28
         beauty_add = 123,
         beauty_change = 124,
@@ -165,11 +191,13 @@
         beauty_random = 126,
         beauty_style_add = 127,
         beauty_style_apply = 128,
+
         // group 29
         trigger = 129,
         minigame_clear = 130,
         useropen_minigame_clear = 131,
         guild_trigger = 263,
+
         // group 30
         guild_join = 132,
         guild_join_req = 133,
@@ -178,13 +206,17 @@
         guild_trophy = 136,
         guild_attendance = 137,
         guild_donate = 138,
+
         // group 31
         emotion = 153,
         couple_dance_event = 154,
+
         // group 32
         send_mail = 168,
+
         // group 33
         resolve_panelty = 169,
+
         // group 34
         interior_exp = 161,
         interior_level = 163,
@@ -198,10 +230,12 @@
         home_bank = 177,
         home_goto = 178,
         item_design = 179,
+
         // group 35
         fall_survive = 180,
         fall_die = 181,
         fall_damage = 182,
+
         // group 38
         interact_object = 28,
         interact_object_rep = 29,
@@ -214,10 +248,12 @@
         nurturing_play = 305,
         nurturing_eat = 306,
         nurturing_growth = 307,
+
         // group 39
         dialogue = 25,
         talk_in = 26,
         interact_npc = 27,
+
         // group 40
         item_move = 155,
         buy_house = 156,
@@ -227,8 +263,10 @@
         rotate_cube = 160,
         buy_cube = 166,
         create_blueprint = 167,
+
         // group 41
         attendance = 183,
+
         // group 42
         dungeon_key_use = 184,
         dungeon_reward = 185,
@@ -244,12 +282,14 @@
         dungeon_clear_group = 195,
         dungeon_first_clear = 196,
         dungeon_round_clear = 197,
+
         // group 43
         maid_get_item = 198,
         maid_salary = 199,
         maid_jackpot = 200,
         maid_affinity = 201,
         maid_profile = 202,
+
         // group 45
         fish = 204,
         fish_success_bait = 205,
@@ -258,6 +298,7 @@
         fish_collect = 208,
         fish_goldmedal = 209,
         auto_fishing = 210,
+
         // group 46
         music_play_score = 211,
         music_play_score_by_name = 212,
@@ -267,20 +308,25 @@
         music_play_ensemble = 216,
         music_play_ensemble_in = 217,
         music_concert_cheer_up = 218,
+
         // group 47
         openItemBox = 219,
         openStoryBook = 220,
         festival_event = 221,
         install_billboard = 222,
+
         // group 52
         game_helper_service = 274,
+
         // group 53
         smart_push = 223,
+
         // group 55
         item_remake_option = 224,
         item_remake_option_record = 225,
         pet_remake_option = 226,
         pet_remake_option_record = 227,
+
         // group 56
         gemstone_upgrade = 231,
         gemstone_upgrade_success = 232,
@@ -296,9 +342,11 @@
         socket_unlock_success = 242,
         socket_unlock_fail = 243,
         socket_unlock_try = 244,
+
         // group 57
         character_ability_learn = 245,
         character_ability_reset = 246,
+
         // group 59
         mastery_grade = 247,
         set_mastery_grade = 248,
@@ -313,10 +361,12 @@
         mastery_farming_try = 257,
         mastery_gathering = 258,
         mastery_gathering_try = 259,
+
         // group 60
         club_join = 260,
         buddy_request = 261,
         chat = 262,
+
         // group 62
         pet_collect = 264,
         pet_first_collect = 265,
@@ -328,24 +378,31 @@
         pet_catch_category = 269,
         pet_evolution_point_by_rank = 272,
         pet_evolution_by_rank = 273,
+
         // group 63
         item_merge_success = 279,
+
         // group 64
         idip_app_attendance = 275,
         idip_live_broadcast = 276,
         idip_adventure_bar = 277,
+
         // group 65
         vipgm = 278,
+
         // group 66
         donation_item = 280,
         donation_type = 281,
+
         // group 67
         play_rps = 282,
         play_rps_win = 283,
         play_rps_lose = 284,
         play_rps_draw = 285,
+
         // group 68
         user_find = 286,
+
         // group 69
         survival_enter = 287,
         survival_kill = 288,
@@ -362,15 +419,18 @@
         survival_npc_kill = 299,
         survival_item_get = 300,
         survival_buy_gold_pass = 301,
+
         // group 70
         worldchampion_hit = 302,
         worldchampion_damage = 303,
         worldchampion_reward = 304,
+
         // group 71
         lapenshard_upgrade_try = 308,
         lapenshard_upgrade_fail = 309,
         lapenshard_upgrade_success = 310,
         lapenshard_upgrade_result = 311,
+
         // group 72
         wedding_propose = 312,
         wedding_propose_decline = 313,

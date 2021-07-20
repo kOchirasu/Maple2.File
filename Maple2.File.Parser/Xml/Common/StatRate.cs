@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
 
 namespace Maple2.File.Parser.Xml.Common {
-    [XmlType(Namespace="Common")]
+    [XmlType(Namespace = "Common")]
     public class StatRate {
         [XmlAttribute] public float str;
         [XmlAttribute] public float dex;
@@ -32,7 +32,9 @@ namespace Maple2.File.Parser.Xml.Common {
         [XmlAttribute] public float mar;
         [XmlAttribute] public float wapmin;
         [XmlAttribute] public float wapmax;
+
         [XmlAttribute] public float dmg;
+
         //[XmlAttribute] public float dmg;
         [XmlAttribute] public float pen;
         [XmlAttribute] public float rmsp;

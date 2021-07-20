@@ -43,6 +43,7 @@ namespace Maple2.File.Parser.Xml {
         [XmlAttribute] public bool ignorePhysxTestInitPosition;
         [XmlAttribute] public int piercingAttackInterval;
         [XmlAttribute] public int piercingAttackMaxTargetCount;
+
         [XmlAttribute] public int moveEndHoldDuration;
         //public float timeInterval => vel / distance;
 

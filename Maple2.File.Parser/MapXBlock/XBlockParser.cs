@@ -1,10 +1,8 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Xml.Serialization;
 using Maple2.File.Flat;
 using Maple2.File.IO;
@@ -19,41 +17,40 @@ namespace Maple2.File.Parser.MapXBlock {
         private readonly FlatTypeIndex index;
         private readonly HashSet<Type> keepEntities;
 
-        public XBlockParser(M2dReader reader, FlatTypeIndex index) {
+        public XBlockParser(M2dReader reader, FlatTypeIndex index = null) {
             this.reader = reader;
+            this.index = index ?? new FlatTypeIndex(reader);
+
             serializer = Program.MakeSerializer<GameXBlock>();
-            
             lookup = new XBlockClassLookup(index);
-            this.index = index;
             keepEntities = new HashSet<Type>();
         }
-        
+
         public bool Keep(Type type) {
             if (!typeof(IMapEntity).IsAssignableFrom(type)) {
                 return false;
             }
-            
+
             keepEntities.Add(type);
             return true;
-
         }
 
         public void Parse(Action<string, IEnumerable<IMapEntity>> callback) {
             foreach (PackFileEntry file in reader.Files) {
                 if (!file.Name.StartsWith("xblock/")) continue;
-                
+
                 string xblock = Path.GetFileNameWithoutExtension(file.Name);
                 callback(xblock, ParseEntities(file));
             }
         }
 
         public void ParseMap(string xblock, Action<IEnumerable<IMapEntity>> callback) {
-            PackFileEntry? file = reader.Files
+            PackFileEntry file = reader.Files
                 .FirstOrDefault(file => file.Name.Equals($"xblock/{xblock}.xblock"));
             if (file == default) {
                 return;
             }
-            
+
             callback(ParseEntities(file));
         }
 
@@ -62,10 +59,10 @@ namespace Maple2.File.Parser.MapXBlock {
                 if (keepEntities.Count == 0) {
                     return block.entitySet.entity.Select(CreateInstance);
                 }
-                
+
                 return block.entitySet.entity
                     .Where(entity => {
-                        Type? mixinType = lookup.GetMixinType(entity.modelName);
+                        Type mixinType = lookup.GetMixinType(entity.modelName);
                         return keepEntities.Any(keep => keep.IsAssignableFrom(mixinType));
                     })
                     .Select(CreateInstance);
@@ -73,36 +70,38 @@ namespace Maple2.File.Parser.MapXBlock {
 
             return Array.Empty<IMapEntity>();
         }
-        
+
         private IMapEntity CreateInstance(Entity entity) {
             Type entityType = lookup.GetClass(entity.modelName);
-            IMapEntity mapEntity = (IMapEntity)Activator.CreateInstance(entityType);
+            var mapEntity = (IMapEntity) Activator.CreateInstance(entityType);
             if (mapEntity == null) {
                 throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
             }
-            
+
             foreach (var property in entity.property) {
                 // Not setting any values
                 if (property.set.Count == 0) {
                     continue;
                 }
-                
+
                 FlatType modelType = index.GetType(entity.modelName);
                 FlatProperty modelProperty = modelType.GetProperty(property.name);
 
                 object value;
                 if (modelProperty.Type.StartsWith("Assoc")) {
-                    value = FlatProperty.ParseAssocType(modelProperty.Type, property.set.Select(set => (set.index, set.value)));
+                    value = FlatProperty.ParseAssocType(modelProperty.Type,
+                        property.set.Select(set => (set.index, set.value)));
                 } else {
                     value = FlatProperty.ParseType(modelProperty.Type, property.set[0].value);
                 }
-                
+
 
                 MethodInfo setter = entityType.GetMethod($"set_{property.name}");
                 if (setter == null) {
                     throw new InvalidOperationException($"No function set_{property.name} on {entity.modelName}");
                 }
-                setter.Invoke(mapEntity, new []{value});
+
+                setter.Invoke(mapEntity, new[] {value});
             }
 
             return mapEntity;

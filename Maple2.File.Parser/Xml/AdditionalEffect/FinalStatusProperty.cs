@@ -39,7 +39,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public long finalmarvalue;
         [XmlAttribute] public long finalwapminvalue;
         [XmlAttribute] public long finalwapmaxvalue;
+
         [XmlAttribute] public long finaldmgvalue;
+
         //[XmlAttribute] public long finaldmgvalue;
         [XmlAttribute] public long finalpenvalue;
         [XmlAttribute] public long finalrmspvalue;
@@ -75,7 +77,9 @@ namespace Maple2.File.Parser.Xml.AdditionalEffect {
         [XmlAttribute] public float finalmarrate;
         [XmlAttribute] public float finalwapminrate;
         [XmlAttribute] public float finalwapmaxrate;
+
         [XmlAttribute] public float finaldmgrate;
+
         //[XmlAttribute] public float finaldmgrate;
         [XmlAttribute] public float finalpenrate;
         [XmlAttribute] public float finalrmsprate;

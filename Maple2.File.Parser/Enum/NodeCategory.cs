@@ -11,6 +11,4 @@
         Tail = 8,
         Hold_Point = 9,
     }
-
-
 }

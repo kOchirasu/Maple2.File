@@ -112,27 +112,36 @@ namespace Maple2.File.Parser.Flat {
             if (Value is float) {
                 value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
             }
+
             if (Value is Vector3) {
-                value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector3($1, $2, $3)");
+                value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>",
+                    "new Vector3($1, $2, $3)");
                 value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
                 value = value.Replace("new Vector3(0, 0, 0)", "default");
             }
+
             if (Value is Vector2) {
                 value = Regex.Replace(value, "<(-?\\d+\\.?\\d*), (-?\\d+\\.?\\d*)>", "new Vector2($1, $2)");
                 value = Regex.Replace(value, "(\\d+\\.\\d+)", "$1f");
                 value = value.Replace("new Vector2(0, 0)", "default");
             }
+
             if (Value is Color) {
-                value = Regex.Replace(value, "Color \\[A=(\\d+), R=(\\d+), G=(\\d+), B=(\\d+)\\]", "Color.FromArgb($1, $2, $3, $4)");
+                value = Regex.Replace(value, "Color \\[A=(\\d+), R=(\\d+), G=(\\d+), B=(\\d+)\\]",
+                    "Color.FromArgb($1, $2, $3, $4)");
                 value = value.Replace("Color.FromArgb(0, 0, 0, 0)", "default");
             }
+
             if (Value is string) {
                 value = $"\"{value}\"";
             }
-            value = Regex.Replace(value, "System\\.Collections\\.Generic\\.Dictionary`2\\[(.+)\\]", "new Dictionary<$1>()");
+
+            value = Regex.Replace(value, "System\\.Collections\\.Generic\\.Dictionary`2\\[(.+)\\]",
+                "new Dictionary<$1>()");
             if (Value is bool) {
                 value = value.ToLower();
             }
+
             return value;
         }
 
@@ -141,7 +150,7 @@ namespace Maple2.File.Parser.Flat {
                 yield return entry;
             }
         }
-        
+
         protected bool Equals(FlatProperty other) {
             return Name == other.Name && Id == other.Id && Type == other.Type && Equals(Value, other.Value);
         }

@@ -10,7 +10,7 @@ using Maple2.File.Parser.Tools;
 namespace Maple2.File.Parser.Flat {
     public class FlatTypeIndex {
         public readonly HierarchyMap<FlatType> Hierarchy;
-        
+
         private readonly string root; // flat, flat/library, flat/presets
         private readonly Dictionary<string, FlatTypeNode> typeNodes;
 
@@ -57,6 +57,7 @@ namespace Maple2.File.Parser.Flat {
                     Console.WriteLine($"Missing model node for: {entry.Name}");
                     continue;
                 }
+
                 if (node.Attributes?["name"] == null) {
                     Console.WriteLine($"Missing name for: {entry.Name}");
                     continue;

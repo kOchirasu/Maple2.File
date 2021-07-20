@@ -23,7 +23,9 @@ namespace Maple2.File.Parser.Xml {
         [XmlElement] public Basic basic;
         [XmlElement] public Notify notify;
         [XmlElement] public Require require;
+
         [XmlElement] public List<Condition> condition;
+
         //[XmlElement] public Navigation navi;
         [XmlElement] public Start start;
         [XmlElement] public Complete complete;
@@ -46,7 +48,10 @@ namespace Maple2.File.Parser.Xml {
 
         public partial class Complete {
             [XmlAttribute] public int npc;
-            [XmlAttribute] public string type = NavigationType.unknown.ToString(); // Navigation type: default = unknown(3)
+
+            [XmlAttribute]
+            public string type = NavigationType.unknown.ToString(); // Navigation type: default = unknown(3)
+
             [M2dArray] public int[] code = Array.Empty<int>();
             [M2dArray] public int[] map = Array.Empty<int>();
 
