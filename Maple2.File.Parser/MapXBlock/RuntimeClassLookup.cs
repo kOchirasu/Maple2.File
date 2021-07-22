@@ -69,18 +69,6 @@ namespace Maple2.File.Parser.MapXBlock {
             );
 
             var backingFields = new List<(FlatProperty, FieldInfo)>();
-
-            // Override ModelName to this model's name.
-            /*{
-                (MethodInfo methodInfo, MethodBuilder methodBuilder) = OverrideMethod(classBuilder, mixinType, "get_ModelName");
-                ILGenerator? ilGenerator = methodBuilder.GetILGenerator();
-                if (ilGenerator == null) {
-                    throw new InvalidOperationException($"{mixinType.Name} could not create ILGenerator.");
-                }
-                ilGenerator.EmitValue(modelName);
-                ilGenerator.Emit(OpCodes.Ret);
-                classBuilder.DefineMethodOverride(methodBuilder, methodInfo);
-            }*/
             (string, string)[] baseProps = {
                 ("ModelName", modelName),
                 ("EntityId", string.Empty),
@@ -99,25 +87,10 @@ namespace Maple2.File.Parser.MapXBlock {
             }
 
             // Define class with property values
-            foreach (FlatProperty property in entityType.GetProperties()) {
-                /*if (property.Value is IDictionary) {
-                    continue;
-                }*/
-
-                /*string methodName = $"get_{property.Name}";
-                (MethodInfo methodInfo, MethodBuilder methodBuilder) = OverrideMethod(classBuilder, mixinType, methodName);
-                ILGenerator? ilGenerator = methodBuilder.GetILGenerator();
-                if (ilGenerator == null) {
-                    throw new InvalidOperationException($"{mixinType.Name} could not create ILGenerator.");
-                }
-
-                ilGenerator.EmitValue(property.Value);
-                ilGenerator.Emit(OpCodes.Ret);
-                classBuilder.DefineMethodOverride(methodBuilder, methodInfo);*/
-                
+            foreach (FlatProperty property in entityType.GetAllProperties()) {
                 if (GetMethod(mixinType, $"get_{property.Name}") == null) {
                     // No such getter exists
-                    Console.WriteLine($"Ignored unknown property {property.Name} on {mixinType.Name}");
+                    Console.WriteLine($"Ignored unknown getter {property.Name} on {mixinType.Name}");
                     continue;
                 }
 
@@ -136,25 +109,6 @@ namespace Maple2.File.Parser.MapXBlock {
 
             cache[mixinType.Name] = createdType;
             return createdType;
-        }
-
-        private (MethodInfo, MethodBuilder) OverrideMethod(TypeBuilder classBuilder, Type mixinType, string methodName) {
-            MethodInfo methodInfo = GetMethod(mixinType, methodName);
-            if (methodInfo == null) {
-                throw new UnknownPropertyException(mixinType, methodName);
-            }
-
-            MethodBuilder methodBuilder = classBuilder.DefineMethod(
-                methodName,
-                MethodAttributes.Public | MethodAttributes.Virtual,
-                methodInfo.ReturnType,
-                Type.EmptyTypes
-            );
-            if (methodBuilder == null) {
-                throw new InvalidOperationException($"{mixinType.Name} could not create MethodBuilder.");
-            }
-
-            return (methodInfo, methodBuilder);
         }
 
         private void CreateConstructor(TypeBuilder classBuilder, IEnumerable<(FlatProperty, FieldInfo)> fields) {

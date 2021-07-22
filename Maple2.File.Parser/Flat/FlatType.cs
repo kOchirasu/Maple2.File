@@ -85,8 +85,20 @@ namespace Maple2.File.Parser.Flat {
         }
 
         protected bool Equals(FlatType other) {
-            return Name == other.Name && Properties.Count == other.Properties.Count &&
-                   !Properties.Except(other.Properties).Any();
+            if (Name != other.Name || Properties.Count != other.Properties.Count) {
+                return false;
+            }
+
+            foreach ((string key, FlatProperty value) in Properties) {
+                if (!other.Properties.TryGetValue(key, out FlatProperty otherValue)) {
+                    return false;
+                }
+                if (!value.Equals(otherValue)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public override bool Equals(object obj) {

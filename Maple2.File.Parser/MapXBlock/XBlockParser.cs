@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +16,9 @@ namespace Maple2.File.Parser.MapXBlock {
         private readonly ClassLookup lookup;
         private readonly FlatTypeIndex index;
         private readonly HashSet<Type> includeEntities;
+
+        // Stream of error logs
+        public Action<string> OnError;
 
         public XBlockParser(M2dReader reader, FlatTypeIndex index) {
             this.reader = reader;
@@ -36,20 +38,20 @@ namespace Maple2.File.Parser.MapXBlock {
             return true;
         }
 
-        public void Parse(Action<string, IEnumerable<EntityData>> callback) {
-            IEnumerable<(string, IEnumerable<EntityData>)> results = reader.Files
+        public void Parse(Action<string, IEnumerable<IMapEntity>> callback) {
+            IEnumerable<(string, IEnumerable<IMapEntity>)> results = reader.Files
                 .Where(file => file.Name.StartsWith("xblock/"))
                 .Select(file => {
                     string xblock = Path.GetFileNameWithoutExtension(file.Name);
                     return (xblock, ParseEntities(file));
                 });
             
-            foreach ((string xblock, IEnumerable<EntityData> entities) in results) {
+            foreach ((string xblock, IEnumerable<IMapEntity> entities) in results) {
                 callback(xblock, entities);
             }
         }
 
-        public void ParseMap(string xblock, Action<IEnumerable<EntityData>> callback) {
+        public void ParseMap(string xblock, Action<IEnumerable<IMapEntity>> callback) {
             PackFileEntry file = reader.Files
                 .FirstOrDefault(file => file.Name.Equals($"xblock/{xblock}.xblock"));
             if (file == default) {
@@ -59,7 +61,7 @@ namespace Maple2.File.Parser.MapXBlock {
             callback(ParseEntities(file));
         }
 
-        private IEnumerable<EntityData> ParseEntities(PackFileEntry file) {
+        private IEnumerable<IMapEntity> ParseEntities(PackFileEntry file) {
             if (serializer.Deserialize(reader.GetXmlReader(file)) is GameXBlock block) {
                 var unknownModels = new HashSet<string>();
                 return block.entitySet.entity
@@ -85,30 +87,36 @@ namespace Maple2.File.Parser.MapXBlock {
                     .Where(entity => entity != null);
             }
 
-            return Array.Empty<EntityData>();
+            return Array.Empty<IMapEntity>();
         }
+        
+        private IMapEntity GetInstance(Entity entity) {
+            Type entityType = lookup.GetClass(entity.modelName);
 
-        public static long TotalCallTime = 0;
-        private EntityData GetInstance(Entity entity) {
-            var setPropertyValue = new Dictionary<string, object>();
-            FlatType baseType = index.GetType(entity.modelName);
-            foreach (FlatProperty property in baseType.GetProperties()) {
-                setPropertyValue[property.Name] = property.Value;
+            var mapEntity = (IMapEntity) Activator.CreateInstance(entityType);
+            if (mapEntity == null) {
+                throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
             }
             
+            // Assigned inherited values
+            FlatType baseType = index.GetType(entity.modelName);
+            foreach (FlatProperty property in baseType.GetProperties()) {
+                SetValue(entityType, mapEntity, property.Name, property.Value);
+            }
+            
+            // Assign entity specific values
             foreach (Entity.Property property in entity.property) {
                 // Not setting any values
                 if (property.set.Count == 0) {
                     continue;
                 }
-
-                FlatType modelType = index.GetType(entity.modelName);
-                FlatProperty modelProperty = modelType.GetProperty(property.name);
+                
+                FlatProperty modelProperty = baseType.GetProperty(property.name);
                 if (modelProperty == null) {
-                    Console.WriteLine($"Ignored unknown property {property.name} on {modelType.Name}");
+                    OnError?.Invoke($"Ignoring unknown property {property.name}");
                     continue;
                 }
-
+                
                 object value;
                 if (modelProperty.Type.StartsWith("Assoc")) {
                     value = FlatProperty.ParseAssocType(modelProperty.Type,
@@ -117,35 +125,23 @@ namespace Maple2.File.Parser.MapXBlock {
                     value = FlatProperty.ParseType(modelProperty.Type, property.set[0].value);
                 }
 
-                setPropertyValue[property.name] = value;
+                SetValue(entityType, mapEntity, property.name, value);
             }
 
-            setPropertyValue["EntityId"] = entity.id;
-            setPropertyValue["EntityName"] = entity.name;
+            SetValue(entityType, mapEntity, "EntityId", entity.id);
+            SetValue(entityType, mapEntity, "EntityName", entity.name);
 
-            Stopwatch s = new Stopwatch();
-            s.Start();
-            Type entityType = lookup.GetClass(entity.modelName);
-            s.Stop();
-            TotalCallTime += s.ElapsedMilliseconds;
-            var instance = new Lazy<IMapEntity>(() => {
-                var mapEntity = (IMapEntity) Activator.CreateInstance(entityType);
-                if (mapEntity == null) {
-                    throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
-                }
-                foreach ((string name, object value) in setPropertyValue) {
-                    MethodInfo setter = entityType.GetMethod($"set_{name}");
-                    if (setter == null) {
-                        throw new UnknownPropertyException(entityType, $"set_{name}");
-                    }
+            return mapEntity;
+        }
 
-                    setter.Invoke(mapEntity, new[] {value});
-                }
-
-                return mapEntity;
-            });
-
-            return new EntityData(entityType, instance);
+        private void SetValue(Type type, IMapEntity entity, string name, object value) {
+            MethodInfo setter = type.GetMethod($"set_{name}");
+            if (setter == null) {
+                OnError?.Invoke($"Ignoring unknown setter {name} on {type.Name}");
+                return;
+            }
+            
+            setter.Invoke(entity, new[] {value});
         }
     }
 }

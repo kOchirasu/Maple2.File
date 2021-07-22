@@ -10,7 +10,7 @@
         <RepositoryUrl>https://github.com/kOchirasu/Maple2.File</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
         <PackageTags>MapleStory2, File, Parser, m2d, xml</PackageTags>
-        <PackageVersion>1.0.2</PackageVersion>
+        <PackageVersion>1.0.3</PackageVersion>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
@@ -18,13 +18,6 @@
       <ProjectReference Include="..\Maple2.File.Flat\Maple2.File.Flat.csproj" PrivateAssets="all" />
       <ProjectReference Include="..\Maple2.File.Generator\Maple2.File.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
       <ProjectReference Include="..\Maple2.File.IO\Maple2.File.IO.csproj" PrivateAssets="all" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="0.1.7">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
     </ItemGroup>
 
 </Project>

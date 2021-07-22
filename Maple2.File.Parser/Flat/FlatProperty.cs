@@ -35,11 +35,11 @@ namespace Maple2.File.Parser.Flat {
                     float[] point2 = FloatList(value);
                     return new Vector2(point2[0], point2[1]);
                 case "Color":
-                    int[] color = FloatList(value).Select(argb => (int) (255 * argb)).ToArray();
-                    return Color.FromArgb(color[0], color[1], color[2]);
+                    float[] color = FloatList(value);
+                    return Color.FromArgb((int) (255 * color[0]), (int) (255 * color[1]), (int) (255 * color[2]));
                 case "ColorA":
-                    int[] colorA = FloatList(value).Select(argb => (int) (255 * argb)).ToArray();
-                    return Color.FromArgb(colorA[3], colorA[0], colorA[1], colorA[2]);
+                    float[] colorA = FloatList(value);
+                    return Color.FromArgb((int) (255 * colorA[3]), (int) (255 * colorA[0]), (int) (255 * colorA[1]), (int) (255 * colorA[2]));
                 case "String":
                 case "EntityRef": // GUID
                 case "AssetID": // urn:llid:GUID
@@ -88,7 +88,7 @@ namespace Maple2.File.Parser.Flat {
         }
 
         private static float[] FloatList(string value) {
-            string[] split = value.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries);
+            string[] split = value.Split(", ");
             float[] result = new float[split.Length];
             for (int i = 0; i < split.Length; i++) {
                 result[i] = float.Parse(split[i]);
@@ -149,8 +149,11 @@ namespace Maple2.File.Parser.Flat {
             if (Equals(Value, other)) {
                 return true;
             }
-            if (Value is IDictionary dict1 && other is IDictionary dict2 && dict1.Count == dict2.Count) {
-                return true;
+
+            if (Type.StartsWith("Assoc")) {
+                if (Value is IDictionary dict1 && other is IDictionary dict2 && dict1.Count == dict2.Count) {
+                    return true;
+                }
             }
             return false;
         }

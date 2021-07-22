@@ -7,20 +7,26 @@ using Maple2.File.Parser.Flat;
 
 namespace Maple2.File.Parser.MapXBlock {
     public abstract class ClassLookup {
+        private readonly Dictionary<string, Type> mixinTypeCache = new Dictionary<string, Type>();
         protected readonly FlatTypeIndex index;
-        
-        public ClassLookup(FlatTypeIndex index) {
+
+        protected ClassLookup(FlatTypeIndex index) {
             this.index = index;
         }
         
         public Type GetMixinType(string modelName) {
+            if (mixinTypeCache.TryGetValue(modelName, out Type mixinType)) {
+                return mixinType;
+            }
+            
             FlatType entityType = index.GetType(modelName);
             if (entityType == null) {
                 throw new UnknownModelTypeException(modelName);
             }
             // First try to directly lookup type as a library type
-            Type mixinType = GetType($"I{modelName}");
+            mixinType = GetType($"I{modelName}");
             if (mixinType != null) {
+                mixinTypeCache[modelName] = mixinType;
                 return mixinType;
             }
 
@@ -35,6 +41,7 @@ namespace Maple2.File.Parser.MapXBlock {
                 throw new UnknownModelTypeException($"I{requiredMixin.Name}");
             }
 
+            mixinTypeCache[modelName] = mixinType;
             return mixinType;
         }
         
