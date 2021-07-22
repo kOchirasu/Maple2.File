@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Maple2.File.Parser.Flat;
@@ -25,6 +24,31 @@ namespace Maple2.File.Parser.MapXBlock {
 
             moduleBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndCollect)
                 .DefineDynamicModule(assemblyName.Name);
+            
+            // Manual index overrides
+            var proxyNifAsset = new FlatProperty {Name = "ProxyNifAsset", Type = "AssetID", Value = ""};
+            var interval = new FlatProperty {Name = "Interval", Type = "SInt32", Value = 0};
+            var friendly = new FlatProperty {Name = "friendly", Type = "SInt32", Value = 0};
+            var dropID = new FlatProperty {Name = "dropID", Type = "SInt32", Value = 0};
+            var npcList = new FlatProperty {Name = "NpcList", Type = "AssocString", Value = new Dictionary<string, string>()};
+            var spawnPointID = new FlatProperty {Name = "SpawnPointID", Type = "SInt32", Value = 0};
+            var spawnRadius = new FlatProperty {Name = "SpawnRadius", Type = "Float32", Value = 0f};
+            var npcCount = new FlatProperty {Name = "NpcCount", Type = "UInt32", Value = (uint)0};
+            var reactableSequenceName = new FlatProperty {Name = "reactableSequenceName", Type = "String", Value = ""};
+            
+            FlatType ms2CubeProp = index.GetType("MS2CubeProp");
+            ms2CubeProp.Properties.Add(proxyNifAsset.Name, proxyNifAsset);
+            ms2CubeProp.Properties.Add(interval.Name, interval);
+            ms2CubeProp.Properties.Add(friendly.Name, friendly);
+            FlatType eventSpawnPointItem = index.GetType("EventSpawnPointItem");
+            eventSpawnPointItem.Properties.Add(dropID.Name, dropID);
+            FlatType ms2Actor = index.GetType("MS2Actor");
+            ms2Actor.Properties.Add(npcList.Name, npcList);
+            ms2Actor.Properties.Add(spawnPointID.Name, spawnPointID);
+            ms2Actor.Properties.Add(proxyNifAsset.Name, proxyNifAsset);
+            ms2Actor.Properties.Add(spawnRadius.Name, spawnRadius);
+            ms2Actor.Properties.Add(npcCount.Name, npcCount);
+            ms2Actor.Properties.Add(reactableSequenceName.Name, reactableSequenceName);
         }
 
         public override Type GetClass(string modelName) {

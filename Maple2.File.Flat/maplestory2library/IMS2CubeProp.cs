@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 
 namespace Maple2.File.Flat.maplestory2library {
@@ -10,5 +11,12 @@ namespace Maple2.File.Flat.maplestory2library {
         string InstallStackable => "3,4,5";
         bool InstallWall => true;
         string InstallStackableD => "3,4,5";
+        // Manually added
+        [Obsolete("This property should not exist")]
+        string ProxyNifAsset => "";
+        [Obsolete("This property should not exist")]
+        int Interval => 0;
+        [Obsolete("This property should not exist")]
+        int friendly => 0;
     }
 }
