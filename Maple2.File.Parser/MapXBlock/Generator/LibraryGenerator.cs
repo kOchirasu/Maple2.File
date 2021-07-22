@@ -100,13 +100,7 @@ namespace Maple2.File.Parser.MapXBlock.Generator {
                 // Inherited properties don't need to be declared on interface
                 if (inheritedProperties.TryGetValue(property.Name, out object propertyValue)) {
                     if (propertyValue != null) {
-                        if (Equals(propertyValue, property.Value)) {
-                            continue;
-                        }
-
-                        // Since the dictionaries are always empty, just doing count comparison to shortcut
-                        if (propertyValue is IDictionary dict1 && property.Value is IDictionary dict2 &&
-                            dict1.Count == dict2.Count) {
+                        if (property.ValueEquals(propertyValue)) {
                             continue;
                         }
                     }

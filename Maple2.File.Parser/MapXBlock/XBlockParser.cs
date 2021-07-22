@@ -92,7 +92,7 @@ namespace Maple2.File.Parser.MapXBlock {
         private EntityData GetInstance(Entity entity) {
             var setPropertyValue = new Dictionary<string, object>();
             FlatType baseType = index.GetType(entity.modelName);
-            foreach (FlatProperty property in baseType.GetAllProperties()) {
+            foreach (FlatProperty property in baseType.GetProperties()) {
                 setPropertyValue[property.Name] = property.Value;
             }
             

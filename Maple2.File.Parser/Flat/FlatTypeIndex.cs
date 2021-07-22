@@ -116,6 +116,12 @@ namespace Maple2.File.Parser.Flat {
                         };
                     }
 
+                    // Don't add this property if the same value is already inherited
+                    FlatProperty inheritedProperty = type.GetProperty(property.Name);
+                    if (inheritedProperty != null && inheritedProperty.ValueEquals(property.Value)) {
+                        continue;
+                    }
+
                     type.Properties.Add(property.Name, property);
                 }
             }

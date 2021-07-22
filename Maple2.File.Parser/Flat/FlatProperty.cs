@@ -145,6 +145,16 @@ namespace Maple2.File.Parser.Flat {
             return value;
         }
 
+        public bool ValueEquals(object other) {
+            if (Equals(Value, other)) {
+                return true;
+            }
+            if (Value is IDictionary dict1 && other is IDictionary dict2 && dict1.Count == dict2.Count) {
+                return true;
+            }
+            return false;
+        }
+
         private IEnumerable<DictionaryEntry> CastDict(IDictionary dictionary) {
             foreach (DictionaryEntry entry in dictionary) {
                 yield return entry;
@@ -152,7 +162,7 @@ namespace Maple2.File.Parser.Flat {
         }
 
         protected bool Equals(FlatProperty other) {
-            return Name == other.Name && Id == other.Id && Type == other.Type && Equals(Value, other.Value);
+            return Name == other.Name && Id == other.Id && Type == other.Type && ValueEquals(other.Value);
         }
 
         public override bool Equals(object obj) {
