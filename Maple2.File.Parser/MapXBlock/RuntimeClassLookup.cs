@@ -7,79 +7,44 @@ using Maple2.File.Parser.Flat;
 using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.MapXBlock {
-    public class XBlockClassLookup {
+    // RuntimeClassLookup generates the assembly at runtime
+    public class RuntimeClassLookup : ClassLookup {
+        private const string RUNTIME_ASSEMBLY = "Maple2.File.Flat.Runtime";
+        
         private readonly Dictionary<string, Type> cache;
-        private readonly FlatTypeIndex index;
         private readonly ModuleBuilder moduleBuilder;
 
-        private static readonly string[] namespaces = {
-            "beastmodellibrary",
-            "gimodellibrary",
-            "maplestory2library",
-            "physxmodellibrary",
-            "standardmodellibrary",
-            "tool",
-            "triggerslibrary",
-            "presets",
-        };
-
-        public XBlockClassLookup(FlatTypeIndex index) {
+        public RuntimeClassLookup(FlatTypeIndex index) : base(index) {
             cache = new Dictionary<string, Type>();
-            this.index = index;
 
             // Create a dynamic assembly and module.
-            var assemblyName = new AssemblyName("Maple2.File.Flat.Runtime");
+            var assemblyName = new AssemblyName(RUNTIME_ASSEMBLY);
             if (string.IsNullOrEmpty(assemblyName.Name)) {
-                throw new ArgumentException("Maple2.File.Flat.Runtime assembly not defined.");
+                throw new ArgumentException($"{RUNTIME_ASSEMBLY} assembly not defined.");
             }
 
             moduleBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndCollect)
                 .DefineDynamicModule(assemblyName.Name);
         }
 
-        public Type GetMixinType(string modelName) {
-            FlatType entityType = index.GetType(modelName);
-            if (entityType == null) {
-                throw new UnknownModelTypeException(modelName);
-            }
-            // First try to directly lookup type as a library type
-            Type mixinType = GetType($"I{modelName}");
-            if (mixinType != null) {
-                return mixinType;
-            }
-
-            List<FlatType> requiredMixins = entityType.RequiredMixin().ToList();
-            if (requiredMixins.Count != 1) {
-                throw new InvalidOperationException($"Cannot find single mixin for: {entityType}");
-            }
-
-            FlatType requiredMixin = requiredMixins.First();
-            mixinType = GetType($"I{requiredMixin.Name}");
-            if (mixinType == null) {
-                throw new UnknownModelTypeException($"I{requiredMixin.Name}");
-            }
-
-            return mixinType;
-        }
-
-        public Type GetClass(string modelName) {
-            if (cache.TryGetValue(modelName, out Type classType)) {
-                return classType;
-            }
-
+        public override Type GetClass(string modelName) {
             FlatType entityType = index.GetType(modelName);
             if (entityType == null) {
                 throw new UnknownModelTypeException(modelName);
             }
             Type mixinType = GetMixinType(modelName);
+            if (cache.TryGetValue(mixinType.Name, out Type classType)) {
+                return classType;
+            }
+            
             TypeBuilder classBuilder = moduleBuilder.DefineType(
-                modelName,
+                mixinType.Name[1..], // Remove "I" prefix from interface
                 TypeAttributes.Class | TypeAttributes.Public,
                 typeof(object),
                 new[] {mixinType}
             );
 
-            List<(FlatProperty, FieldInfo)> backingFields = new List<(FlatProperty, FieldInfo)>();
+            var backingFields = new List<(FlatProperty, FieldInfo)>();
 
             // Override ModelName to this model's name.
             /*{
@@ -145,7 +110,7 @@ namespace Maple2.File.Parser.MapXBlock {
                 throw new InvalidOperationException($"Failed to generate class for {modelName}.");
             }
 
-            cache.Add(modelName, createdType);
+            cache[mixinType.Name] = createdType;
             return createdType;
         }
 
@@ -252,36 +217,6 @@ namespace Maple2.File.Parser.MapXBlock {
             ilGenerator.Emit(OpCodes.Ldarg_1);
             ilGenerator.Emit(OpCodes.Stfld, backing);
             ilGenerator.Emit(OpCodes.Ret);
-        }
-
-        // GetType that searches in Maple2.File.Flat assembly
-        public static Type GetType(string name) {
-            const string assemblyName = "Maple2.File.Flat";
-            foreach (string @namespace in namespaces) {
-                Type type;
-                if ((type = Type.GetType($"{assemblyName}.{@namespace}.{name}, {assemblyName}")) != null) {
-                    return type;
-                }
-            }
-
-            return null;
-        }
-
-        // GetMethod that also searches in implemented interfaces.
-        private static MethodInfo GetMethod(Type type, string name, BindingFlags flags = BindingFlags.Default) {
-            MethodInfo methodInfo = type.GetMethod(name);
-            if (methodInfo != null) {
-                return methodInfo;
-            }
-
-            foreach (Type @interface in type.GetInterfaces()) {
-                methodInfo = GetMethod(@interface, name, flags);
-                if (methodInfo != null) {
-                    return methodInfo;
-                }
-            }
-
-            return null;
         }
     }
 }

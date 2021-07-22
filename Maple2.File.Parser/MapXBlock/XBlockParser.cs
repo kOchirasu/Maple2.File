@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,7 +14,7 @@ namespace Maple2.File.Parser.MapXBlock {
     public class XBlockParser {
         private readonly M2dReader reader;
         private readonly XmlSerializer serializer;
-        private readonly XBlockClassLookup lookup;
+        private readonly ClassLookup lookup;
         private readonly FlatTypeIndex index;
         private readonly HashSet<Type> includeEntities;
 
@@ -22,7 +23,7 @@ namespace Maple2.File.Parser.MapXBlock {
             this.index = index ?? new FlatTypeIndex(reader);
 
             serializer = new XmlSerializer(typeof(GameXBlock));
-            lookup = new XBlockClassLookup(this.index);
+            lookup = new RuntimeClassLookup(this.index);
             includeEntities = new HashSet<Type>();
         }
 
@@ -35,35 +36,20 @@ namespace Maple2.File.Parser.MapXBlock {
             return true;
         }
 
-        public void Parse(Action<string, IEnumerable<IMapEntity>> callback) {
-            IEnumerable<(string, IEnumerable<IMapEntity>)> results = reader.Files
+        public void Parse(Action<string, IEnumerable<EntityData>> callback) {
+            IEnumerable<(string, IEnumerable<EntityData>)> results = reader.Files
                 .Where(file => file.Name.StartsWith("xblock/"))
                 .Select(file => {
                     string xblock = Path.GetFileNameWithoutExtension(file.Name);
                     return (xblock, ParseEntities(file));
                 });
             
-            foreach ((string xblock, IEnumerable<IMapEntity> entities) in results) {
+            foreach ((string xblock, IEnumerable<EntityData> entities) in results) {
                 callback(xblock, entities);
             }
         }
 
-        public void ParseParallel(Action<string, IEnumerable<IMapEntity>> callback) {
-            IEnumerable<(string, IEnumerable<IMapEntity>)> results = reader.Files
-                .Where(file => file.Name.StartsWith("xblock/"))
-                .AsParallel()
-                .Select(file => {
-                    string xblock = Path.GetFileNameWithoutExtension(file.Name);
-                    return (xblock, ParseEntities(file));
-                })
-                .AsSequential();
-            
-            foreach ((string xblock, IEnumerable<IMapEntity> entities) in results) {
-                callback(xblock, entities);
-            }
-        }
-
-        public void ParseMap(string xblock, Action<IEnumerable<IMapEntity>> callback) {
+        public void ParseMap(string xblock, Action<IEnumerable<EntityData>> callback) {
             PackFileEntry file = reader.Files
                 .FirstOrDefault(file => file.Name.Equals($"xblock/{xblock}.xblock"));
             if (file == default) {
@@ -73,7 +59,7 @@ namespace Maple2.File.Parser.MapXBlock {
             callback(ParseEntities(file));
         }
 
-        private IEnumerable<IMapEntity> ParseEntities(PackFileEntry file) {
+        private IEnumerable<EntityData> ParseEntities(PackFileEntry file) {
             if (serializer.Deserialize(reader.GetXmlReader(file)) is GameXBlock block) {
                 var unknownModels = new HashSet<string>();
                 return block.entitySet.entity
@@ -87,7 +73,7 @@ namespace Maple2.File.Parser.MapXBlock {
                     })
                     .Select(entity => {
                         try {
-                            return CreateInstance(entity);
+                            return GetInstance(entity);
                         } catch (UnknownModelTypeException ex) {
                             // Reduce noise from this exception to once per file
                             if (unknownModels.Add(entity.modelName)) {
@@ -99,18 +85,18 @@ namespace Maple2.File.Parser.MapXBlock {
                     .Where(entity => entity != null);
             }
 
-            return Array.Empty<IMapEntity>();
+            return Array.Empty<EntityData>();
         }
 
-        private IMapEntity CreateInstance(Entity entity) {
-            Type entityType = lookup.GetClass(entity.modelName);
-            var mapEntity = (IMapEntity) Activator.CreateInstance(entityType);
-            if (mapEntity == null) {
-                throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
+        public static long TotalCallTime = 0;
+        private EntityData GetInstance(Entity entity) {
+            var setPropertyValue = new Dictionary<string, object>();
+            FlatType baseType = index.GetType(entity.modelName);
+            foreach (FlatProperty property in baseType.GetAllProperties()) {
+                setPropertyValue[property.Name] = property.Value;
             }
-
-            var setPropertyValue = new List<(string, object)>();
-            foreach (var property in entity.property) {
+            
+            foreach (Entity.Property property in entity.property) {
                 // Not setting any values
                 if (property.set.Count == 0) {
                     continue;
@@ -131,22 +117,35 @@ namespace Maple2.File.Parser.MapXBlock {
                     value = FlatProperty.ParseType(modelProperty.Type, property.set[0].value);
                 }
 
-                setPropertyValue.Add((property.name, value));
+                setPropertyValue[property.name] = value;
             }
 
-            setPropertyValue.Add(("EntityId", entity.id));
-            setPropertyValue.Add(("EntityName", entity.name));
+            setPropertyValue["EntityId"] = entity.id;
+            setPropertyValue["EntityName"] = entity.name;
 
-            foreach ((string name, object value) in setPropertyValue) {
-                MethodInfo setter = entityType.GetMethod($"set_{name}");
-                if (setter == null) {
-                    throw new UnknownPropertyException(entityType, $"set_{name}");
+            Stopwatch s = new Stopwatch();
+            s.Start();
+            Type entityType = lookup.GetClass(entity.modelName);
+            s.Stop();
+            TotalCallTime += s.ElapsedMilliseconds;
+            var instance = new Lazy<IMapEntity>(() => {
+                var mapEntity = (IMapEntity) Activator.CreateInstance(entityType);
+                if (mapEntity == null) {
+                    throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
+                }
+                foreach ((string name, object value) in setPropertyValue) {
+                    MethodInfo setter = entityType.GetMethod($"set_{name}");
+                    if (setter == null) {
+                        throw new UnknownPropertyException(entityType, $"set_{name}");
+                    }
+
+                    setter.Invoke(mapEntity, new[] {value});
                 }
 
-                setter.Invoke(mapEntity, new[] {value});
-            }
+                return mapEntity;
+            });
 
-            return mapEntity;
+            return new EntityData(entityType, instance);
         }
     }
 }

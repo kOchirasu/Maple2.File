@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Maple2.File.Parser.Flat;
 
-namespace Maple2.File.Parser.MapXBlock {
+namespace Maple2.File.Parser.MapXBlock.Generator {
     public class LibraryGenerator {
         private readonly FlatTypeIndex index;
 
@@ -61,7 +61,7 @@ namespace Maple2.File.Parser.MapXBlock {
                     }
 
                     FlatType requiredMixin = requiredMixins.First();
-                    Type mixinType = XBlockClassLookup.GetType($"I{requiredMixin.Name}");
+                    Type mixinType = ClassLookup.GetType($"I{requiredMixin.Name}");
                     if (mixinType == null) {
                         Console.WriteLine($"Invalid type {type.Name} is not derived from library. Expected: {requiredMixin.Name}");
                     }
@@ -115,40 +115,6 @@ namespace Maple2.File.Parser.MapXBlock {
                 string typeStr = NormalizeType(property.Value.GetType().ToString());
                 string typeValue = property.ValueCodeString();
                 builder.AppendLine($"\t\t{typeStr} {property.Name} => {typeValue};");
-            }
-
-            builder.AppendLine("\t}"); // class
-            builder.AppendLine("}"); // namespace
-
-            return builder.ToString();
-        }
-
-        public string GenerateClass(string @namespace, FlatType type) {
-            List<string> mixinTypes = type.RequiredMixin()
-                .Select(mixin => mixin.Name)
-                .ToList();
-
-            var builder = new StringBuilder();
-
-            builder.AppendLine($"namespace Maple2.File.Flat.{@namespace} {{");
-            List<string> mixinInterfaces = mixinTypes.Select(mixin => $"I{mixin}").ToList();
-            if (mixinInterfaces.Count > 0) {
-                builder.AppendLine($"\tpublic class {type.Name} : {string.Join(",", mixinInterfaces)} {{");
-            } else {
-                builder.AppendLine($"\tpublic class {type.Name} : IMapEntity {{");
-            }
-
-            builder.AppendLine($"\t\tstring ModelName => \"{type.Name}\";");
-            foreach (FlatProperty property in type.GetProperties()) {
-                string typeStr = NormalizeType(property.Value.GetType().ToString());
-                string typeValue = property.ValueCodeString();
-                builder.AppendLine($"\t\tpublic {typeStr} {property.Name} {{ get; set; }} = {typeValue};");
-            }
-
-            foreach (FlatProperty property in type.GetInheritedProperties()) {
-                string typeStr = NormalizeType(property.Value.GetType().ToString());
-                string typeValue = property.ValueCodeString();
-                builder.AppendLine($"\t\t{typeStr} {property.Name} {{ get; set; }} = {typeValue};");
             }
 
             builder.AppendLine("\t}"); // class
