@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using Maple2.File.IO;
@@ -126,6 +127,79 @@ namespace Maple2.File.Parser.Flat {
             }
 
             return types;
+        }
+
+        public void CliExplorer() {
+            while (true) {
+                string[] input = (Console.ReadLine() ?? string.Empty).Split(" ", 2);
+
+                switch (input[0]) {
+                    case "quit":
+                        return;
+                    case "type":
+                    case "prop":
+                    case "properties":
+                        if (input.Length < 2) {
+                            Console.WriteLine("Invalid input.");
+                        } else {
+                            string name = input[1];
+                            FlatType type = GetType(name);
+                            if (type == null) {
+                                Console.WriteLine($"Invalid type: {name}");
+                                continue;
+                            }
+
+                            Console.WriteLine(type);
+                            foreach (FlatProperty prop in type.GetProperties()) {
+                                Console.WriteLine($"{prop.Type,22}{prop.Name,30}: {prop.ValueString()}");
+                            }
+
+                            Console.WriteLine("----------------------Inherited------------------------");
+                            foreach (FlatProperty prop in type.GetInheritedProperties()) {
+                                Console.WriteLine($"{prop.Type,22}{prop.Name,30}: {prop.ValueString()}");
+                            }
+                        }
+                        break;
+                    case "sub":
+                    case "children":
+                        if (input.Length < 2) {
+                            Console.WriteLine("Invalid input.");
+                        } else {
+                            string name = input[1];
+                            FlatType type = GetType(name);
+                            if (type == null) {
+                                Console.WriteLine($"Invalid type: {name}");
+                                continue;
+                            }
+
+                            Console.WriteLine(type);
+                            foreach (FlatType subType in GetSubTypes(name)) {
+                                Console.WriteLine($"{subType.Name,30} : {string.Join(',', subType.Mixin.Select(sub => sub.Name))}");
+                            }
+                        }
+                        break;
+                    case "ls":
+                        try {
+                            bool recursive = input.Contains("-r");
+                            string path = input.FirstOrDefault(arg => arg != "ls" && arg != "-r");
+                            Console.WriteLine(string.Join(", ", Hierarchy.List(path, recursive).Select(type => type.Name)));
+                        } catch (DirectoryNotFoundException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case "lsdir":
+                        try {
+                            string path = input.FirstOrDefault(arg => arg != "lsdir");
+                            Console.WriteLine(string.Join(", ", Hierarchy.ListDirectories(path)));
+                        } catch (DirectoryNotFoundException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    default:
+                        Console.WriteLine($"Unknown command: {string.Join(' ', input)}");
+                        break;
+                }
+            }
         }
 
         private class FlatTypeNode {

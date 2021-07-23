@@ -79,7 +79,7 @@ namespace Maple2.File.Parser.MapXBlock {
                         } catch (UnknownModelTypeException ex) {
                             // Reduce noise from this exception to once per file
                             if (unknownModels.Add(entity.modelName)) {
-                                Console.WriteLine(ex);
+                                OnError?.Invoke(ex.Message);
                             }
                             return null;
                         }
