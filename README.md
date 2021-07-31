@@ -15,12 +15,13 @@ var results = new Dictionary<string, MapEntityMetadata>();
 parser.Parse((xblock, entities) => {
     var metadata = new MapEntityMetadata();
     foreach (IMapEntity entity in entities) {
-        if (entity is ISpawnPointPC spawnPoint) {
-            ...
-        } else if (entity is ISpawnPointNPC npcSpawnPoint) {
-            ...
-        } else {
-            ...
+        switch (entity) {
+            case ISpawnPointPC spawnPoint:
+                ...
+            case ISpawnPointNPC npcSpawnPoint:
+                ...
+            default:
+                ...
         }
     }
     results[xblock] = metadata;
