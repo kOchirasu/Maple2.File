@@ -61,7 +61,7 @@ namespace Maple2.File.Parser.MapXBlock {
             callback(ParseEntities(file));
         }
 
-        public static void CheckParseOrder(ICollection<Type> types) {
+        public static IEnumerable<string> CheckParseOrder(ICollection<Type> types) {
             // Validate input types are all IMapEntity.
             foreach (Type parseType in types) {
                 if (!typeof(IMapEntity).IsAssignableFrom(parseType)) {
@@ -78,7 +78,7 @@ namespace Maple2.File.Parser.MapXBlock {
                 }
 
                 if (assignable.Count > 1) {
-                    Console.WriteLine($"Warning: {entityType.Name} is captured by {string.Join(", ", assignable)}");
+                    yield return $"Warning: {entityType.Name} is captured by {string.Join(", ", assignable)}";
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace Maple2.File.Parser.MapXBlock {
 
             return Array.Empty<IMapEntity>();
         }
-        
+
         private IMapEntity GetInstance(Entity entity) {
             Type entityType = lookup.GetClass(entity.modelName);
 
@@ -119,26 +119,26 @@ namespace Maple2.File.Parser.MapXBlock {
             if (mapEntity == null) {
                 throw new InvalidOperationException($"Unable to create instance of: {entity.modelName}");
             }
-            
+
             // Assigned inherited values
             FlatType baseType = index.GetType(entity.modelName);
             foreach (FlatProperty property in baseType.GetProperties()) {
                 SetValue(entityType, mapEntity, property.Name, property.Value);
             }
-            
+
             // Assign entity specific values
             foreach (Entity.Property property in entity.property) {
                 // Not setting any values
                 if (property.set.Count == 0) {
                     continue;
                 }
-                
+
                 FlatProperty modelProperty = baseType.GetProperty(property.name);
                 if (modelProperty == null) {
                     OnError?.Invoke($"Ignoring unknown property {property.name}");
                     continue;
                 }
-                
+
                 object value;
                 if (modelProperty.Type.StartsWith("Assoc")) {
                     value = FlatProperty.ParseAssocType(modelProperty.Type,
@@ -158,13 +158,13 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         private void SetValue(Type type, IMapEntity entity, string name, object value) {
-            PropertyInfo property = lookup.GetProperty(type, name);
-            if (property == null) {
-                OnError?.Invoke($"Ignoring unknown property {name} on {type.Name}");
+            FieldInfo field = lookup.GetField(type, name);
+            if (field == null) {
+                OnError?.Invoke($"Ignoring unknown field {name} on {type.Name}");
                 return;
             }
             
-            property.SetValue(entity, value);
+            field.SetValue(entity, value);
         }
     }
 }

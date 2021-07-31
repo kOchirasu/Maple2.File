@@ -12,8 +12,8 @@ namespace Maple2.File.Parser.MapXBlock {
 
         private readonly Dictionary<(string, string), MethodInfo> methodCache =
             new Dictionary<(string, string), MethodInfo>();
-        private readonly Dictionary<(string, string), PropertyInfo> propertyCache =
-            new Dictionary<(string, string), PropertyInfo>();
+        private readonly Dictionary<(string, string), FieldInfo> fieldCache =
+            new Dictionary<(string, string), FieldInfo>();
         private readonly Dictionary<string, Type> mixinTypeCache = new Dictionary<string, Type>();
         protected readonly FlatTypeIndex index;
 
@@ -75,14 +75,17 @@ namespace Maple2.File.Parser.MapXBlock {
 
         public MethodInfo GetMethod(Type type, string name) => methodCache.GetValueOrDefault((type.Name, name));
 
-        public PropertyInfo GetProperty(Type type, string name) => propertyCache.GetValueOrDefault((type.Name, name));
+        public FieldInfo GetField(Type type, string name) => fieldCache.GetValueOrDefault((type.Name, name));
 
         protected void IndexType(Type type) {
             foreach (MethodInfo method in type.GetMethods()) {
+                if (!method.Name.StartsWith("get_")) {
+                    continue;
+                }
                 methodCache[(type.Name, method.Name)] = method;
             }
-            foreach (PropertyInfo property in type.GetProperties()) {
-                propertyCache[(type.Name, property.Name[1..])] = property;
+            foreach (FieldInfo field in type.GetFields()) {
+                fieldCache[(type.Name, field.Name)] = field;
             }
         }
 

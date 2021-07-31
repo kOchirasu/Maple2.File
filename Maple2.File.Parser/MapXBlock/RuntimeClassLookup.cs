@@ -131,11 +131,10 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         private FieldInfo CreateBacking(TypeBuilder classBuilder, FlatProperty property) {
-            string fieldName = $"_{property.Name}";
             FieldBuilder fieldBuilder = classBuilder.DefineField(
-                fieldName,
+                property.Name,
                 property.Value.GetType(),
-                FieldAttributes.Private
+                FieldAttributes.Public
             );
             if (fieldBuilder == null) {
                 throw new InvalidOperationException($"{property.Name} could not create FieldBuilder.");
