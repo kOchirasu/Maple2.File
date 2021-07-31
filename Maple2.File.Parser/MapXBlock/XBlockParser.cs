@@ -61,6 +61,28 @@ namespace Maple2.File.Parser.MapXBlock {
             callback(ParseEntities(file));
         }
 
+        public static void CheckParseOrder(ICollection<Type> types) {
+            // Validate input types are all IMapEntity.
+            foreach (Type parseType in types) {
+                if (!typeof(IMapEntity).IsAssignableFrom(parseType)) {
+                    throw new ArgumentException($"Type {parseType.Name} is not IMapEntity");
+                }
+            }
+            
+            foreach (Type entityType in Assembly.GetAssembly(typeof(IMapEntity)).GetTypes()) {
+                var assignable = new List<string>();
+                foreach (Type parseType in types) {
+                    if (parseType.IsAssignableFrom(entityType)) {
+                        assignable.Add(parseType.Name);
+                    }
+                }
+
+                if (assignable.Count > 1) {
+                    Console.WriteLine($"Warning: {entityType.Name} is captured by {string.Join(", ", assignable)}");
+                }
+            }
+        }
+
         private IEnumerable<IMapEntity> ParseEntities(PackFileEntry file) {
             if (serializer.Deserialize(reader.GetXmlReader(file)) is GameXBlock block) {
                 var unknownModels = new HashSet<string>();
