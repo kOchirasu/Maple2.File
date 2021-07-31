@@ -1,14 +1,26 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Maple2.File.Flat;
 using Maple2.File.Parser.Flat;
 
 namespace Maple2.File.Parser.MapXBlock {
     public abstract class ClassLookup {
+        private static readonly Dictionary<string, Type> typeIndex = new Dictionary<string, Type>();
+        private static readonly ConcurrentDictionary<string, MethodInfo> MethodCache =
+            new ConcurrentDictionary<string, MethodInfo>();
+
         private readonly Dictionary<string, Type> mixinTypeCache = new Dictionary<string, Type>();
         protected readonly FlatTypeIndex index;
+
+        static ClassLookup() {
+            foreach (Type type in Assembly.GetAssembly(typeof(IMapEntity)).GetTypes()) {
+                typeIndex[type.Name] = type;
+            }
+        }
 
         protected ClassLookup(FlatTypeIndex index) {
             this.index = index;
@@ -47,43 +59,15 @@ namespace Maple2.File.Parser.MapXBlock {
         
         public abstract Type GetClass(string modelName);
         
-        private static readonly string[] Namespaces = {
-            "beastmodellibrary",
-            "gimodellibrary",
-            "maplestory2library",
-            "physxmodellibrary",
-            "standardmodellibrary",
-            "tool",
-            "triggerslibrary",
-            "presets",
-        };
-        
-        // GetType that searches in Maple2.File.Flat assembly
-        private static readonly Dictionary<string, Type> TypeCache = new Dictionary<string, Type>();
-        public static Type GetType(string name) {
-            if (TypeCache.TryGetValue(name, out Type type)) {
-                return type;
-            }
-            
-            const string assemblyName = "Maple2.File.Flat";
-            foreach (string @namespace in Namespaces) {
-                if ((type = Type.GetType($"{assemblyName}.{@namespace}.{name}, {assemblyName}")) != null) {
-                    TypeCache[name] = type;
-                    return type;
-                }
-            }
-
-            TypeCache[name] = null;
-            return null;
-        }
+        public static Type GetType(string name) => typeIndex.GetValueOrDefault(name);
 
         // GetMethod that also searches in implemented interfaces.
-        private static readonly Dictionary<string, MethodInfo> MethodCache = new Dictionary<string, MethodInfo>();
-        public static MethodInfo GetMethod(Type type, string name) {
-            string key = type.FullName + name;
+        protected static MethodInfo GetMethod(Type type, string name) {
+            string key = $"{type.Name}.{name}";
             if (MethodCache.TryGetValue(key, out MethodInfo methodInfo)) {
                 return methodInfo;
             }
+
             methodInfo = type.GetMethod(name);
             if (methodInfo != null) {
                 MethodCache[key] = methodInfo;

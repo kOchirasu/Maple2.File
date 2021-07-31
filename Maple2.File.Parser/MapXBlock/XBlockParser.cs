@@ -150,6 +150,7 @@ namespace Maple2.File.Parser.MapXBlock {
                 SetValue(entityType, mapEntity, property.name, value);
             }
 
+            SetValue(entityType, mapEntity, "ModelName", entity.modelName);
             SetValue(entityType, mapEntity, "EntityId", entity.id);
             SetValue(entityType, mapEntity, "EntityName", entity.name);
 
