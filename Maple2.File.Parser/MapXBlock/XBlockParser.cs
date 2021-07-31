@@ -158,13 +158,13 @@ namespace Maple2.File.Parser.MapXBlock {
         }
 
         private void SetValue(Type type, IMapEntity entity, string name, object value) {
-            MethodInfo setter = type.GetMethod($"set_{name}");
-            if (setter == null) {
-                OnError?.Invoke($"Ignoring unknown setter {name} on {type.Name}");
+            PropertyInfo property = lookup.GetProperty(type, name);
+            if (property == null) {
+                OnError?.Invoke($"Ignoring unknown property {name} on {type.Name}");
                 return;
             }
             
-            setter.Invoke(entity, new[] {value});
+            property.SetValue(entity, value);
         }
     }
 }

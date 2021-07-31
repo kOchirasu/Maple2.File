@@ -82,7 +82,6 @@ namespace Maple2.File.Parser.MapXBlock {
                 };
                 FieldInfo backing = CreateBacking(classBuilder, property);
                 OverrideGetter(classBuilder, backing, mixinType, property);
-                CreateSetter(classBuilder, backing, property);
                 backingFields.Add((property, backing));
             }
 
@@ -96,7 +95,6 @@ namespace Maple2.File.Parser.MapXBlock {
 
                 FieldInfo backing = CreateBacking(classBuilder, property);
                 OverrideGetter(classBuilder, backing, mixinType, property);
-                CreateSetter(classBuilder, backing, property);
                 backingFields.Add((property, backing));
             }
 
@@ -107,11 +105,12 @@ namespace Maple2.File.Parser.MapXBlock {
                 throw new InvalidOperationException($"Failed to generate class for {modelName}.");
             }
 
+            IndexType(createdType);
             cache[mixinType.Name] = createdType;
             return createdType;
         }
 
-        private void CreateConstructor(TypeBuilder classBuilder, IEnumerable<(FlatProperty, FieldInfo)> fields) {
+        private ConstructorInfo CreateConstructor(TypeBuilder classBuilder, IEnumerable<(FlatProperty, FieldInfo)> fields) {
             ConstructorBuilder ctorBuilder = classBuilder.DefineConstructor(MethodAttributes.Public,
                 CallingConventions.Standard, Type.EmptyTypes);
             ILGenerator ilGenerator = ctorBuilder.GetILGenerator();
@@ -126,8 +125,9 @@ namespace Maple2.File.Parser.MapXBlock {
             }
 
             ilGenerator.Emit(OpCodes.Ldarg_0);
-            ilGenerator.Emit(OpCodes.Call, typeof(Object).GetConstructor(Type.EmptyTypes));
+            ilGenerator.Emit(OpCodes.Call, typeof(object).GetConstructor(Type.EmptyTypes));
             ilGenerator.Emit(OpCodes.Ret);
+            return ctorBuilder;
         }
 
         private FieldInfo CreateBacking(TypeBuilder classBuilder, FlatProperty property) {
@@ -144,8 +144,7 @@ namespace Maple2.File.Parser.MapXBlock {
             return fieldBuilder;
         }
 
-        private void OverrideGetter(TypeBuilder classBuilder, FieldInfo backing, Type mixinType,
-            FlatProperty property) {
+        private MethodInfo OverrideGetter(TypeBuilder classBuilder, FieldInfo backing, Type mixinType, FlatProperty property) {
             string methodName = $"get_{property.Name}";
             MethodInfo methodInfo = GetMethod(mixinType, methodName);
             if (methodInfo == null) {
@@ -172,29 +171,7 @@ namespace Maple2.File.Parser.MapXBlock {
             ilGenerator.Emit(OpCodes.Ret);
 
             classBuilder.DefineMethodOverride(methodBuilder, methodInfo);
-        }
-
-        private void CreateSetter(TypeBuilder classBuilder, FieldInfo backing, FlatProperty property) {
-            string methodName = $"set_{property.Name}";
-            MethodBuilder methodBuilder = classBuilder.DefineMethod(
-                methodName,
-                MethodAttributes.Public,
-                typeof(void),
-                new[] {property.Value.GetType()}
-            );
-            if (methodBuilder == null) {
-                throw new InvalidOperationException($"{property.Name} could not create MethodBuilder.");
-            }
-
-            ILGenerator ilGenerator = methodBuilder.GetILGenerator();
-            if (ilGenerator == null) {
-                throw new InvalidOperationException($"{property.Name} could not create ILGenerator.");
-            }
-
-            ilGenerator.Emit(OpCodes.Ldarg_0);
-            ilGenerator.Emit(OpCodes.Ldarg_1);
-            ilGenerator.Emit(OpCodes.Stfld, backing);
-            ilGenerator.Emit(OpCodes.Ret);
+            return methodBuilder;
         }
     }
 }

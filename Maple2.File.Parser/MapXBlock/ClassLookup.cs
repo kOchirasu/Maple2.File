@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,9 +9,11 @@ using Maple2.File.Parser.Flat;
 namespace Maple2.File.Parser.MapXBlock {
     public abstract class ClassLookup {
         private static readonly Dictionary<string, Type> typeIndex = new Dictionary<string, Type>();
-        private static readonly ConcurrentDictionary<string, MethodInfo> MethodCache =
-            new ConcurrentDictionary<string, MethodInfo>();
 
+        private readonly Dictionary<(string, string), MethodInfo> methodCache =
+            new Dictionary<(string, string), MethodInfo>();
+        private readonly Dictionary<(string, string), PropertyInfo> propertyCache =
+            new Dictionary<(string, string), PropertyInfo>();
         private readonly Dictionary<string, Type> mixinTypeCache = new Dictionary<string, Type>();
         protected readonly FlatTypeIndex index;
 
@@ -24,6 +25,17 @@ namespace Maple2.File.Parser.MapXBlock {
 
         protected ClassLookup(FlatTypeIndex index) {
             this.index = index;
+
+            foreach (Type type in Assembly.GetAssembly(typeof(IMapEntity)).GetTypes()) {
+                foreach (MethodInfo method in type.GetMethods()) {
+                    methodCache[(type.Name, method.Name)] = method;
+                }
+                foreach (Type @interface in type.GetInterfaces()) {
+                    foreach (MethodInfo method in @interface.GetMethods()) {
+                        methodCache[(type.Name, method.Name)] = method;
+                    }
+                }
+            }
         }
         
         public Type GetMixinType(string modelName) {
@@ -61,31 +73,19 @@ namespace Maple2.File.Parser.MapXBlock {
         
         public static Type GetType(string name) => typeIndex.GetValueOrDefault(name);
 
-        // GetMethod that also searches in implemented interfaces.
-        protected static MethodInfo GetMethod(Type type, string name) {
-            string key = $"{type.Name}.{name}";
-            if (MethodCache.TryGetValue(key, out MethodInfo methodInfo)) {
-                return methodInfo;
-            }
+        public MethodInfo GetMethod(Type type, string name) => methodCache.GetValueOrDefault((type.Name, name));
 
-            methodInfo = type.GetMethod(name);
-            if (methodInfo != null) {
-                MethodCache[key] = methodInfo;
-                return methodInfo;
-            }
+        public PropertyInfo GetProperty(Type type, string name) => propertyCache.GetValueOrDefault((type.Name, name));
 
-            foreach (Type @interface in type.GetInterfaces()) {
-                methodInfo = GetMethod(@interface, name);
-                if (methodInfo != null) {
-                    MethodCache[key] = methodInfo;
-                    return methodInfo;
-                }
+        protected void IndexType(Type type) {
+            foreach (MethodInfo method in type.GetMethods()) {
+                methodCache[(type.Name, method.Name)] = method;
             }
-
-            MethodCache[key] = null;
-            return null;
+            foreach (PropertyInfo property in type.GetProperties()) {
+                propertyCache[(type.Name, property.Name[1..])] = property;
+            }
         }
-        
+
         public static string NormalizeClass(string className) {
             className = className.Replace("(", "").Replace(")", "").Replace(" ", "");
             if (Regex.IsMatch(className, @"^\d")) {

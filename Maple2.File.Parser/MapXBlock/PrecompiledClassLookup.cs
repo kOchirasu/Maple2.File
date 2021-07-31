@@ -15,6 +15,7 @@ namespace Maple2.File.Parser.MapXBlock {
             cache = new Dictionary<string, Type>();
             foreach (Type type in Assembly.Load("Maple2.File.Flat.Precompiled").GetTypes()) {
                 cache[type.Name] = type;
+                IndexType(type);
             }
         }
 
