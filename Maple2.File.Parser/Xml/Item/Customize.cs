@@ -3,45 +3,45 @@ using System.Numerics;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-namespace Maple2.File.Parser.Xml.Item {
-    public partial class Customize {
-        [XmlAttribute] public int colorPalette;
-        [XmlAttribute] public int color;
-        [XmlAttribute] public int ch0;
-        [XmlAttribute] public int ch1;
-        [XmlAttribute] public int ch2;
-        [XmlAttribute] public int colordetail;
-        [XmlAttribute] public int defaultColorIndex = -1;
+namespace Maple2.File.Parser.Xml.Item; 
 
-        [XmlElement] public Hair HR;
-        [XmlElement] public FaceDecal FD;
-        [XmlElement] public Cap CP;
+public partial class Customize {
+    [XmlAttribute] public int colorPalette;
+    [XmlAttribute] public int color;
+    [XmlAttribute] public int ch0;
+    [XmlAttribute] public int ch1;
+    [XmlAttribute] public int ch2;
+    [XmlAttribute] public int colordetail;
+    [XmlAttribute] public int defaultColorIndex = -1;
 
-        public class Hair {
-            [XmlAttribute] public int scale;
-            [XmlAttribute] public int pony;
-        }
+    [XmlElement] public Hair HR;
+    [XmlElement] public FaceDecal FD;
+    [XmlElement] public Cap CP;
 
-        public class FaceDecal {
-            [XmlAttribute] public int translation;
-            [XmlAttribute] public int rotation;
-            [XmlAttribute] public int scale;
-        }
+    public class Hair {
+        [XmlAttribute] public int scale;
+        [XmlAttribute] public int pony;
+    }
 
-        public class Cap {
-            [XmlAttribute] public int xrotation;
-            [XmlAttribute] public int yrotation;
-            [XmlAttribute] public int zrotation;
-            [XmlAttribute] public int scale;
-            [XmlAttribute] public int attach;
+    public class FaceDecal {
+        [XmlAttribute] public int translation;
+        [XmlAttribute] public int rotation;
+        [XmlAttribute] public int scale;
+    }
 
-            [XmlElement] public List<Transform> transform;
-        }
+    public class Cap {
+        [XmlAttribute] public int xrotation;
+        [XmlAttribute] public int yrotation;
+        [XmlAttribute] public int zrotation;
+        [XmlAttribute] public int scale;
+        [XmlAttribute] public int attach;
 
-        public partial class Transform {
-            [M2dVector3] public Vector3 position;
-            [M2dVector3] public Vector3 rotation;
-            [XmlAttribute] public float scale;
-        }
+        [XmlElement] public List<Transform> transform;
+    }
+
+    public partial class Transform {
+        [M2dVector3] public Vector3 position;
+        [M2dVector3] public Vector3 rotation;
+        [XmlAttribute] public float scale;
     }
 }

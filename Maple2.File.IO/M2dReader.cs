@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using Maple2.File.IO.Crypto;
@@ -39,6 +40,11 @@ namespace Maple2.File.IO {
             return XmlReader.Create(new MemoryStream(CryptoManager.DecryptData(entry.FileHeader, m2dFile)));
         }
 
+        public XmlReader GetXmlReader(string filename) {
+            PackFileEntry entry = Files.First(entry => entry.Name.EndsWith(filename));
+            return GetXmlReader(entry);
+        }
+
         public XmlDocument GetXmlDocument(PackFileEntry entry) {
             var document = new XmlDocument();
             byte[] data = CryptoManager.DecryptData(entry.FileHeader, m2dFile);
@@ -50,6 +56,11 @@ namespace Maple2.File.IO {
             }
 
             return document;
+        }
+
+        public XmlDocument GetXmlDocument(string filename) {
+            PackFileEntry entry = Files.First(entry => entry.Name.EndsWith(filename));
+            return GetXmlDocument(entry);
         }
 
         public byte[] GetBytes(PackFileEntry entry) {

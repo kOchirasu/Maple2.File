@@ -1,16 +1,16 @@
-﻿namespace Maple2.File.Parser.Enum {
-    public enum MasteryType {
-        Unknown = 0,
-        Fishing = 1,
-        Music = 2,
-        Mining = 3,
-        Gathering = 4,
-        Breeding = 5,
-        Farming = 6,
-        Blacksmithing = 7,
-        Engraving = 8,
-        Alchemist = 9,
-        Cooking = 10,
-        PetTaming = 11,
-    }
+﻿namespace Maple2.File.Parser.Enum; 
+
+public enum MasteryType {
+    Unknown = 0,
+    Fishing = 1,
+    Music = 2,
+    Mining = 3,
+    Gathering = 4,
+    Breeding = 5,
+    Farming = 6,
+    Blacksmithing = 7,
+    Engraving = 8,
+    Alchemist = 9,
+    Cooking = 10,
+    PetTaming = 11,
 }

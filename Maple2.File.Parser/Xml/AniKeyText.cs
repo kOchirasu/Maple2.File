@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Maple2.File.Parser.Xml {
-    // ./data/xml/anikeytext.xml
-    [XmlRoot("ms2ani")]
-    public class AnimationData {
-        [XmlElement] public List<KeyFrameMotion> kfm;
-    }
+namespace Maple2.File.Parser.Xml; 
 
-    public class KeyFrameMotion {
-        [XmlAttribute] public string name = string.Empty;
+// ./data/xml/anikeytext.xml
+[XmlRoot("ms2ani")]
+public class AnimationData {
+    [XmlElement] public List<KeyFrameMotion> kfm;
+}
 
-        [XmlElement] public List<FrameSequence> seq;
-    }
+public class KeyFrameMotion {
+    [XmlAttribute] public string name = string.Empty;
 
-    public class FrameSequence {
-        [XmlAttribute] public int id;
-        [XmlAttribute] public string name = string.Empty;
+    [XmlElement] public List<FrameSequence> seq;
+}
 
-        [XmlElement] public List<FrameSequenceKey> key;
-    }
+public class FrameSequence {
+    [XmlAttribute] public int id;
+    [XmlAttribute] public string name = string.Empty;
 
-    public class FrameSequenceKey {
-        [XmlAttribute] public string name = string.Empty;
-        [XmlAttribute] public double time;
-    }
+    [XmlElement] public List<FrameSequenceKey> key;
+}
+
+public class FrameSequenceKey {
+    [XmlAttribute] public string name = string.Empty;
+    [XmlAttribute] public double time;
 }
