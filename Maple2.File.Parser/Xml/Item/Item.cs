@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml.Item;
 
-namespace Maple2.File.Parser.Xml;
+namespace Maple2.File.Parser.Xml.Item;
 
 // ./data/xml/item/%01d/%02d/%08u.xml
 [XmlRoot("ms2")]

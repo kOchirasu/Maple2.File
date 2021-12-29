@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-namespace Maple2.File.Parser.Xml; 
+namespace Maple2.File.Parser.Xml.Table; 
 
 // ./data/xml/table/magicPath.xml
 [XmlRoot("ms2")]

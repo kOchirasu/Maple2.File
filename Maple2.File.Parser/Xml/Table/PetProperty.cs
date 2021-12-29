@@ -6,7 +6,7 @@ using M2dXmlGenerator;
 using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Pet;
 
-namespace Maple2.File.Parser.Xml;
+namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/petproperty.xml
 [XmlRoot("ms2")]

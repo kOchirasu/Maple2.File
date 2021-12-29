@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml.Npc;
 
-namespace Maple2.File.Parser.Xml;
+namespace Maple2.File.Parser.Xml.Npc;
 
 // ./data/xml/npc/%02d/%08d.xml
 [XmlRoot("ms2")]

@@ -2,10 +2,9 @@
 using System.Linq;
 using System.Xml.Serialization;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml.AdditionalEffect;
 using Maple2.File.Parser.Xml.Skill;
 
-namespace Maple2.File.Parser.Xml;
+namespace Maple2.File.Parser.Xml.AdditionalEffect;
 
 // ./data/xml/additionaleffect/%08d.xml
 [XmlRoot("ms2")]

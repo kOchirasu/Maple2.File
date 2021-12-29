@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
-using Maple2.File.Parser.Xml.Skill;
 using Maple2.File.Parser.Xml.Skill.Property;
 
-namespace Maple2.File.Parser.Xml; 
+namespace Maple2.File.Parser.Xml.Skill; 
 
 // ./data/xml/skill/%02d/%08u.xml
 [XmlRoot("ms2")]

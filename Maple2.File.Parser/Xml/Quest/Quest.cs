@@ -5,9 +5,8 @@ using System.Xml.Serialization;
 using M2dXmlGenerator;
 using Maple2.File.Parser.Enum;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml.Quest;
 
-namespace Maple2.File.Parser.Xml;
+namespace Maple2.File.Parser.Xml.Quest;
 
 // ./data/xml/quest/%08d.xml
 [XmlRoot("ms2")]
