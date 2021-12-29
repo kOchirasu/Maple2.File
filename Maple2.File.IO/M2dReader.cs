@@ -36,13 +36,12 @@ namespace Maple2.File.IO {
             Files = stream.FileList;
         }
 
-        public XmlReader GetXmlReader(PackFileEntry entry) {
-            return XmlReader.Create(new MemoryStream(CryptoManager.DecryptData(entry.FileHeader, m2dFile)));
+        public PackFileEntry GetEntry(string filename) {
+            return Files.First(entry => entry.Name.EndsWith(filename));
         }
 
-        public XmlReader GetXmlReader(string filename) {
-            PackFileEntry entry = Files.First(entry => entry.Name.EndsWith(filename));
-            return GetXmlReader(entry);
+        public XmlReader GetXmlReader(PackFileEntry entry) {
+            return XmlReader.Create(new MemoryStream(CryptoManager.DecryptData(entry.FileHeader, m2dFile)));
         }
 
         public XmlDocument GetXmlDocument(PackFileEntry entry) {
@@ -56,11 +55,6 @@ namespace Maple2.File.IO {
             }
 
             return document;
-        }
-
-        public XmlDocument GetXmlDocument(string filename) {
-            PackFileEntry entry = Files.First(entry => entry.Name.EndsWith(filename));
-            return GetXmlDocument(entry);
         }
 
         public byte[] GetBytes(PackFileEntry entry) {

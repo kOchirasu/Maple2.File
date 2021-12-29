@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.Parser.Xml.Table;
@@ -22,9 +23,11 @@ public class Filter {
         var settingSerializer = new XmlSerializer(typeof(FeatureSetting));
         var featureSerializer = new XmlSerializer(typeof(FeatureRoot));
 
-        var featureSetting = (FeatureSetting) settingSerializer.Deserialize(xmlReader.GetXmlReader("feature_setting.xml"));
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("feature_setting.xml"));
+        var featureSetting = (FeatureSetting) settingSerializer.Deserialize(reader);
         Setting setting = featureSetting.setting.First(setting => setting.type == env);
-        var featureRoot = (FeatureRoot) featureSerializer.Deserialize(xmlReader.GetXmlReader("feature.xml"));
+        reader = xmlReader.GetXmlReader(xmlReader.GetEntry("feature.xml"));
+        var featureRoot = (FeatureRoot) featureSerializer.Deserialize(reader);
 
         HashSet<string> features = featureRoot.feature.Where(feature => {
             return locale switch {
@@ -46,6 +49,6 @@ public class Filter {
     }
 
     public bool HasLocale(string checkLocale) {
-        return string.IsNullOrEmpty(checkLocale) || checkLocale == Locale;
+        return string.IsNullOrEmpty(checkLocale) || Locale.Equals(checkLocale, StringComparison.OrdinalIgnoreCase);
     }
 }

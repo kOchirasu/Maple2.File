@@ -15,7 +15,7 @@ public class AchievesData {
     internal AchieveData Filter(Filter filter) {
         return achieves
             .Where(data => filter.FeatureEnabled(data.feature))
-            .FirstOrDefault(data => filter.HasLocale(data.locale));
+            .FirstByLocale(filter, data => data.locale);
     }
 }
 

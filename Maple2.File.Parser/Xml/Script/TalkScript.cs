@@ -1,29 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
+using Maple2.File.Parser.Tools;
 
-namespace Maple2.File.Parser.Xml.Script; 
-
-// ./data/xml/script/npc/%08d.xml
-[XmlRoot("ms2")]
-public class NpcScript {
-    [XmlElement] public List<TalkScript> select;
-    [XmlElement] public TalkScript job;
-    [XmlElement] public List<TalkScript> monologue;
-    [XmlElement] public List<TalkScript> script;
-}
-
-// ./data/xml/script/quest/%s.xml
-[XmlRoot("ms2")]
-public class QuestScriptRoot {
-    [XmlElement] public List<QuestScript> quest;
-}
-
-public class QuestScript {
-    [XmlAttribute] public int id;
-
-    [XmlElement] public List<TalkScript> script;
-}
+namespace Maple2.File.Parser.Xml.Script;
 
 public partial class TalkScript {
     [XmlAttribute] public string feature = string.Empty;
@@ -41,4 +22,10 @@ public partial class TalkScript {
     // Ignored by client.
     //[XmlAttribute] public string buttonSet; // "roulette"
     //[XmlAttribute] public string tag; // "limitFameGrade"
+
+    internal static IEnumerable<TalkScript> Filter(IEnumerable<TalkScript> enumerable, Filter filter) {
+        return enumerable?.Where(talk => filter.FeatureEnabled(talk.feature))
+            .GroupBy(talk => talk.id)
+            .FirstByLocale(filter, talk => talk.locale);
+    }
 }

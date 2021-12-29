@@ -13,7 +13,9 @@ public class AdditionalEffectLevelData {
 
     internal List<AdditionalEffectData> Filter(Filter filter) {
         return level
-            .Where(data => filter.FeatureEnabled(data.feature) && filter.HasLocale(data.locale))
+            .Where(data => filter.FeatureEnabled(data.feature))
+            .GroupBy(data => data.BasicProperty.level)
+            .FirstByLocale(filter, data => data.locale)
             .ToList();
     }
 }

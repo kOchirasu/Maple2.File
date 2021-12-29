@@ -15,9 +15,8 @@ public class QuestEnvironmentData {
 
     internal QuestData Filter(Filter filter) {
         return environment
-            .Where(data => filter.FeatureEnabled(data.feature) && filter.HasLocale(data.locale))
-            .Select(data => data.quest)
-            .FirstOrDefault();
+            .Where(data => filter.FeatureEnabled(data.feature))
+            .FirstByLocale(filter, data => data.locale)?.quest;
     }
 }
 

@@ -14,7 +14,7 @@ public class NpcEnvironmentData {
     internal (NpcData, List<EffectDummy>) Filter(Filter filter) {
         NpcData npcData = environment
             .Where(data => filter.FeatureEnabled(data.feature))
-            .FirstOrDefault(data => filter.HasLocale(data.locale));
+            .FirstByLocale(filter, data => data.locale);
 
         return (npcData, effectdummy);
     }

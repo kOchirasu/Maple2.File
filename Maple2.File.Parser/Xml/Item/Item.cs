@@ -13,7 +13,7 @@ public class ItemDataRoot {
     internal ItemData Filter(Filter filter) {
         return environment
             .Where(data => filter.FeatureEnabled(data.feature))
-            .FirstOrDefault(data => filter.HasLocale(data.locale));
+            .FirstByLocale(filter, data => data.locale);
     }
 }
 

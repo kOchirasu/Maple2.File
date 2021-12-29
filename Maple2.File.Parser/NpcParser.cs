@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml;
 using Maple2.File.Parser.Xml.Npc;
 using Maple2.File.Parser.Xml.String;
 
@@ -27,14 +26,15 @@ public class NpcParser {
     }
 
     public IEnumerable<(int Id, string Name, NpcData Data, List<EffectDummy>)> Parse() {
-        XmlReader reader = xmlReader.GetXmlReader("en/npcname.xml");
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/npcname.xml"));
         var mapping = nameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
         Dictionary<int, string> npcNames = mapping.Filter(filter);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("npc/"))) {
-            var root = npcSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as NpcEnvironmentData;
+            reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeNpc(xmlReader.GetString(entry))));
+            var root = npcSerializer.Deserialize(reader) as NpcEnvironmentData;
             Debug.Assert(root != null);
 
             (NpcData data, List<EffectDummy> effectDummies) = root.Filter(filter);

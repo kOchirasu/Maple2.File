@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml;
 using Maple2.File.Parser.Xml.Item;
 using Maple2.File.Parser.Xml.String;
 
@@ -27,7 +26,7 @@ public class ItemParser {
     }
 
     public IEnumerable<(int Id, string Name, ItemData Data)> Parse() {
-        XmlReader reader = xmlReader.GetXmlReader("en/itemname.xml");
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/itemname.xml"));
         var mapping = nameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 

@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml;
 using Maple2.File.Parser.Xml.Map;
 using Maple2.File.Parser.Xml.String;
 
@@ -27,14 +26,15 @@ public class MapParser {
     }
 
     public IEnumerable<(int Id, string Name, MapData Data)> Parse() {
-        XmlReader reader = xmlReader.GetXmlReader("en/mapname.xml");
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/mapname.xml"));
         var mapping = nameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
         Dictionary<int, string> mapNames = mapping.Filter(filter);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("map/"))) {
-            var root = mapSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as MapEnvironmentData;
+            reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeMap(xmlReader.GetString(entry))));
+            var root = mapSerializer.Deserialize(reader) as MapEnvironmentData;
             Debug.Assert(root != null);
 
             MapData data = root.Filter(filter);

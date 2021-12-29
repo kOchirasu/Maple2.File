@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml;
 using Maple2.File.Parser.Xml.Skill;
 using Maple2.File.Parser.Xml.String;
 

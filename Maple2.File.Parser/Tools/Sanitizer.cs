@@ -47,6 +47,12 @@ public static class Sanitizer {
         return xml;
     }
 
+    public static string SanitizeQuestDescription(string xml) {
+        xml = RemoveEmpty(xml);
+        xml = xml.Replace("count=\"0E98\"", "count=\"0\"");
+        return xml;
+    }
+
     public static string RemoveEmpty(string xml) {
         return Regex.Replace(xml, "\\w+=\"\"", string.Empty);
     }

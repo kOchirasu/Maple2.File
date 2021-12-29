@@ -4,7 +4,6 @@ using System.Linq;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 using Maple2.File.Parser.Tools;
-using Maple2.File.Parser.Xml.Pet;
 
 namespace Maple2.File.Parser.Xml.Table;
 
@@ -15,7 +14,9 @@ public class PetPropertyRoot {
 
     internal List<PetProperty> Filter(Filter filter) {
         return pets
-            .Where(pet => filter.FeatureEnabled(pet.feature) && filter.HasLocale(pet.locale))
+            .Where(pet => filter.FeatureEnabled(pet.feature))
+            .GroupBy(pet => pet.code)
+            .FirstByLocale(filter, pet => pet.locale)
             .ToList();
     }
 }
@@ -64,7 +65,28 @@ public class PetData {
     [XmlAttribute] public int code;
     [XmlAttribute] public int slotNum;
 
-    [XmlElement] public Pet.Skill skill;
+    [XmlElement] public Skill skill;
     [XmlElement] public Distance distance;
     [XmlElement] public Time time;
+
+    public class Skill {
+        [XmlAttribute] public int id;
+        [XmlAttribute] public short level = 1;
+    }
+
+    public class Distance {
+        [XmlAttribute] public float pick;
+        [XmlAttribute] public float warp;
+        [XmlAttribute] public float trace;
+        [XmlAttribute] public float battleTrace;
+    }
+
+    public class Time {
+        [XmlAttribute] public int idle;
+        [XmlAttribute] public int bore;
+        [XmlAttribute] public int summonCast;
+        [XmlAttribute] public int tired;
+        [XmlAttribute] public int skill;
+        [XmlAttribute] public int PetSlotNum;
+    }
 }
