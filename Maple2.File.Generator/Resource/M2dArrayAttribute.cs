@@ -6,7 +6,7 @@ namespace M2dXmlGenerator {
     public class M2dArrayAttribute : XmlIgnoreAttribute {
         public M2dArrayAttribute() { }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public char Delimiter { get; set; } = ',';
     }
 }

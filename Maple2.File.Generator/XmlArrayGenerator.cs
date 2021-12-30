@@ -40,8 +40,7 @@ namespace Maple2.File.Generator {
 
         private string ProcessField(GeneratorExecutionContext context, IFieldSymbol field, ISymbol attribute) {
             if (!(field.Type is IArrayTypeSymbol)) {
-                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type,
-                    field.ToDisplayString()));
+                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type, field.ToDisplayString()));
             }
 
             AttributeData attributeData = field.GetAttribute(attribute);

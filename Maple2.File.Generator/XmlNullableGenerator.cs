@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Maple2.File.Generator.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -41,8 +40,7 @@ namespace Maple2.File.Generator {
 
         private string ProcessField(GeneratorExecutionContext context, IFieldSymbol field, ISymbol attribute) {
             if (!IsNullableValue(field)) {
-                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type,
-                    field.ToDisplayString()));
+                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type, field.ToDisplayString()));
             }
 
             AttributeData attributeData = field.GetAttribute(attribute);

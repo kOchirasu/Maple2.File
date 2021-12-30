@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
+        <IsRoslynComponent>true</IsRoslynComponent>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.10.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -16,6 +17,12 @@
         <EmbeddedResource Include="Resource\M2dNullableAttribute.cs" />
         <Compile Remove="Resource\M2dVector3Attribute.cs" />
         <EmbeddedResource Include="Resource\M2dVector3Attribute.cs" />
+        <Compile Remove="Resource\IFeatureLocale.cs" />
+        <EmbeddedResource Include="Resource\IFeatureLocale.cs" />
+        <Compile Remove="Resource\M2dFeatureLocaleAttribute.cs" />
+        <EmbeddedResource Include="Resource\M2dFeatureLocaleAttribute.cs" />
+        <Compile Remove="Resource\FeatureLocaleFilter.cs" />
+        <EmbeddedResource Include="Resource\FeatureLocaleFilter.cs" />
     </ItemGroup>
 
 </Project>

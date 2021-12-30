@@ -6,6 +6,6 @@ namespace M2dXmlGenerator {
     public class M2dVector3Attribute : XmlIgnoreAttribute {
         public M2dVector3Attribute() { }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

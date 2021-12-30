@@ -41,8 +41,7 @@ namespace Maple2.File.Generator {
 
         private string ProcessField(GeneratorExecutionContext context, IFieldSymbol field, ISymbol attribute) {
             if (field.Type.ToDisplayString() != "System.Numerics.Vector3") {
-                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type,
-                    field.ToDisplayString()));
+                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type, field.ToDisplayString()));
             }
 
             AttributeData attributeData = field.GetAttribute(attribute);

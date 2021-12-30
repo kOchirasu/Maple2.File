@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Maple2.File.Generator.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -25,17 +24,16 @@ namespace Maple2.File.Generator {
             context.RegisterForSyntaxNotifications(() => new AttributeSyntaxReceiver());
         }
 
-        public void Execute(GeneratorExecutionContext context) {
+        public virtual void Execute(GeneratorExecutionContext context) {
             // Register the attribute source
             context.AddSource(attributeName, attributeSource);
 
-            if (!(context.SyntaxReceiver is AttributeSyntaxReceiver receiver)) {
+            if (context.SyntaxReceiver is not AttributeSyntaxReceiver receiver) {
                 return;
             }
 
             Compilation compilation = context.Compilation.AddSource(attributeSource.ToString());
-            INamedTypeSymbol attributeSymbol =
-                compilation.GetTypeByMetadataName($"{attributeNamespace}.{attributeName}");
+            INamedTypeSymbol attributeSymbol = compilation.GetTypeByMetadataName($"{attributeNamespace}.{attributeName}");
 
             IEnumerable<IGrouping<ISymbol, IFieldSymbol>> classGroups = receiver.Fields
                 .Fields(compilation)

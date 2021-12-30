@@ -53,13 +53,27 @@ namespace Maple2.File.Generator.Utils {
             return fields.SelectMany(field => {
                 SemanticModel model = compilation.GetSemanticModel(field.SyntaxTree);
                 return field.Declaration.Variables
-                    .Select(variable => ModelExtensions.GetDeclaredSymbol(model, variable) as IFieldSymbol);
+                    .Select(variable => model.GetDeclaredSymbol(variable))
+                    .Cast<IFieldSymbol>();
             });
         }
 
         public static IEnumerable<IFieldSymbol> WithAttribute(this IEnumerable<IFieldSymbol> symbols,
                 INamedTypeSymbol attributeSymbol) {
             return symbols.Where(symbol => symbol.GetAttribute(attributeSymbol) != null);
+        }
+
+        public static IEnumerable<INamedTypeSymbol> WithInterface(
+            this IEnumerable<ClassDeclarationSyntax> classes, Compilation compilation, INamedTypeSymbol interfaceSymbol) {
+            return classes.Where(@class => @class.BaseList != null)
+                .Where(@class => {
+                    SemanticModel model = compilation.GetSemanticModel(@class.SyntaxTree);
+                    return @class.BaseList.Types
+                        .Select(type => type.Type)
+                        .Select(type => model.GetTypeInfo(type))
+                        .Select(info => info.Type)
+                        .Any(type => SymbolEqualityComparer.Default.Equals(type, interfaceSymbol));
+                }).Select(@class => compilation.GetSemanticModel(@class.SyntaxTree).GetDeclaredSymbol(@class));
         }
 
         public static SourceText LoadSource(this Assembly assembly, string fileName) {
