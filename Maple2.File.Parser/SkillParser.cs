@@ -41,7 +41,6 @@ public class SkillParser {
 
             if (data.FeatureLocale() == null) continue;
 
-            // TODO: SkillData.SkillLevelData feature is not checked.
             int skillId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));
             yield return (skillId, skillNames.GetValueOrDefault(skillId), data);
         }

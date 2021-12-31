@@ -1,10 +1,11 @@
 ﻿using System.Xml.Serialization;
+using M2dXmlGenerator;
 using Maple2.File.Parser.Enum;
 
-namespace Maple2.File.Parser.Xml.Quest; 
+namespace Maple2.File.Parser.Xml.Quest;
 
-public class Notify {
-    [XmlAttribute] public string completeUiEffect = UiEffect.unknown.ToString(); // UiEffect
+public partial class Notify {
+    [M2dEnum] public UiEffect completeUiEffect = UiEffect.unknown;
     [XmlAttribute] public string acceptSoundKey = string.Empty;
     [XmlAttribute] public string completeSoundKey = string.Empty;
 }

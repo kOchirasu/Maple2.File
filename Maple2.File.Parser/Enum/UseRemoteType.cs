@@ -1,4 +1,4 @@
-﻿namespace Maple2.File.Parser.Enum; 
+﻿namespace Maple2.File.Parser.Enum;
 
 public enum UseRemoteType {
     unknown = 0,

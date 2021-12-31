@@ -60,7 +60,7 @@ public partial class Skills {
         [XmlAttribute] public int main;
         [XmlAttribute] public int subJobCode;
         [M2dArray] public int[] sub = Array.Empty<int>();
-        [M2dArray] public int[] uiPosition = Array.Empty<int>(); // TODO: trim space?
+        [M2dArray] public int[] uiPosition = Array.Empty<int>();
         [XmlAttribute] public bool uiHighlight;
         [XmlAttribute] public short maxLevel;
         [XmlAttribute] public int quickSlotPriority;

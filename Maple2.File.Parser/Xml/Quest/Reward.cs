@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 using Maple2.File.Parser.Enum;
 
-namespace Maple2.File.Parser.Xml.Quest; 
+namespace Maple2.File.Parser.Xml.Quest;
 
 // Note acceptReward only uses slotTab & slotIndex + essentialItem & essentialJobItem
-public class Reward {
+public partial class Reward {
     [XmlAttribute] public int money;
     [XmlAttribute] public int exp;
     [XmlAttribute] public int guildFund;
@@ -16,8 +17,8 @@ public class Reward {
     [XmlAttribute] public int useMainFamePoint;
     [XmlAttribute] public int fameLog;
     [XmlAttribute] public int rewardExpExtra;
-    [XmlAttribute] public string relativeExp = RelativeExp.unknown.ToString(); // RelativeExp
-    [XmlAttribute] public string relativeMeso = RelativeMeso.Unknown.ToString(); // RelativeMeso
+    [M2dEnum] public RelativeExp relativeExp = RelativeExp.unknown;
+    [M2dEnum] public RelativeMeso relativeMeso = RelativeMeso.Unknown;
     [XmlAttribute] public long weddingExp;
     [XmlAttribute] public int karma;
     [XmlAttribute] public int lu;

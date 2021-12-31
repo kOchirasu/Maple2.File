@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
+using Maple2.File.Parser.Enum;
 
-namespace Maple2.File.Parser.Xml.Quest; 
+namespace Maple2.File.Parser.Xml.Quest;
 
 public partial class Require {
     [XmlAttribute] public short level;
@@ -16,7 +17,7 @@ public partial class Require {
     [XmlAttribute] public int enterDungeon;
     [XmlAttribute] public string alliance = string.Empty;
     [XmlAttribute] public int fameGrade;
-    [XmlAttribute] public int masteryType;
+    [M2dEnum] public MasteryType masteryType;
     [XmlAttribute] public int masteryGrade;
     [M2dArray] public int[] dungeonBeginner = Array.Empty<int>();
     [XmlAttribute] public int mentor;
@@ -32,6 +33,6 @@ public partial class Require {
     [M2dArray] public int[] selectableQuest = Array.Empty<int>();
     [M2dArray] public int[] unrequireGroup = Array.Empty<int>();
     [XmlAttribute] public int guildLevel;
-    [M2dArray] public int[] dayOfWeek;
+    [M2dArray] public Enum.DayOfWeek[] dayOfWeek; // DayOfWeek?
     [XmlAttribute] public int groupID;
 }

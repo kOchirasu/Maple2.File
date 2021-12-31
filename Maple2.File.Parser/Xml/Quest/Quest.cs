@@ -45,9 +45,7 @@ public partial class QuestData {
 
     public partial class Complete {
         [XmlAttribute] public int npc;
-
-        [XmlAttribute]
-        public string type = NavigationType.unknown.ToString(); // Navigation type: default = unknown(3)
+        [M2dEnum] public NavigationType type = NavigationType.unknown;
 
         [M2dArray] public int[] code = Array.Empty<int>();
         [M2dArray] public int[] map = Array.Empty<int>();

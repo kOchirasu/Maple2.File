@@ -57,31 +57,44 @@ public string _{xmlAttributeName} {{
             source.Append(@"
     }
     set {");
-            AddDeserializer(source, field, delimiter);
+            AddDeserializer(context, source, field, delimiter);
             source.AppendLine(@"
     }
 }");
             return source.ToString();
         }
 
-        private void AddSerializer(StringBuilder source, IFieldSymbol field,
-                char delimiter) {
+        private void AddSerializer(StringBuilder source, IFieldSymbol field, char delimiter) {
             string fieldName = $"this.{field.FieldName()}";
             source.Append($"return {fieldName} != null ? string.Join('{delimiter}', {fieldName}) : null;");
         }
 
-        private void AddDeserializer(StringBuilder source, IFieldSymbol field,
-                char delimiter) {
+        private void AddDeserializer(GeneratorExecutionContext context, StringBuilder source, IFieldSymbol field, char delimiter) {
             var arrayType = field.Type as IArrayTypeSymbol;
 
             string fieldName = $"this.{field.FieldName()}";
             source.AppendLine($@"
 string[] split = value.Split('{delimiter}', StringSplitOptions.RemoveEmptyEntries);
 {fieldName} = new {arrayType.ElementType}[split.Length];
-for (int i = 0; i < split.Length; i++) {{");
-            source.AppendLine(arrayType.ElementType.IsValueType
-                ? $"{fieldName}[i] = {arrayType.ElementType}.Parse(split[i].Trim());"
-                : $"{fieldName}[i] = split[i].Trim();");
+for (int i = 0; i < split.Length; i++) {{
+    var val = split[i].Trim();");
+
+            INamedTypeSymbol enumSymbol = context.Compilation.GetTypeByMetadataName("System.Enum");
+            if (SymbolEqualityComparer.Default.Equals(arrayType.ElementType.BaseType, enumSymbol)) {
+                source.Append($@"
+if (int.TryParse(val, out int n)) {{
+    if (System.Enum.IsDefined(typeof({arrayType.ElementType}), n)) {{
+        {fieldName}[i] = ({arrayType.ElementType}) n;
+    }}
+}} else {{
+    {fieldName}[i] = System.Enum.Parse<{arrayType.ElementType}>(val, true);
+}}
+");
+            } else if (arrayType.ElementType.IsValueType) {
+                source.AppendLine($"{fieldName}[i] = {arrayType.ElementType}.Parse(val);");
+            } else {
+                source.AppendLine($"{fieldName}[i] = val;");
+            }
             source.Append('}');
         }
     }

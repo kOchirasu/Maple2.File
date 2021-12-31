@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
+using Maple2.File.Parser.Enum;
 
-namespace Maple2.File.Parser.Xml.Item; 
+namespace Maple2.File.Parser.Xml.Item;
 
 public partial class Limit {
-    [XmlAttribute] public int genderLimit = 2;
+    [M2dEnum] public Gender genderLimit = Gender.All;
     [XmlAttribute] public int levelLimit = 1;
     [XmlAttribute] public int levelLimitMax;
     [XmlAttribute] public int transferType;

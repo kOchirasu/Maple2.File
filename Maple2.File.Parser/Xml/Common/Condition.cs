@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
+using Maple2.File.Parser.Enum;
 
-namespace Maple2.File.Parser.Xml.Common; 
+namespace Maple2.File.Parser.Xml.Common;
 
 [XmlType(Namespace = "Common")]
 public partial class Condition {
-    [XmlAttribute] public string type = string.Empty; // ConditionType
+    [M2dEnum] public ConditionType type = ConditionType.unknown;
     [XmlAttribute] public long value;
     [M2dArray] public string[] code = Array.Empty<string>(); // split on ',' and '-'
     [M2dArray] public string[] target = Array.Empty<string>(); // split on ',' and ':'

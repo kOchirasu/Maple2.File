@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
+using Maple2.File.Parser.Enum;
 using Maple2.File.Parser.Xml.Common;
 
-namespace Maple2.File.Parser.Xml.Skill; 
+namespace Maple2.File.Parser.Xml.Skill;
 
-public class BeginCondition {
+public partial class BeginCondition {
     [XmlAttribute] public int level = 1;
     [XmlAttribute] public long money;
-    [XmlAttribute] public int gender = 2;
+    [M2dEnum] public Gender gender = Gender.All;
     [XmlAttribute] public bool target;
     [XmlAttribute] public float probability = 1.0f;
     [XmlAttribute] public float invokeEffectFactor = 1.0f;

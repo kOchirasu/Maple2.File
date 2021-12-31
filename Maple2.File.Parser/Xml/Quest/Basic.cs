@@ -2,7 +2,7 @@
 using M2dXmlGenerator;
 using Maple2.File.Parser.Enum;
 
-namespace Maple2.File.Parser.Xml.Quest; 
+namespace Maple2.File.Parser.Xml.Quest;
 
 public partial class Basic {
     [XmlAttribute] public int chapterID;
@@ -19,10 +19,10 @@ public partial class Basic {
     [XmlAttribute] public int tabIndex = -1;
     [XmlAttribute] public int forceRegistGuide;
     [XmlAttribute] public bool useNavi;
-    [XmlAttribute] public string alliance = string.Empty; // AllianceType
-    [XmlAttribute] public string rank = AllianceRank.Unknown.ToString(); // AllianceRank
+    [M2dEnum] public AllianceType alliance = AllianceType.unknown;
+    [M2dEnum] public AllianceRank rank = AllianceRank.Unknown;
     [XmlAttribute] public bool usePostbox;
     [XmlAttribute] public bool useReEntryHiddenMap;
-    [XmlAttribute] public string usePeriod = DayOfWeek.unknown.ToString(); // DayOfWeek
-    [M2dArray] public string[] property; // QuestPropertyType
+    [M2dEnum] public DayOfWeek usePeriod = DayOfWeek.unknown;
+    [M2dArray] public QuestPropertyType[] property;
 }
