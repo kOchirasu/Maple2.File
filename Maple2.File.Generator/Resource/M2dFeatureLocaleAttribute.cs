@@ -2,13 +2,13 @@
 using System;
 using System.Xml.Serialization;
 
-namespace M2dXmlGenerator {
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class M2dFeatureLocaleAttribute : XmlIgnoreAttribute {
-        public M2dFeatureLocaleAttribute() { }
+namespace M2dXmlGenerator;
 
-        public string? Name { get; set; }
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+public class M2dFeatureLocaleAttribute : XmlIgnoreAttribute {
+    public M2dFeatureLocaleAttribute() { }
 
-        public string? Selector { get; set; }
-    }
+    public string? Name { get; set; }
+
+    public string? Selector { get; set; }
 }

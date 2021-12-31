@@ -6,50 +6,51 @@ using Maple2.File.Generator.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Maple2.File.Generator {
-    [Generator]
-    public class XmlVector3Generator : XmlGenerator {
-        private static readonly SourceText attributeSource =
-            Assembly.GetExecutingAssembly().LoadSource("M2dVector3Attribute.cs");
-        private static readonly DiagnosticDescriptor typeError = new DiagnosticDescriptor(
-            "FG00030",
-            "M2dVector3Attribute can only be applied to System.Numerics.Vector3",
-            "Invalid type {0} for M2dVector3Attribute in {1}",
-            "Maple2.File.Generator",
-            DiagnosticSeverity.Error,
-            true
-        );
+namespace Maple2.File.Generator; 
 
-        public XmlVector3Generator() : base(attributeSource, "M2dXmlGenerator", "M2dVector3") { }
+[Generator]
+public class XmlVector3Generator : XmlGenerator {
+    private static readonly SourceText attributeSource =
+        Assembly.GetExecutingAssembly().LoadSource("M2dVector3Attribute.cs");
+    private static readonly DiagnosticDescriptor typeError = new DiagnosticDescriptor(
+        "FG00030",
+        "M2dVector3Attribute can only be applied to System.Numerics.Vector3",
+        "Invalid type {0} for M2dVector3Attribute in {1}",
+        "Maple2.File.Generator",
+        DiagnosticSeverity.Error,
+        true
+    );
 
-        protected override string ProcessClass(GeneratorExecutionContext context, ISymbol @class,
-                IEnumerable<IFieldSymbol> fields, INamedTypeSymbol attribute) {
-            var builder = new SourceBuilder(@class.ContainingNamespace);
-            builder.Imports.AddRange(new[] {
-                "System",
-                "System.Numerics",
-                "System.Xml.Serialization",
-            });
-            builder.Classes.AddRange(@class.ContainingTypes().Select(symbol => symbol.Name));
-            builder.Classes.Add(@class.Name);
+    public XmlVector3Generator() : base(attributeSource, "M2dXmlGenerator", "M2dVector3") { }
 
-            // create properties for each field
-            builder.Code.AddRange(fields.Select(field => ProcessField(context, field, attribute)));
+    protected override string ProcessClass(GeneratorExecutionContext context, ISymbol @class,
+        IEnumerable<IFieldSymbol> fields, INamedTypeSymbol attribute) {
+        var builder = new SourceBuilder(@class.ContainingNamespace);
+        builder.Imports.AddRange(new[] {
+            "System",
+            "System.Numerics",
+            "System.Xml.Serialization",
+        });
+        builder.Classes.AddRange(@class.ContainingTypes().Select(symbol => symbol.Name));
+        builder.Classes.Add(@class.Name);
 
-            return builder.Build();
+        // create properties for each field
+        builder.Code.AddRange(fields.Select(field => ProcessField(context, field, attribute)));
+
+        return builder.Build();
+    }
+
+    private string ProcessField(GeneratorExecutionContext context, IFieldSymbol field, ISymbol attribute) {
+        if (field.Type.ToDisplayString() != "System.Numerics.Vector3") {
+            context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type, field.ToDisplayString()));
         }
 
-        private string ProcessField(GeneratorExecutionContext context, IFieldSymbol field, ISymbol attribute) {
-            if (field.Type.ToDisplayString() != "System.Numerics.Vector3") {
-                context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type, field.ToDisplayString()));
-            }
+        AttributeData attributeData = field.GetAttribute(attribute);
+        string xmlAttributeName = attributeData.GetValueOrDefault("Name", field.Name);
+        string fieldName = $"this.{field.Name}";
 
-            AttributeData attributeData = field.GetAttribute(attribute);
-            string xmlAttributeName = attributeData.GetValueOrDefault("Name", field.Name);
-            string fieldName = $"this.{field.Name}";
-
-            var source = new StringBuilder();
-            source.Append($@"
+        var source = new StringBuilder();
+        source.Append($@"
 [XmlAttribute(""{xmlAttributeName}"")]
 public string _{xmlAttributeName} {{
     get => $""{{{fieldName}.X}},{{{fieldName}.Y}},{{{fieldName}.Z}}"";
@@ -61,7 +62,6 @@ public string _{xmlAttributeName} {{
         {fieldName} =  new Vector3(x, y, z);
     }}
 }}");
-            return source.ToString();
-        }
+        return source.ToString();
     }
 }
