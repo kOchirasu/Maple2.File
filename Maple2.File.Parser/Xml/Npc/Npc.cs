@@ -6,7 +6,7 @@ namespace Maple2.File.Parser.Xml.Npc;
 
 // ./data/xml/npc/%02d/%08d.xml
 [XmlRoot("ms2")]
-public partial class NpcEnvironmentData {
+public partial class NpcDataRoot {
     [M2dFeatureLocale] private NpcData _environment;
     [XmlElement] public List<EffectDummy> effectdummy;
 }

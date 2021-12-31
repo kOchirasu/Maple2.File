@@ -20,7 +20,7 @@ public class NpcParser {
     public NpcParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
         this.nameSerializer = new XmlSerializer(typeof(StringMapping));
-        this.npcSerializer = new XmlSerializer(typeof(NpcEnvironmentData));
+        this.npcSerializer = new XmlSerializer(typeof(NpcDataRoot));
     }
 
     public IEnumerable<(int Id, string Name, NpcData Data, List<EffectDummy> Dummy)> Parse() {
@@ -32,7 +32,7 @@ public class NpcParser {
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("npc/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeNpc(xmlReader.GetString(entry))));
-            var root = npcSerializer.Deserialize(reader) as NpcEnvironmentData;
+            var root = npcSerializer.Deserialize(reader) as NpcDataRoot;
             Debug.Assert(root != null);
 
             int npcId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));

@@ -5,7 +5,7 @@ namespace Maple2.File.Parser.Xml.Map;
 
 // ./data/xml/map/%08d.xml
 [XmlRoot("ms2")]
-public partial class MapEnvironmentData {
+public partial class MapDataRoot {
     [M2dFeatureLocale] private MapData _environment;
 }
 

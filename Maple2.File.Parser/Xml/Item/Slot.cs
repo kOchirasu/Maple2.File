@@ -3,8 +3,9 @@ using System.Numerics;
 using System;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
+using Maple2.File.Parser.Enum;
 
-namespace Maple2.File.Parser.Xml.Item; 
+namespace Maple2.File.Parser.Xml.Item;
 
 public class Slots {
     [XmlElement] public List<Slot> slot;

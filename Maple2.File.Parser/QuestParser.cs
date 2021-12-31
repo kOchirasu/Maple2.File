@@ -20,7 +20,7 @@ public class QuestParser {
     public QuestParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
         this.descriptionSerializer = new XmlSerializer(typeof(QuestDescriptionRoot));
-        this.questSerializer = new XmlSerializer(typeof(QuestEnvironmentData));
+        this.questSerializer = new XmlSerializer(typeof(QuestDataRootRoot));
     }
 
     public IEnumerable<(int Id, string Name, QuestData Data)> Parse() {
@@ -43,7 +43,7 @@ public class QuestParser {
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("quest/"))) {
             var reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeQuest(xmlReader.GetString(entry))));
-            var root = questSerializer.Deserialize(reader) as QuestEnvironmentData;
+            var root = questSerializer.Deserialize(reader) as QuestDataRootRoot;
             Debug.Assert(root != null);
 
             QuestData data = root.environment?.quest;

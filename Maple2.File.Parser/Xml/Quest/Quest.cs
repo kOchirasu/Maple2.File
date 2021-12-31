@@ -8,7 +8,7 @@ namespace Maple2.File.Parser.Xml.Quest;
 
 // ./data/xml/quest/%08d.xml
 [XmlRoot("ms2")]
-public partial class QuestEnvironmentData {
+public partial class QuestDataRootRoot {
     [M2dFeatureLocale] private QuestDataRoot _environment;
 }
 

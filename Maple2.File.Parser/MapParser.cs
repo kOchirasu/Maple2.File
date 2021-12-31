@@ -20,7 +20,7 @@ public class MapParser {
     public MapParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
         this.nameSerializer = new XmlSerializer(typeof(StringMapping));
-        this.mapSerializer = new XmlSerializer(typeof(MapEnvironmentData));
+        this.mapSerializer = new XmlSerializer(typeof(MapDataRoot));
     }
 
     public IEnumerable<(int Id, string Name, MapData Data)> Parse() {
@@ -32,7 +32,7 @@ public class MapParser {
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("map/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeMap(xmlReader.GetString(entry))));
-            var root = mapSerializer.Deserialize(reader) as MapEnvironmentData;
+            var root = mapSerializer.Deserialize(reader) as MapDataRoot;
             Debug.Assert(root != null);
 
             MapData data = root.environment;
