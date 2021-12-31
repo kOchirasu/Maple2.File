@@ -42,7 +42,6 @@ namespace Maple2.File.Generator {
                 IEnumerable<IFieldSymbol> fields, INamedTypeSymbol attribute) {
             var builder = new SourceBuilder(@class.ContainingNamespace);
             builder.Imports.AddRange(new[] {
-                "System",
                 "System.Collections.Generic",
                 "System.Linq",
                 "System.Xml.Serialization",

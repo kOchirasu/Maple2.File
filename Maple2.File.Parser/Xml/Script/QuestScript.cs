@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Script;
 
@@ -11,15 +10,8 @@ public class QuestScriptRoot {
     [XmlElement] public List<QuestScript> quest;
 }
 
-public class QuestScript {
+public partial class QuestScript {
     [XmlAttribute] public int id;
 
-    [XmlElement] public List<TalkScript> script;
-
-    internal QuestScript Filter(Filter filter) {
-        return new QuestScript {
-            id = this.id,
-            script = TalkScript.Filter(script, filter).ToList(),
-        };
-    }
+    [M2dFeatureLocale] private IList<TalkScript> _script;
 }

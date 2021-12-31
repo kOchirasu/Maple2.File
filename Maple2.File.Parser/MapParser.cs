@@ -14,13 +14,11 @@ namespace Maple2.File.Parser;
 
 public class MapParser {
     private readonly M2dReader xmlReader;
-    private readonly Filter filter;
     private readonly XmlSerializer nameSerializer;
     private readonly XmlSerializer mapSerializer;
 
-    public MapParser(M2dReader xmlReader, Filter filter) {
+    public MapParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
-        this.filter = filter;
         this.nameSerializer = new XmlSerializer(typeof(StringMapping));
         this.mapSerializer = new XmlSerializer(typeof(MapEnvironmentData));
     }
@@ -30,14 +28,14 @@ public class MapParser {
         var mapping = nameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
-        Dictionary<int, string> mapNames = mapping.Filter(filter);
+        Dictionary<int, string> mapNames = mapping.key.ToDictionary(key => key.id, key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("map/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeMap(xmlReader.GetString(entry))));
             var root = mapSerializer.Deserialize(reader) as MapEnvironmentData;
             Debug.Assert(root != null);
 
-            MapData data = root.Filter(filter);
+            MapData data = root.environment;
             if (data == null) continue;
 
             int mapId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));

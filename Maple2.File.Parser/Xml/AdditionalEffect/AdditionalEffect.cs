@@ -1,29 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Skill;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.AdditionalEffect;
 
 // ./data/xml/additionaleffect/%08d.xml
 [XmlRoot("ms2")]
-public class AdditionalEffectLevelData {
-    [XmlElement] public List<AdditionalEffectData> level;
-
-    internal List<AdditionalEffectData> Filter(Filter filter) {
-        return level
-            .Where(data => filter.FeatureEnabled(data.feature))
-            .GroupBy(data => data.BasicProperty.level)
-            .FirstByLocale(filter, data => data.locale)
-            .ToList();
-    }
+public partial class AdditionalEffectLevelData {
+    [M2dFeatureLocale(Selector = "BasicProperty.level")] private IList<AdditionalEffectData> _level;
 }
 
-public class AdditionalEffectData {
-    [XmlAttribute] public string locale = string.Empty;
-    [XmlAttribute] public string feature = string.Empty;
-
+public partial class AdditionalEffectData : IFeatureLocale {
     [XmlElement] public BeginCondition beginCondition;
     [XmlElement] public BasicProperty BasicProperty;
     [XmlElement] public MotionProperty MotionProperty;

@@ -26,7 +26,6 @@ namespace Maple2.File.Generator {
             var builder = new SourceBuilder(@class.ContainingNamespace);
             builder.Imports.AddRange(new[] {
                 "System.ComponentModel",
-                "System",
                 "System.Xml.Serialization",
             });
             builder.Classes.AddRange(@class.ContainingTypes().Select(symbol => symbol.Name));

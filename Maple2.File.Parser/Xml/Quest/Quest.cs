@@ -1,29 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 using Maple2.File.Parser.Enum;
-using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Quest;
 
 // ./data/xml/quest/%08d.xml
 [XmlRoot("ms2")]
-public class QuestEnvironmentData {
-    [XmlElement] public List<QuestDataRoot> environment;
-
-    internal QuestData Filter(Filter filter) {
-        return environment
-            .Where(data => filter.FeatureEnabled(data.feature))
-            .FirstByLocale(filter, data => data.locale)?.quest;
-    }
+public partial class QuestEnvironmentData {
+    [M2dFeatureLocale] private QuestDataRoot _environment;
 }
 
-public class QuestDataRoot {
-    [XmlAttribute] public string feature = string.Empty;
-    [XmlAttribute] public string locale = string.Empty;
-
+public partial class QuestDataRoot : IFeatureLocale {
     [XmlElement] public QuestData quest;
 }
 

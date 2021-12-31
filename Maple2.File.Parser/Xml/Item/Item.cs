@@ -1,26 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+﻿using System.Xml.Serialization;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Item;
 
 // ./data/xml/item/%01d/%02d/%08u.xml
 [XmlRoot("ms2")]
-public class ItemDataRoot {
-    [XmlElement] public List<ItemData> environment;
-
-    internal ItemData Filter(Filter filter) {
-        return environment
-            .Where(data => filter.FeatureEnabled(data.feature))
-            .FirstByLocale(filter, data => data.locale);
-    }
+public partial class ItemDataRoot {
+    [M2dFeatureLocale] private ItemData _environment;
 }
 
-public class ItemData {
-    [XmlAttribute] public string feature = string.Empty;
-    [XmlAttribute] public string locale = string.Empty;
-
+public partial class ItemData : IFeatureLocale {
     [XmlElement] public Basic basic;
     [XmlElement] public Slots slots;
     [XmlElement] public Customize customize;
@@ -31,17 +20,17 @@ public class ItemData {
     [XmlElement] public Material material;
     [XmlElement] public Life life;
     [XmlElement] public Limit limit;
-    [XmlElement] public Item.Skill skill;
-    [XmlElement] public Item.Skill objectWeaponSkill;
+    [XmlElement] public Skill skill;
+    [XmlElement] public Skill objectWeaponSkill;
     [XmlElement] public Title title;
     [XmlElement] public Drop drop;
     [XmlElement] public UCC ucc;
     [XmlElement] public Effect effect;
     [XmlElement] public Fusion fusion;
-    [XmlElement] public Item.Pet pet;
+    [XmlElement] public Pet pet;
     [XmlElement] public Ride ride;
     [XmlElement] public Badge gem;
-    [XmlElement] public Item.AdditionalEffect AdditionalEffect;
+    [XmlElement] public AdditionalEffect AdditionalEffect;
     [XmlElement] public Function function;
     [XmlElement] public Tool tool;
     [XmlElement] public Option option;

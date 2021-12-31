@@ -1,26 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+﻿using System.Xml.Serialization;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Map;
 
 // ./data/xml/map/%08d.xml
 [XmlRoot("ms2")]
-public class MapEnvironmentData {
-    [XmlElement] public List<MapData> environment;
-
-    internal MapData Filter(Filter filter) {
-        return environment
-            .Where(data => filter.FeatureEnabled(data.feature))
-            .FirstByLocale(filter, data => data.locale);
-    }
+public partial class MapEnvironmentData {
+    [M2dFeatureLocale] private MapData _environment;
 }
 
-public class MapData {
-    [XmlAttribute] public string feature = string.Empty;
-    [XmlAttribute] public string locale = string.Empty;
-
+public partial class MapData : IFeatureLocale {
     [XmlElement] public XBlock xblock;
     [XmlElement] public Property property;
     [XmlElement] public Drop drop;

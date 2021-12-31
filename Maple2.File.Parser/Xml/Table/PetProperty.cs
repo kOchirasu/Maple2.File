@@ -1,30 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
-using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/petproperty.xml
 [XmlRoot("ms2")]
-public class PetPropertyRoot {
-    [XmlElement] public List<PetProperty> pets;
-
-    internal List<PetProperty> Filter(Filter filter) {
-        return pets
-            .Where(pet => filter.FeatureEnabled(pet.feature))
-            .GroupBy(pet => pet.code)
-            .FirstByLocale(filter, pet => pet.locale)
-            .ToList();
-    }
+public partial class PetPropertyRoot {
+    [M2dFeatureLocale(Selector = "code")] private IList<PetProperty> _pets;
 }
 
-public partial class PetProperty {
-    [XmlAttribute] public string feature = string.Empty;
-    [XmlAttribute] public string locale = string.Empty;
-
+public partial class PetProperty : IFeatureLocale {
     [XmlAttribute] public int type;
     [XmlAttribute] public int code;
     [XmlAttribute] public int slotNum;
@@ -52,41 +39,5 @@ public partial class PetProperty {
     public class Skill {
         [XmlAttribute] public int id;
         [XmlAttribute] public short level;
-    }
-}
-
-// ./data/xml/pet/%08d.xml
-[XmlRoot("ms2")]
-public class PetDataRoot {
-    [XmlElement] public PetData pet;
-}
-
-public class PetData {
-    [XmlAttribute] public int code;
-    [XmlAttribute] public int slotNum;
-
-    [XmlElement] public Skill skill;
-    [XmlElement] public Distance distance;
-    [XmlElement] public Time time;
-
-    public class Skill {
-        [XmlAttribute] public int id;
-        [XmlAttribute] public short level = 1;
-    }
-
-    public class Distance {
-        [XmlAttribute] public float pick;
-        [XmlAttribute] public float warp;
-        [XmlAttribute] public float trace;
-        [XmlAttribute] public float battleTrace;
-    }
-
-    public class Time {
-        [XmlAttribute] public int idle;
-        [XmlAttribute] public int bore;
-        [XmlAttribute] public int summonCast;
-        [XmlAttribute] public int tired;
-        [XmlAttribute] public int skill;
-        [XmlAttribute] public int PetSlotNum;
     }
 }

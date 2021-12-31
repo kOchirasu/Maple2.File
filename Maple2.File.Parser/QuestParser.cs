@@ -14,13 +14,11 @@ namespace Maple2.File.Parser;
 
 public class QuestParser {
     private readonly M2dReader xmlReader;
-    private readonly Filter filter;
     private readonly XmlSerializer descriptionSerializer;
     private readonly XmlSerializer questSerializer;
 
-    public QuestParser(M2dReader xmlReader, Filter filter) {
+    public QuestParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
-        this.filter = filter;
         this.descriptionSerializer = new XmlSerializer(typeof(QuestDescriptionRoot));
         this.questSerializer = new XmlSerializer(typeof(QuestEnvironmentData));
     }
@@ -38,7 +36,7 @@ public class QuestParser {
             var root = descriptionSerializer.Deserialize(reader) as QuestDescriptionRoot;
             Debug.Assert(root != null);
 
-            foreach (QuestDescription description in root.Filter(filter)) {
+            foreach (QuestDescription description in root.quest) {
                 questNames.Add(description.questID, description.name);
             }
         }
@@ -48,7 +46,7 @@ public class QuestParser {
             var root = questSerializer.Deserialize(reader) as QuestEnvironmentData;
             Debug.Assert(root != null);
 
-            QuestData data = root.Filter(filter);
+            QuestData data = root.environment?.quest;
             if (data == null) continue;
 
             int questId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));

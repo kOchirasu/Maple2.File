@@ -14,13 +14,11 @@ namespace Maple2.File.Parser;
 
 public class AchieveParser {
     private readonly M2dReader xmlReader;
-    private readonly Filter filter;
     private readonly XmlSerializer nameSerializer;
     private readonly XmlSerializer achieveSerializer;
 
-    public AchieveParser(M2dReader xmlReader, Filter filter) {
+    public AchieveParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
-        this.filter = filter;
         this.nameSerializer = new XmlSerializer(typeof(StringMapping));
         this.achieveSerializer = new XmlSerializer(typeof(AchievesData));
     }
@@ -30,14 +28,14 @@ public class AchieveParser {
         var mapping = nameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
-        Dictionary<int, string> achieveNames = mapping.Filter(filter);
+        Dictionary<int, string> achieveNames = mapping.key.ToDictionary(key => key.id, key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("achieve/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.RemoveEmpty(xmlReader.GetString(entry))));
             var root = achieveSerializer.Deserialize(reader) as AchievesData;
             Debug.Assert(root != null);
 
-            AchieveData data = root.Filter(filter);
+            AchieveData data = root.achieves;
             if (data == null) continue;
 
             int achieveId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));

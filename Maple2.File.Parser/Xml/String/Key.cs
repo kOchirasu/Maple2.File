@@ -1,10 +1,9 @@
 ﻿using System.Xml.Serialization;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.String;
 
-public class Key {
-    [XmlAttribute] public string feature = string.Empty;
-
+public partial class Key : IFeatureLocale {
     [XmlAttribute] public string name = string.Empty;
     [XmlAttribute] public int id;
 }

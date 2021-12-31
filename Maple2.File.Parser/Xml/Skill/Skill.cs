@@ -4,19 +4,16 @@ using System.Xml.Serialization;
 using M2dXmlGenerator;
 using Maple2.File.Parser.Xml.Skill.Property;
 
-namespace Maple2.File.Parser.Xml.Skill; 
+namespace Maple2.File.Parser.Xml.Skill;
 
 // ./data/xml/skill/%02d/%08u.xml
 [XmlRoot("ms2")]
-public class SkillData {
-    [XmlAttribute] public string feature = string.Empty;
-
+public partial class SkillData : IFeatureLocale {
     [XmlElement] public List<Basic> basic;
     [XmlElement] public List<SkillLevelData> level;
 }
 
-public class SkillLevelData {
-    [XmlAttribute] public string feature = string.Empty;
+public partial class SkillLevelData : IFeatureLocale {
     [XmlAttribute] public short value;
 
     [XmlElement] public BeginCondition beginCondition;

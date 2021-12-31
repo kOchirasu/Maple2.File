@@ -1,19 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
-using Maple2.File.Parser.Tools;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.String;
 
 [XmlRoot("ms2")]
-public class StringMapping {
-    [XmlElement] public List<Key> key;
-
-    internal Dictionary<int, string> Filter(Filter filter) {
-        return key
-            .Where(k => filter.FeatureEnabled(k.feature))
-            .GroupBy(k => k.id)
-            .Select(grouping => grouping.First())
-            .ToDictionary(k => k.id, k => k.name);
-    }
+public partial class StringMapping {
+    [M2dFeatureLocale(Selector = "id")] private IList<Key> _key;
 }

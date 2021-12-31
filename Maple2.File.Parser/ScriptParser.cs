@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
-using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Script;
 
 namespace Maple2.File.Parser;
 
 public class ScriptParser {
     private readonly M2dReader xmlReader;
-    private readonly Filter filter;
     private readonly XmlSerializer npcScriptSerializer;
     private readonly XmlSerializer questScriptSerializer;
 
-    public ScriptParser(M2dReader xmlReader, Filter filter) {
+    public ScriptParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
-        this.filter = filter;
         this.npcScriptSerializer = new XmlSerializer(typeof(NpcScript));
         this.questScriptSerializer = new XmlSerializer(typeof(QuestScriptRoot));
     }
@@ -30,7 +26,7 @@ public class ScriptParser {
             Debug.Assert(root != null);
 
             int npcId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));
-            yield return (npcId, root.Filter(filter));
+            yield return (npcId, root);
         }
     }
 
@@ -40,7 +36,7 @@ public class ScriptParser {
             Debug.Assert(root != null);
 
             foreach (QuestScript quest in root.quest) {
-                yield return quest.Filter(filter);
+                yield return quest;
             }
         }
     }

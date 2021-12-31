@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 using Maple2.File.IO;
 using Maple2.File.Parser.Xml.Table;
 
 namespace Maple2.File.Parser.Tools;
 
-public class Filter {
-    public readonly string Locale;
-    public readonly HashSet<string> Features;
-
-    public Filter(string locale, IEnumerable<string> features) {
-        Locale = locale;
-        Features = new HashSet<string>(features);
-    }
-
+public static class Filter {
     // locale: TW, TH, NA, CN, JP, KR
     // env: Dev, Qa, DevStage, Stage, Live
-    public static Filter Load(M2dReader xmlReader, string locale, string env) {
+    public static void Load(M2dReader xmlReader, string locale, string env) {
         var settingSerializer = new XmlSerializer(typeof(FeatureSetting));
         var featureSerializer = new XmlSerializer(typeof(FeatureRoot));
 
@@ -41,14 +34,7 @@ public class Filter {
             };
         }).Select(feature => feature.name).ToHashSet();
 
-        return new Filter(locale, features);
-    }
-
-    public bool FeatureEnabled(string feature) {
-        return string.IsNullOrEmpty(feature) || Features.Contains(feature);
-    }
-
-    public bool HasLocale(string checkLocale) {
-        return string.IsNullOrEmpty(checkLocale) || Locale.Equals(checkLocale, StringComparison.OrdinalIgnoreCase);
+        FeatureLocaleFilter.Locale = locale;
+        FeatureLocaleFilter.Features = features;
     }
 }

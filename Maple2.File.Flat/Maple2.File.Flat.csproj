@@ -5,4 +5,8 @@
         <LangVersion>latestmajor</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <NoWarn>1701;1702;108</NoWarn>
+    </PropertyGroup>
+
 </Project>

@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
-using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Skill;
 using Maple2.File.Parser.Xml.String;
 
@@ -14,13 +14,11 @@ namespace Maple2.File.Parser;
 
 public class SkillParser {
     private readonly M2dReader xmlReader;
-    private readonly Filter filter;
     private readonly XmlSerializer nameSerializer;
     private readonly XmlSerializer skillSerializer;
 
-    public SkillParser(M2dReader xmlReader, Filter filter) {
+    public SkillParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
-        this.filter = filter;
         this.nameSerializer = new XmlSerializer(typeof(StringMapping));
         this.skillSerializer = new XmlSerializer(typeof(SkillData));
     }
@@ -32,8 +30,8 @@ public class SkillParser {
             var mapping = nameSerializer.Deserialize(reader) as StringMapping;
             Debug.Assert(mapping != null);
 
-            foreach ((int id, string name) in mapping.Filter(filter)) {
-                skillNames.Add(id, name);
+            foreach (Key key in mapping.key) {
+                skillNames.Add(key.id, key.name);
             }
         }
 
@@ -41,7 +39,7 @@ public class SkillParser {
             var data = skillSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as SkillData;
             Debug.Assert(data != null);
 
-            if (!filter.FeatureEnabled(data.feature)) continue;
+            if (data.FeatureLocale() == null) continue;
 
             // TODO: SkillData.SkillLevelData feature is not checked.
             int skillId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));

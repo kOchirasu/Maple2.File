@@ -1,28 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
-using Maple2.File.Parser.Tools;
 
 namespace Maple2.File.Parser.Xml.Achieve;
 
 // ./data/xml/achieve/%08d.xml
 [XmlRoot("ms2")]
-public class AchievesData {
-    [XmlElement] public List<AchieveData> achieves;
-
-    internal AchieveData Filter(Filter filter) {
-        return achieves
-            .Where(data => filter.FeatureEnabled(data.feature))
-            .FirstByLocale(filter, data => data.locale);
-    }
+public partial class AchievesData {
+    [M2dFeatureLocale] private AchieveData _achieves;
 }
 
-public partial class AchieveData {
-    [XmlAttribute] public string feature = string.Empty;
-    [XmlAttribute] public string locale = string.Empty;
-
+public partial class AchieveData : IFeatureLocale {
     [XmlAttribute] public int id;
     [XmlAttribute] public int noticePercent = 1;
     [XmlAttribute] public short standardLevel;
