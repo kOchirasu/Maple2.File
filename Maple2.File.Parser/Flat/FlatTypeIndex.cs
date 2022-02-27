@@ -126,11 +126,12 @@ public class FlatTypeIndex {
                 type.Properties.Add(property.Name, property);
             }
         }
-
+        
         return types;
     }
 
     public void CliExplorer() {
+        Console.WriteLine("Explorer is ready");
         while (true) {
             string[] input = (Console.ReadLine() ?? string.Empty).Split(" ", 2);
 
@@ -176,6 +177,29 @@ public class FlatTypeIndex {
                         Console.WriteLine(type);
                         foreach (FlatType subType in GetSubTypes(name)) {
                             Console.WriteLine($"{subType.Name,30} : {string.Join(',', subType.Mixin.Select(sub => sub.Name))}");
+                        }
+                    }
+                    break;
+                case "find":
+                    if (input.Length < 3) {
+                        Console.WriteLine("Invalid input.");
+                    } else {
+                        string name = input[1];
+                        FlatType type = GetType(name);
+                        if (type == null) {
+                            Console.WriteLine($"Invalid type: {name}");
+                            continue;
+                        }
+                            
+                        string field = input[2];
+                        if (type.Properties.ContainsKey(field)) {
+                            Console.WriteLine(type.Name);
+                        }
+                            
+                        foreach (FlatType parent in type.Mixin) {
+                            if (parent.Properties.ContainsKey(field)) {
+                                Console.WriteLine(parent.Name);
+                            }
                         }
                     }
                     break;

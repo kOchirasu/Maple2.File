@@ -41,3 +41,10 @@ foreach ((int id, string name, ItemData data) in parser.Parse()) {
     // Extract fields from ItemData that are needed.
 }
 ```
+
+### xblock CliExplorer Example:
+```csharp
+using var reader = new M2dReader(EXPORTED_PATH);
+var index = new FlatTypeIndex(reader);
+index.CliExplorer();
+```
