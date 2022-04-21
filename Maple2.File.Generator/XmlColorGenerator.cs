@@ -9,19 +9,19 @@ using Microsoft.CodeAnalysis.Text;
 namespace Maple2.File.Generator; 
 
 [Generator]
-public class XmlVector3Generator : XmlGenerator {
+public class XmlColorGenerator : XmlGenerator {
     private static readonly SourceText attributeSource =
-        Assembly.GetExecutingAssembly().LoadSource("M2dVector3Attribute.cs");
+        Assembly.GetExecutingAssembly().LoadSource("M2dColorAttribute.cs");
     private static readonly DiagnosticDescriptor typeError = new DiagnosticDescriptor(
-        "FG00030",
-        "M2dVector3Attribute can only be applied to System.Numerics.Vector3",
-        "Invalid type {0} for M2dVector3Attribute in {1}",
+        "FG00060",
+        "M2dColorAttribute can only be applied to System.Drawing.Color",
+        "Invalid type {0} for M2dColorAttribute in {1}",
         "Maple2.File.Generator",
         DiagnosticSeverity.Error,
         true
     );
 
-    public XmlVector3Generator() : base(attributeSource, "M2dXmlGenerator", "M2dVector3") { }
+    public XmlColorGenerator() : base(attributeSource, "M2dXmlGenerator", "M2dColor") { }
 
     protected override string ProcessClass(GeneratorExecutionContext context, ISymbol @class,
         IEnumerable<IFieldSymbol> fields, INamedTypeSymbol attribute) {
@@ -40,7 +40,7 @@ public class XmlVector3Generator : XmlGenerator {
     }
 
     private string ProcessField(GeneratorExecutionContext context, IFieldSymbol field, ISymbol attribute) {
-        if (field.Type.ToDisplayString() != "System.Numerics.Vector3") {
+        if (field.Type.ToDisplayString() != "System.Drawing.Color") {
             context.ReportDiagnostic(Diagnostic.Create(typeError, Location.None, field.Type, field.ToDisplayString()));
         }
 
@@ -52,14 +52,8 @@ public class XmlVector3Generator : XmlGenerator {
         source.Append($@"
 [XmlAttribute(""{xmlAttributeName}"")]
 public string _{xmlAttributeName} {{
-    get => $""{{{fieldName}.X}},{{{fieldName}.Y}},{{{fieldName}.Z}}"";
-    set {{
-        string[] split = value.Split(new[] {{',', ' '}}, StringSplitOptions.RemoveEmptyEntries);
-        float x = split.Length > 0 ? float.Parse(split[0]) : 0;
-        float y = split.Length > 1 ? float.Parse(split[1]) : 0;
-        float z = split.Length > 2 ? float.Parse(split[2]) : 0;
-        {fieldName} =  new System.Numerics.Vector3(x, y, z);
-    }}
+    get => $""0x{{{fieldName}.A:x2}}{{{fieldName}.R:x2}}{{{fieldName}.G:x2}}{{{fieldName}.B:x2}}"";
+    set => {fieldName} = System.Drawing.Color.FromArgb(Convert.ToInt32(value, 16));
 }}");
         return source.ToString();
     }

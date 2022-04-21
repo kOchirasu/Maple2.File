@@ -25,6 +25,8 @@
         <EmbeddedResource Include="Resource\FeatureLocaleFilter.cs" />
         <Compile Remove="Resource\M2dEnumAttribute.cs" />
         <EmbeddedResource Include="Resource\M2dEnumAttribute.cs" />
+        <Compile Remove="Resource\M2dColorAttribute.cs" />
+        <EmbeddedResource Include="Resource\M2dColorAttribute.cs" />
     </ItemGroup>
 
 </Project>
