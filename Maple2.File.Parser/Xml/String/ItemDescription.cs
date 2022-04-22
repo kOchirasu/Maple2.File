@@ -10,7 +10,7 @@ public partial class ItemDescription {
 
     public partial class Key : IFeatureLocale {
         [XmlAttribute] public int id;
-        [XmlAttribute] public string tooltipDescription;
-        [XmlAttribute] public string guideDescription;
+        [XmlAttribute] public string tooltipDescription = string.Empty;
+        [XmlAttribute] public string guideDescription = string.Empty;
     }
 }
