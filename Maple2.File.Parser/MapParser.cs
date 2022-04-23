@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,25 +15,25 @@ namespace Maple2.File.Parser;
 
 public class MapParser {
     private readonly M2dReader xmlReader;
-    private readonly XmlSerializer nameSerializer;
-    private readonly XmlSerializer mapSerializer;
+    public readonly XmlSerializer NameSerializer;
+    public readonly XmlSerializer MapSerializer;
 
     public MapParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
-        this.nameSerializer = new XmlSerializer(typeof(StringMapping));
-        this.mapSerializer = new XmlSerializer(typeof(MapDataRoot));
+        this.NameSerializer = new XmlSerializer(typeof(StringMapping));
+        this.MapSerializer = new XmlSerializer(typeof(MapDataRoot));
     }
 
     public IEnumerable<(int Id, string Name, MapData Data)> Parse() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/mapname.xml"));
-        var mapping = nameSerializer.Deserialize(reader) as StringMapping;
+        var mapping = NameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
         Dictionary<int, string> mapNames = mapping.key.ToDictionary(key => key.id, key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("map/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeMap(xmlReader.GetString(entry))));
-            var root = mapSerializer.Deserialize(reader) as MapDataRoot;
+            var root = MapSerializer.Deserialize(reader) as MapDataRoot;
             Debug.Assert(root != null);
 
             MapData data = root.environment;

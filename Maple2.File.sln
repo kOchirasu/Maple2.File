@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maple2.File.Generator", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maple2.File.Flat", "Maple2.File.Flat\Maple2.File.Flat.csproj", "{4634738C-CDCE-4426-8D41-FE20C2F85892}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maple2.File.Tests", "Maple2.File.Tests\Maple2.File.Tests.csproj", "{7A3AFE6F-9291-4392-9605-F2BC21274D1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{4634738C-CDCE-4426-8D41-FE20C2F85892}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4634738C-CDCE-4426-8D41-FE20C2F85892}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4634738C-CDCE-4426-8D41-FE20C2F85892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A3AFE6F-9291-4392-9605-F2BC21274D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A3AFE6F-9291-4392-9605-F2BC21274D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A3AFE6F-9291-4392-9605-F2BC21274D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A3AFE6F-9291-4392-9605-F2BC21274D1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
