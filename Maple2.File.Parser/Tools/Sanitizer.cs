@@ -53,6 +53,12 @@ public static class Sanitizer {
         return xml;
     }
 
+    public static string SanitizeFunctionCube(string xml) {
+        xml = RemoveEmpty(xml);
+        xml = xml.Replace("AutoStateChange=\"1-C\"", "AutoStateChange=\"1-0\"");
+        return xml;
+    }
+
     public static string RemoveEmpty(string xml) {
         return Regex.Replace(xml, "\\w+=\"\"", string.Empty);
     }

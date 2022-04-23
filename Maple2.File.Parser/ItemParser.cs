@@ -13,24 +13,24 @@ namespace Maple2.File.Parser;
 
 public class ItemParser {
     private readonly M2dReader xmlReader;
-    private readonly XmlSerializer nameSerializer;
-    private readonly XmlSerializer itemSerializer;
+    public readonly XmlSerializer NameSerializer;
+    public readonly XmlSerializer ItemSerializer;
 
     public ItemParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
-        this.nameSerializer = new XmlSerializer(typeof(StringMapping));
-        this.itemSerializer = new XmlSerializer(typeof(ItemDataRoot));
+        this.NameSerializer = new XmlSerializer(typeof(StringMapping));
+        this.ItemSerializer = new XmlSerializer(typeof(ItemDataRoot));
     }
 
     public IEnumerable<(int Id, string Name, ItemData Data)> Parse() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/itemname.xml"));
-        var mapping = nameSerializer.Deserialize(reader) as StringMapping;
+        var mapping = NameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
         Dictionary<int, string> itemNames = mapping.key.ToDictionary(key => key.id, key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("item/"))) {
-            var root = itemSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as ItemDataRoot;
+            var root = ItemSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as ItemDataRoot;
             Debug.Assert(root != null);
 
             ItemData data = root.environment;
