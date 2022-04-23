@@ -75,7 +75,7 @@ public string _{xmlAttributeName} {{
 
         string fieldName = $"this.{field.FieldName()}";
         source.AppendLine($@"
-string[] split = value.Split('{delimiter}', StringSplitOptions.RemoveEmptyEntries);
+string[] split = value.Split(new[] {{'{delimiter}', ' '}}, StringSplitOptions.RemoveEmptyEntries);
 {fieldName} = new {arrayType.ElementType}[split.Length];
 for (int i = 0; i < split.Length; i++) {{
     var val = split[i].Trim();");

@@ -26,9 +26,12 @@ public class PetParser {
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("pet/"))) {
             var root = petSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as PetDataRoot;
             Debug.Assert(root != null);
+            
+            PetData data = root.pet;
+            if (data == null) continue;
 
             int petId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));
-            yield return (petId, root.pet);
+            yield return (petId, data);
         }
     }
 

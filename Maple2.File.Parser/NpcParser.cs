@@ -34,9 +34,12 @@ public class NpcParser {
             reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeNpc(xmlReader.GetString(entry))));
             var root = npcSerializer.Deserialize(reader) as NpcDataRoot;
             Debug.Assert(root != null);
+            
+            NpcData data = root.environment;
+            if (data == null) continue;
 
             int npcId = int.Parse(Path.GetFileNameWithoutExtension(entry.Name));
-            yield return (npcId, npcNames.GetValueOrDefault(npcId), root.environment, root.effectdummy);
+            yield return (npcId, npcNames.GetValueOrDefault(npcId), data, root.effectdummy);
         }
     }
 }

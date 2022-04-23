@@ -25,7 +25,7 @@ public partial class Basic {
     [XmlAttribute] public int abnormalImmune;
     [XmlAttribute] public short level = 1;
     [XmlAttribute("class")] public int @class = 1;
-    [XmlAttribute] public int rotationDisabled;
+    [XmlAttribute] public bool rotationDisabled;
     [XmlAttribute] public int carePathToEnemy = 1;
     [XmlAttribute] public string rankIcon = string.Empty;
     [XmlAttribute] public string npcSoundStart = string.Empty;
