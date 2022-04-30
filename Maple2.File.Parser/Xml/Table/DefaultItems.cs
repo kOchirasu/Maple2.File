@@ -11,12 +11,14 @@ public partial class DefaultItems {
 
     public partial class Key : IFeatureLocale {
         [XmlAttribute] public int jobCode;
+
+        [XmlElement] public List<Slot> slot;
     }
 
     public partial class Slot {
-        [M2dFeatureLocale(Selector = "id")] private IList<Item> _item;
-        
         [XmlAttribute] public string name = string.Empty;
+        
+        [M2dFeatureLocale(Selector = "id")] private IList<Item> _item;
     }
 
     public partial class Item : IFeatureLocale {

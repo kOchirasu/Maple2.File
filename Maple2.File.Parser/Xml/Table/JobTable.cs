@@ -8,10 +8,10 @@ namespace Maple2.File.Parser.Xml.Table;
 // TODO: Validate with IDA against client.
 [XmlRoot("ms2")]
 public class JobRoot {
-    [XmlElement] public List<Job> job;
+    [XmlElement] public List<JobTable> job;
 }
 
-public partial class Job {
+public partial class JobTable {
     [XmlAttribute] public int code = 1;
     [XmlAttribute] public int characterBGM;
     [M2dArray] public string[] defaultWeaponSlot = Array.Empty<string>();
@@ -33,6 +33,7 @@ public partial class CharacterVoice : IFeatureLocale {
     [XmlAttribute] public string value;
 }
 
+[XmlType(Namespace = "StartInvenItem")]
 public partial class StartInvenItem {
     [XmlElement] public List<Item> item;
 
@@ -43,6 +44,7 @@ public partial class StartInvenItem {
     }
 }
 
+[XmlType(Namespace = "Reward")]
 public partial class Reward {
     [XmlElement] public List<Item> item;
 
@@ -53,6 +55,7 @@ public partial class Reward {
     }
 }
 
+[XmlType(Namespace = "Skills")]
 public partial class Skills {
     [XmlElement] public List<Skill> skill;
 
@@ -67,6 +70,7 @@ public partial class Skills {
     }
 }
 
+[XmlType(Namespace = "Learn")]
 public partial class Learn {
     [XmlAttribute] public short level;
 

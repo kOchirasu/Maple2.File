@@ -8,11 +8,13 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/na/colorpalette_achieve.xml
 [XmlRoot("ms2")]
 public class ColorPaletteRoot {
-    [XmlAttribute] public int id;
+    [XmlElement] public List<ColorPalette> color;
 }
 
 public partial class ColorPalette {
-    [XmlElement] public List<ColorPalette> color;
+    [XmlAttribute] public int id;
+    
+    [XmlElement] public List<Color> color;
 
     public partial class Color {
         [M2dColor] public System.Drawing.Color ch0;
