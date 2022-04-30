@@ -30,11 +30,11 @@ public static class FeatureLocaleFilter {
             .FirstByLocale();
     }
 
-    private static bool FeatureEnabled(string feature) {
+    public static bool FeatureEnabled(string feature) {
         return string.IsNullOrEmpty(feature) || Features.Contains(feature);
     }
 
-    private static bool HasLocale(string locale) {
+    public static bool HasLocale(string locale) {
         return string.IsNullOrEmpty(locale) || Locale.Equals(locale, StringComparison.OrdinalIgnoreCase);
     }
 
