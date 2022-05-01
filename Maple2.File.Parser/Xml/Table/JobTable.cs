@@ -7,11 +7,11 @@ namespace Maple2.File.Parser.Xml.Table;
 
 // TODO: Validate with IDA against client.
 [XmlRoot("ms2")]
-public class JobRoot {
-    [XmlElement] public List<JobTable> job;
+public partial class JobRoot {
+    [M2dFeatureLocale(Selector = "code")] private IList<JobTable> _job;
 }
 
-public partial class JobTable {
+public partial class JobTable : IFeatureLocale {
     [XmlAttribute] public int code = 1;
     [XmlAttribute] public int characterBGM;
     [M2dArray] public string[] defaultWeaponSlot = Array.Empty<string>();
@@ -40,7 +40,7 @@ public partial class StartInvenItem {
     public partial class Item : IFeatureLocale {
         [XmlAttribute] public int itemID;
         [XmlAttribute] public int grade;
-        [XmlAttribute] public int count;
+        [XmlAttribute] public int count = 1;
     }
 }
 
@@ -61,22 +61,23 @@ public partial class Skills {
 
     public partial class Skill : IFeatureLocale {
         [XmlAttribute] public int main;
-        [XmlAttribute] public int subJobCode;
         [M2dArray] public int[] sub = Array.Empty<int>();
+        [XmlAttribute] public int subJobCode;
+        [XmlAttribute] public short maxLevel = 1;
+        [XmlAttribute] public int quickSlotPriority;
         [M2dArray] public int[] uiPosition = Array.Empty<int>();
         [XmlAttribute] public bool uiHighlight;
-        [XmlAttribute] public short maxLevel;
-        [XmlAttribute] public int quickSlotPriority;
     }
 }
 
 [XmlType(Namespace = "Learn")]
 public partial class Learn {
-    [XmlAttribute] public short level;
+    [XmlAttribute] public short level; // Basic=1, Awakening=2
 
     [XmlElement] public List<Skill> skill;
 
     public partial class Skill : IFeatureLocale {
         [XmlAttribute] public int id;
+        [M2dArray] public int[] sub = Array.Empty<int>();
     }
 }

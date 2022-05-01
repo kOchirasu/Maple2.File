@@ -15,10 +15,13 @@ public class MapParserTest {
         // parser.MapSerializer.UnknownElement += TestUtils.UnknownElementHandler;
         // parser.MapSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
         
+        int count = 0;
         foreach ((int id, string name, MapData data) in parser.Parse()) {
             // Debug.WriteLine($"Parsing Map: {id} ({name})");
             Assert.IsTrue(id > 0);
             Assert.IsNotNull(data);
+            count++;
         }
+        Assert.AreEqual(1153, count);
     }
 }

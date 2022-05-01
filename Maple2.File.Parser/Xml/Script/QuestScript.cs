@@ -13,5 +13,5 @@ public class QuestScriptRoot {
 public partial class QuestScript {
     [XmlAttribute] public int id;
 
-    [M2dFeatureLocale] private IList<TalkScript> _script;
+    [M2dFeatureLocale(Selector = "id")] private IList<TalkScript> _script;
 }

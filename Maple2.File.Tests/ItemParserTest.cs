@@ -14,11 +14,14 @@ public class ItemParserTest {
         // parser.NameSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
         // parser.ItemSerializer.UnknownElement += TestUtils.UnknownElementHandler;
         // parser.ItemSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
-        
+
+        int count = 0;
         foreach ((int id, string name, ItemData data) in parser.Parse()) {
             // Debug.WriteLine($"Parsing item: {id} ({name})");
             Assert.IsTrue(id > 0);
             Assert.IsNotNull(data);
+            count++;
         }
+        Assert.AreEqual(35136, count);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Maple2.File.Generator.Utils;
@@ -26,6 +27,9 @@ public abstract class XmlGenerator : ISourceGenerator {
     }
 
     public virtual void Execute(GeneratorExecutionContext context) {
+        if (!Debugger.IsAttached) {
+            Debugger.Launch();
+        }
         // Register the attribute source
         context.AddSource(attributeName, attributeSource);
 

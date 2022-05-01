@@ -32,8 +32,30 @@ public class TableTest {
     public void TestJobTableParser() {
         var parser = new JobTableParser(TestUtils.XmlReader);
 
-        foreach (JobTable _ in parser.Parse()) {
-            continue;
+        Dictionary<int, List<JobTable>> results = parser.Parse()
+            .GroupBy(result => result.code)
+            .ToDictionary(group => group.Key, group => group.ToList());
+
+        var expected = new Dictionary<int, string> {
+            {1, ""},
+            {10, "JobChange_02"},
+            {20, "JobChange_02"},
+            {30, "JobChange_02"},
+            {40, "JobChange_02"},
+            {50, "JobChange_02"},
+            {60, "JobChange_02"},
+            {70, "JobChange_02"},
+            {80, "JobChange_02"},
+            {90, "JobChange_02"},
+            {100, "JobChange_02"},
+            {110, "JobChange_02"},
+        };
+        foreach ((int jobCode, string feature) in expected) {
+            Assert.IsTrue(results.TryGetValue(jobCode, out List<JobTable>? job));
+            Assert.IsNotNull(job);
+            // Ensure that FeatureLocale was filtered properly
+            Assert.AreEqual(1, job.Count);
+            Assert.AreEqual(job[0].Feature, feature);
         }
     }
 }

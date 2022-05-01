@@ -83,7 +83,7 @@ public class XmlFeatureLocaleGenerator : XmlGenerator {
 
         return $@"
 private List<{type}> {field.Name}_;
-public {type} {propertyName} => {field.Name}_.FirstFeatureLocale();
+public {type} {propertyName} => {field.Name}_.ResolveFeatureLocale();
 
 [XmlElement(""{propertyName}"")]
 public List<{type}> _{field.Name} {{
@@ -108,7 +108,7 @@ public List<{type}> _{field.Name} {{
 
         return $@"
 private {concreteList} {field.Name}_;
-public {type} {propertyName} => {field.Name}_.FeatureLocale({groupBy}).ToList();
+public {type} {propertyName} => {field.Name}_.ResolveFeatureLocale({groupBy}).ToList();
 
 [XmlElement(""{propertyName}"")]
 public {concreteList} _{field.Name} {{

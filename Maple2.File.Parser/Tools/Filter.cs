@@ -22,7 +22,7 @@ public static class Filter {
         reader = xmlReader.GetXmlReader(xmlReader.GetEntry("feature.xml"));
         var featureRoot = (FeatureRoot) featureSerializer.Deserialize(reader);
 
-        HashSet<string> features = featureRoot.feature.Where(feature => {
+        Dictionary<string, int> features = featureRoot.feature.Where(feature => {
             return locale switch {
                 "TW" => feature.TW <= setting.TW,
                 "TH" => feature.TH <= setting.TH,
@@ -32,7 +32,17 @@ public static class Filter {
                 "KR" => feature.KR <= setting.KR,
                 _ => throw new ArgumentException($"Unsupported locale: {locale}"),
             };
-        }).Select(feature => feature.name).ToHashSet();
+        }).Select(feature => {
+            return locale switch {
+                "TW" => (feature.name, feature.TW),
+                "TH" => (feature.name, feature.TH),
+                "NA" => (feature.name, feature.NA),
+                "CN" => (feature.name, feature.CN),
+                "JP" => (feature.name, feature.JP),
+                "KR" => (feature.name, feature.KR),
+                _ => throw new ArgumentException($"Unsupported locale: {locale}"),
+            };
+        }).ToDictionary(entry => entry.name, entry => entry.Item2);
 
         FeatureLocaleFilter.Locale = locale;
         FeatureLocaleFilter.Features = features;

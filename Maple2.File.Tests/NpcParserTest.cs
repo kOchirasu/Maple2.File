@@ -14,11 +14,14 @@ public class NpcParserTest {
         // parser.NameSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
         // parser.NpcSerializer.UnknownElement += TestUtils.UnknownElementHandler;
         // parser.NpcSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
-        
+
+        int count = 0;
         foreach ((int id, string name, NpcData data, List<EffectDummy> dummy) in parser.Parse()) {
             // Debug.WriteLine($"Parsing Npc: {id} ({name})");
             Assert.IsTrue(id > 0);
             Assert.IsNotNull(data);
+            count++;
         }
+        Assert.AreEqual(7402, count);
     }
 }
