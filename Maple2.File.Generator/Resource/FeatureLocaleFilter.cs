@@ -19,7 +19,7 @@ public static class FeatureLocaleFilter {
     public static IEnumerable<T> FeatureLocale<T>(this IEnumerable<T> results) where T : IFeatureLocale {
         return results.Where(data => FeatureEnabled(data.Feature) && HasLocale(data.Locale));
     }
-    
+
     public static T ResolveFeatureLocale<T>(this IEnumerable<T> results) where T : IFeatureLocale {
         return results.FeatureLocale().Resolve();
     }
@@ -43,32 +43,34 @@ public static class FeatureLocaleFilter {
 
     private static T Resolve<T>(this IEnumerable<T> enumerable) where T : IFeatureLocale {
         List<T> entries = enumerable.ToList();
-        
+
         // Matching locale is preferred over empty locale.
         List<T> filtered = entries.Where(entry => Locale.Equals(entry.Locale, StringComparison.OrdinalIgnoreCase)).ToList();
         if (filtered.Count == 0) {
             filtered = entries.Where(entry => string.IsNullOrEmpty(entry.Locale)).ToList();
         }
-        
+
         // If no matches, just return null.
         T result = default(T);
         int maxVersion = -1;
-        
+
         // Now that we have filtered on locale, resolve by feature with the highest version.
         foreach (T entry in filtered) {
             // Unspecified feature is lowest priority for matching.
-            if (string.IsNullOrWhiteSpace(entry.Feature) && maxVersion == -1) {
-                result = entry;
+            if (string.IsNullOrWhiteSpace(entry.Feature)) {
+                if (maxVersion == -1) {
+                    result = entry;
+                }
                 continue;
             }
-            
+
             int version = Features[entry.Feature];
             if (version > maxVersion) {
                 result = entry;
                 maxVersion = version;
             }
         }
-        
+
         return result;
     }
 }

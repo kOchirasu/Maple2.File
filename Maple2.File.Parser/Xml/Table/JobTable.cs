@@ -22,11 +22,11 @@ public partial class JobTable : IFeatureLocale {
     [M2dArray] public int[] tutorialClearOpenTaxis = Array.Empty<int>();
     [XmlAttribute] public int startField; // default = 524289?
 
-    [XmlElement] public List<CharacterVoice> characterVoice;
+    [M2dFeatureLocale] private CharacterVoice _characterVoice;
     [XmlElement] public JobItem startInvenItem;
     [XmlElement] public JobItem reward;
     [XmlElement] public Skills skills;
-    [XmlElement] public Learn learn;
+    [XmlElement] public List<Learn> learn;
 }
 
 public partial class CharacterVoice : IFeatureLocale {
@@ -34,7 +34,7 @@ public partial class CharacterVoice : IFeatureLocale {
 }
 
 public partial class JobItem {
-    [XmlElement] public List<Item> item;
+    [M2dFeatureLocale(Selector = "itemID")] private IList<Item> _item;
 
     public partial class Item : IFeatureLocale {
         [XmlAttribute] public int itemID;
@@ -45,7 +45,7 @@ public partial class JobItem {
 }
 
 public partial class Skills {
-    [XmlElement] public List<Skill> skill;
+    [M2dFeatureLocale(Selector = "main")] private IList<Skill> _skill;
 
     public partial class Skill : IFeatureLocale {
         [XmlAttribute] public int main;
@@ -61,7 +61,7 @@ public partial class Skills {
 public partial class Learn {
     [XmlAttribute] public short level;
 
-    [XmlElement] public List<LearnSkill> skill;
+    [M2dFeatureLocale(Selector = "id")] private IList<LearnSkill> _skill;
 
     public partial class LearnSkill : IFeatureLocale {
         [XmlAttribute] public int id;

@@ -9,8 +9,8 @@ namespace Maple2.File.Parser.Xml.Skill;
 // ./data/xml/skill/%02d/%08u.xml
 [XmlRoot("ms2")]
 public partial class SkillData : IFeatureLocale {
-    [XmlElement] public List<Basic> basic;
-    [XmlElement] public List<SkillLevelData> level;
+    [M2dFeatureLocale] private Basic _basic;
+    [M2dFeatureLocale(Selector = "value")] private IList<SkillLevelData> _level;
 }
 
 public partial class SkillLevelData : IFeatureLocale {
