@@ -5,7 +5,7 @@ using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Table;
 
-// TODO: Validate with IDA against client.
+// ./data/xml/table/job.xml
 [XmlRoot("ms2")]
 public partial class JobRoot {
     [M2dFeatureLocale(Selector = "code")] private IList<JobTable> _job;
@@ -23,8 +23,8 @@ public partial class JobTable : IFeatureLocale {
     [XmlAttribute] public int startField; // default = 524289?
 
     [XmlElement] public List<CharacterVoice> characterVoice;
-    [XmlElement] public StartInvenItem startInvenItem;
-    [XmlElement] public Reward reward;
+    [XmlElement] public JobItem startInvenItem;
+    [XmlElement] public JobItem reward;
     [XmlElement] public Skills skills;
     [XmlElement] public Learn learn;
 }
@@ -33,29 +33,17 @@ public partial class CharacterVoice : IFeatureLocale {
     [XmlAttribute] public string value;
 }
 
-[XmlType(Namespace = "StartInvenItem")]
-public partial class StartInvenItem {
+public partial class JobItem {
     [XmlElement] public List<Item> item;
 
     public partial class Item : IFeatureLocale {
         [XmlAttribute] public int itemID;
         [XmlAttribute] public int grade;
         [XmlAttribute] public int count = 1;
+        [XmlAttribute] public string slotHint = string.Empty;
     }
 }
 
-[XmlType(Namespace = "Reward")]
-public partial class Reward {
-    [XmlElement] public List<Item> item;
-
-    public partial class Item : IFeatureLocale{
-        [XmlAttribute] public int itemID;
-        [XmlAttribute] public int grade;
-        [XmlAttribute] public string slotHint;
-    }
-}
-
-[XmlType(Namespace = "Skills")]
 public partial class Skills {
     [XmlElement] public List<Skill> skill;
 
@@ -70,13 +58,12 @@ public partial class Skills {
     }
 }
 
-[XmlType(Namespace = "Learn")]
 public partial class Learn {
-    [XmlAttribute] public short level; // Basic=1, Awakening=2
+    [XmlAttribute] public short level;
 
-    [XmlElement] public List<Skill> skill;
+    [XmlElement] public List<LearnSkill> skill;
 
-    public partial class Skill : IFeatureLocale {
+    public partial class LearnSkill : IFeatureLocale {
         [XmlAttribute] public int id;
         [M2dArray] public int[] sub = Array.Empty<int>();
     }

@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 
 namespace Maple2.File.Parser.Xml.Table;
 
+// ./data/xml/table/feature.xml
 [XmlRoot("ms2")]
 public class FeatureRoot {
     [XmlElement] public List<Feature> feature;

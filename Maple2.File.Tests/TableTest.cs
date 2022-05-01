@@ -56,6 +56,9 @@ public class TableTest {
             // Ensure that FeatureLocale was filtered properly
             Assert.AreEqual(1, job.Count);
             Assert.AreEqual(job[0].Feature, feature);
+            // Ensure that some value was parsed
+            Assert.IsTrue(job[0].skills.skill.Count > 0);
+            Assert.IsTrue(job[0].learn.skill.Count > 0);
         }
     }
 }
