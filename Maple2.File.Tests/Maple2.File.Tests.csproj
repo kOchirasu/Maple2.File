@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Maple2.File.Flat\Maple2.File.Flat.csproj" />
       <ProjectReference Include="..\Maple2.File.IO\Maple2.File.IO.csproj" />
       <ProjectReference Include="..\Maple2.File.Parser\Maple2.File.Parser.csproj" />
     </ItemGroup>

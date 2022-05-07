@@ -9,7 +9,7 @@ using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
 using Maple2.File.Parser.Flat;
 
-namespace Maple2.File.Parser.MapXBlock; 
+namespace Maple2.File.Parser.MapXBlock;
 
 public class XBlockParser {
     private readonly M2dReader reader;
@@ -46,7 +46,7 @@ public class XBlockParser {
                 string xblock = Path.GetFileNameWithoutExtension(file.Name);
                 return (xblock, ParseEntities(file));
             });
-            
+
         foreach ((string xblock, IEnumerable<IMapEntity> entities) in results) {
             callback(xblock, entities);
         }
@@ -69,7 +69,7 @@ public class XBlockParser {
                 throw new ArgumentException($"Type {parseType.Name} is not IMapEntity");
             }
         }
-            
+
         foreach (Type entityType in Assembly.GetAssembly(typeof(IMapEntity)).GetTypes()) {
             var assignable = new List<string>();
             foreach (Type parseType in types) {
@@ -164,7 +164,7 @@ public class XBlockParser {
             OnError?.Invoke($"Ignoring unknown field {name} on {type.Name}");
             return;
         }
-            
+
         field.SetValue(entity, value);
     }
 }

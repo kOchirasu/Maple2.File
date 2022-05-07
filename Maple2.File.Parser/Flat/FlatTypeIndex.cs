@@ -8,13 +8,15 @@ using Maple2.File.IO;
 using Maple2.File.IO.Crypto.Common;
 using Maple2.File.Parser.Tools;
 
-namespace Maple2.File.Parser.Flat; 
+namespace Maple2.File.Parser.Flat;
 
 public class FlatTypeIndex {
     public readonly HierarchyMap<FlatType> Hierarchy;
 
     private readonly string root; // flat, flat/library, flat/presets
     private readonly Dictionary<string, FlatTypeNode> typeNodes;
+
+    public bool MinimizeProperties { get; set; } = false;
 
     public FlatTypeIndex(M2dReader reader, string root = "flat") {
         this.root = root;
@@ -117,16 +119,19 @@ public class FlatTypeIndex {
                     };
                 }
 
-                // Don't add this property if the same value is already inherited
-                FlatProperty inheritedProperty = type.GetProperty(property.Name);
-                if (inheritedProperty != null && inheritedProperty.ValueEquals(property.Value)) {
-                    continue;
+                // Skip this check by default because it doesn't seem fully correct.
+                if (MinimizeProperties) {
+                    // Don't add this property if the same value is already inherited
+                    FlatProperty inheritedProperty = type.GetProperty(property.Name);
+                    if (inheritedProperty != null && inheritedProperty.ValueEquals(property.Value)) {
+                        continue;
+                    }
                 }
 
                 type.Properties.Add(property.Name, property);
             }
         }
-        
+
         return types;
     }
 
@@ -190,12 +195,12 @@ public class FlatTypeIndex {
                             Console.WriteLine($"Invalid type: {name}");
                             continue;
                         }
-                            
+
                         string field = input[2];
                         if (type.Properties.ContainsKey(field)) {
                             Console.WriteLine(type.Name);
                         }
-                            
+
                         foreach (FlatType parent in type.Mixin) {
                             if (parent.Properties.ContainsKey(field)) {
                                 Console.WriteLine(parent.Name);
