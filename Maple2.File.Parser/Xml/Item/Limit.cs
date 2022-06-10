@@ -13,12 +13,12 @@ public partial class Limit {
     [M2dNullable] public int? globalTransferType;
     [M2dNullable] public int? globalTransferTypeNA;
     [XmlAttribute] public int transferTypeVersion;
-    [XmlAttribute] public int shopSell;
-    [XmlAttribute] public int enableBreak;
-    [XmlAttribute] public int enableRegisterMeratMarket;
-    [XmlAttribute] public int exceptEnchant;
-    [XmlAttribute] public int vip;
-    [XmlAttribute] public int wedding;
+    [XmlAttribute] public bool shopSell;
+    [XmlAttribute] public bool enableBreak;
+    [XmlAttribute] public bool enableRegisterMeratMarket;
+    [XmlAttribute] public bool exceptEnchant;
+    [XmlAttribute] public bool vip;
+    [XmlAttribute] public bool wedding;
     [XmlAttribute] public int tradeLimitRank = 4;
     [XmlAttribute] public int vipLevel;
     [XmlAttribute] public bool enableSocketTransfer = true;

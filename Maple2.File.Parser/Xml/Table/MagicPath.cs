@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-namespace Maple2.File.Parser.Xml.Table; 
+namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/magicPath.xml
 [XmlRoot("ms2")]
@@ -37,7 +37,7 @@ public partial class MagicData {
     [XmlAttribute] public float controlRate;
     [XmlAttribute] public int lookAtType;
     [XmlAttribute] public int catmullrom;
-    [XmlAttribute] public int rotation = 1;
+    [XmlAttribute] public bool rotation = true;
     [XmlAttribute] public float traceTargetDuration;
     [XmlAttribute] public bool explosionByDestroy = true;
     [XmlAttribute] public bool traceTargetOffsetPos;
@@ -50,6 +50,6 @@ public partial class MagicData {
 
     // Ignored by client.
     [XmlAttribute] public bool align;
-    [XmlAttribute] public int alignCubeHeight;
+    [XmlAttribute] public bool alignCubeHeight;
     [XmlAttribute] public bool ignoreAdjustCubePosition;
 }

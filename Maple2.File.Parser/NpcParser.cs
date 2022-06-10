@@ -28,13 +28,13 @@ public class NpcParser {
         var mapping = NameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
-        Dictionary<int, string> npcNames = mapping.key.ToDictionary(key => key.id, key => key.name);
+        Dictionary<int, string> npcNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("npc/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeNpc(xmlReader.GetString(entry))));
             var root = NpcSerializer.Deserialize(reader) as NpcDataRoot;
             Debug.Assert(root != null);
-            
+
             NpcData data = root.environment;
             if (data == null) continue;
 

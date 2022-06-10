@@ -29,7 +29,7 @@ public class MapParser {
         var mapping = NameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
-        Dictionary<int, string> mapNames = mapping.key.ToDictionary(key => key.id, key => key.name);
+        Dictionary<int, string> mapNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("map/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.SanitizeMap(xmlReader.GetString(entry))));

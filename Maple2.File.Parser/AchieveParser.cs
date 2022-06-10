@@ -28,7 +28,7 @@ public class AchieveParser {
         var mapping = nameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
-        Dictionary<int, string> achieveNames = mapping.key.ToDictionary(key => key.id, key => key.name);
+        Dictionary<int, string> achieveNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("achieve/"))) {
             reader = XmlReader.Create(new StringReader(Sanitizer.RemoveEmpty(xmlReader.GetString(entry))));

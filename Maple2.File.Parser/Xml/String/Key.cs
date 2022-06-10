@@ -5,5 +5,5 @@ namespace Maple2.File.Parser.Xml.String;
 
 public partial class Key : IFeatureLocale {
     [XmlAttribute] public string name = string.Empty;
-    [XmlAttribute] public int id;
+    [XmlAttribute] public string id;
 }

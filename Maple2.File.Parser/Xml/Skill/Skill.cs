@@ -56,7 +56,7 @@ public class SkillGlideData {
 }
 
 public class SkillMotionData {
-    [XmlElement] public List<SkillMotionProperty> motionProperty;
+    [XmlElement] public SkillMotionProperty motionProperty;
     [XmlElement] public List<SkillAttackData> attack;
 }
 

@@ -31,7 +31,7 @@ public class SkillParser {
             Debug.Assert(mapping != null);
 
             foreach (Key key in mapping.key) {
-                skillNames.Add(key.id, key.name);
+                skillNames.Add(int.Parse(key.id), key.name);
             }
         }
 

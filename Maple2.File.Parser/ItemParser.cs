@@ -27,7 +27,7 @@ public class ItemParser {
         var mapping = NameSerializer.Deserialize(reader) as StringMapping;
         Debug.Assert(mapping != null);
 
-        Dictionary<int, string> itemNames = mapping.key.ToDictionary(key => key.id, key => key.name);
+        Dictionary<int, string> itemNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
 
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("item/"))) {
             var root = ItemSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as ItemDataRoot;
