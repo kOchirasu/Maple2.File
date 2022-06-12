@@ -1,9 +1,9 @@
 ﻿using System.Xml.Serialization;
 
-namespace Maple2.File.Parser.Xml.AdditionalEffect; 
+namespace Maple2.File.Parser.Xml.AdditionalEffect;
 
 public class RecoveryProperty {
-    [XmlAttribute] public int showUIText;
+    [XmlAttribute] public bool showUIText;
     [XmlAttribute] public float RecoveryRate;
     [XmlAttribute] public long hpValue;
     [XmlAttribute] public float hpRate;
@@ -16,5 +16,5 @@ public class RecoveryProperty {
     [XmlAttribute] public int statChangeBase;
     [XmlAttribute] public int statChangeResult;
     [XmlAttribute] public float statChangeRate;
-    [XmlAttribute] public int disableCriticalRecovery;
+    [XmlAttribute] public bool disableCriticalRecovery;
 }

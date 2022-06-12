@@ -78,24 +78,24 @@ public partial class SkillMotionProperty {
     [XmlAttribute] public bool IgnoreOptimalHideSplashInvokeEffect;
     [XmlAttribute] public bool IgnoreOptimalHideSplashEndEffect;
     [XmlAttribute] public bool splashCastEffectStartDelay;
-    [XmlAttribute] public int splashLifeTick;
-    [XmlAttribute] public int splashInvokeCoolTick;
+    [XmlAttribute] public int splashLifeTick; // 0,6000,8000,10000,12000,14000,16000,18000,20000,22000,24000,26000,28000
+    [XmlAttribute] public int splashInvokeCoolTick; // 0,100
     [XmlAttribute] public float sequenceSpeed;
     [XmlAttribute] public float keyMove;
-    [XmlAttribute] public int movetype;
+    [XmlAttribute] public int movetype; // 0,3
     [XmlAttribute] public float moveangle;
     [XmlAttribute] public float movevangle;
     [XmlAttribute] public float movedistance;
-    [XmlAttribute] public int moveEaseType;
+    [XmlAttribute] public int moveEaseType; // 0,1,2
     [XmlAttribute] public float moveMid;
     [XmlAttribute] public float moveHeight;
-    [XmlAttribute] public int hide;
-    [XmlAttribute] public int ignoreCollisionGroups;
-    [XmlAttribute] public int holdWeapon;
+    [XmlAttribute] public int hide; // 0
+    [XmlAttribute] public int ignoreCollisionGroups; // 0,4,16,20
+    [XmlAttribute] public bool holdWeapon;
     [XmlAttribute] public int loopCount;
-    [XmlAttribute] public int faceTarget;
+    [XmlAttribute] public bool faceTarget;
     [XmlAttribute] public bool doesPlayIdleOnSkillEnd;
-    [XmlAttribute] public int startNoneBlendDelay;
+    [XmlAttribute] public bool startNoneBlendDelay;
     [XmlAttribute] public bool ignoreASP;
     [XmlAttribute] public float pushCylinderVelH;
     [XmlAttribute] public float pushCylinderVelV;
@@ -108,20 +108,20 @@ public partial class SkillMotionProperty {
 public partial class SkillAttackData {
     [XmlAttribute] public string point = string.Empty;
     [XmlAttribute] public int pointGroupID;
-    [XmlAttribute] public int targetCount;
+    [XmlAttribute] public int targetCount; // 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,26,30,50,52,80,99,100,200,9999
     [XmlAttribute] public int magicPathID;
     [XmlAttribute] public int cubeMagicPathID;
-    [XmlAttribute] public int direction = 3;
+    [XmlAttribute] public int direction = 3; // 0,1,2,3,4
     [XmlAttribute] public int sequence;
-    [XmlAttribute] public int attacktype;
-    [XmlAttribute] public int attackMethodType;
-    [XmlAttribute] public int hitImmuneBreak;
+    [XmlAttribute] public int attacktype; // 0,1,2,3
+    [XmlAttribute] public int attackMethodType; // 0,1
+    [XmlAttribute] public int hitImmuneBreak; // 0,1,2,3,5,99
     [XmlAttribute] public float brokenForce;
-    [XmlAttribute] public int brokenOffence;
-    [XmlAttribute] public int unrideOnHit;
-    [XmlAttribute] public int releaseObjectWeaponOnHit = 1;
+    [XmlAttribute] public int brokenOffence; // 0,1,2,3,4,5,10,25,50,53,55,60,61,63,65,66,67,70,71,75,76,80,81,85,86,88,90,91,92,93,95,96,97,99
+    [XmlAttribute] public int unrideOnHit; // 0,1,2,5
+    [XmlAttribute] public int releaseObjectWeaponOnHit = 1; // 0,1,2,3,5
     [M2dArray] public int[] compulsionType = Array.Empty<int>();
-    [XmlAttribute] public int grabTargetType;
+    [XmlAttribute] public int grabTargetType; // 0,1,2,3
     [M2dArray] public string[] grabNodeCategory = Array.Empty<string>();
 
     [XmlElement] public PetTamingProperty petTamingProperty;

@@ -8,16 +8,16 @@ public partial class Basic {
     [XmlAttribute] public int chapterID;
     [XmlAttribute] public int questID;
     [XmlAttribute] public int standardLevel;
-    [XmlAttribute] public int autoStart;
-    [XmlAttribute] public int disableGiveup;
-    [XmlAttribute] public int exceptChapterClear;
-    [XmlAttribute] public int repeatable;
-    [XmlAttribute] public int questType;
-    [XmlAttribute] public int account;
+    [XmlAttribute] public bool autoStart;
+    [XmlAttribute] public bool disableGiveup;
+    [XmlAttribute] public bool exceptChapterClear;
+    [XmlAttribute] public int repeatable; // 0,1,2,3
+    [XmlAttribute] public int questType; // 0,1,2,3,4,5,6,8,9
+    [XmlAttribute] public int account; // 0,1,2
     [XmlAttribute] public string eventTag = string.Empty;
-    [XmlAttribute] public int locking;
-    [XmlAttribute] public int tabIndex = -1;
-    [XmlAttribute] public int forceRegistGuide;
+    [XmlAttribute] public bool locking;
+    [XmlAttribute] public int tabIndex = -1; // -1,1,2
+    [XmlAttribute] public bool forceRegistGuide;
     [XmlAttribute] public bool useNavi;
     [M2dEnum] public AllianceType alliance = AllianceType.unknown;
     [M2dEnum] public AllianceRank rank = AllianceRank.Unknown;

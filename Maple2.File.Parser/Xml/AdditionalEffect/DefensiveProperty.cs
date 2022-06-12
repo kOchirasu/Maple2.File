@@ -1,11 +1,11 @@
 ﻿using System.Xml.Serialization;
 
-namespace Maple2.File.Parser.Xml.AdditionalEffect; 
+namespace Maple2.File.Parser.Xml.AdditionalEffect;
 
 public class DefensiveProperty {
     [XmlAttribute] public long papDamageV;
     [XmlAttribute] public float papDamageR;
     [XmlAttribute] public long mapDamageV;
     [XmlAttribute] public float mapDamageR;
-    [XmlAttribute] public int invincible;
+    [XmlAttribute] public int invincible; // 0,1,2,3,150
 }

@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-namespace Maple2.File.Parser.Xml.Skill; 
+namespace Maple2.File.Parser.Xml.Skill;
 
 public partial class ChangeSkill {
     [M2dArray] public int[] changeSkillCheckEffectID = Array.Empty<int>();
@@ -12,5 +12,5 @@ public partial class ChangeSkill {
     [M2dArray] public int[] changeSkillLevel = Array.Empty<int>();
     [XmlAttribute] public int originSkillID;
     [XmlAttribute] public short originSkillLevel = 1;
-    [XmlAttribute] public int autoChange;
+    [XmlAttribute] public int autoChange; // 0,1,2
 }

@@ -7,7 +7,7 @@ namespace Maple2.File.Tests;
 [TestClass]
 public class SkillParserTest {
     [TestMethod]
-    public void TestNpcParser() {
+    public void TestSkillParser() {
         var parser = new SkillParser(TestUtils.XmlReader);
 
         int count = 0;

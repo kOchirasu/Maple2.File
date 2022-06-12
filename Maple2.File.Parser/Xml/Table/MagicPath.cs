@@ -50,6 +50,6 @@ public partial class MagicData {
 
     // Ignored by client.
     [XmlAttribute] public bool align;
-    [XmlAttribute] public bool alignCubeHeight;
+    [XmlAttribute] public int alignCubeHeight;
     [XmlAttribute] public bool ignoreAdjustCubePosition;
 }

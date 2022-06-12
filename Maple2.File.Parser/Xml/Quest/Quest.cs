@@ -31,7 +31,7 @@ public partial class QuestData {
     [XmlElement] public ProgressMap progressMap;
     [XmlElement] public Guide guide;
     [XmlElement] public EventMission eventMission;
-    [XmlElement] public MentoringMission mentoringMission;
+    [XmlElement] public MentoringMission mentoringMission; // feature="Mentoring"
     [XmlElement] public Dispatch dispatch;
     [XmlElement] public GotoNpc gotoNpc;
     [XmlElement] public GotoDungeon gotoDungeon;
@@ -47,7 +47,7 @@ public partial class QuestData {
         [XmlAttribute] public int npc;
         [M2dEnum] public NavigationType type = NavigationType.unknown;
 
-        [M2dArray] public int[] code = Array.Empty<int>();
+        //[M2dArray] public int[] code = Array.Empty<int>(); // Never set
         [M2dArray] public int[] map = Array.Empty<int>();
 
         // Ignored by client.

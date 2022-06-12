@@ -25,7 +25,7 @@ public partial class Reward {
     [XmlAttribute] public int slotTab = 4;
     [XmlAttribute] public int slotIndex;
 
-    [XmlElement] public List<Item> selectedItem;
+    //[XmlElement] public List<Item> selectedItem; // Never set
     [XmlElement] public List<Item> essentialItem;
     [XmlElement] public List<Item> essentialJobItem;
     [XmlElement] public List<Item> globalEssentialItem; // Feature 149
@@ -35,6 +35,6 @@ public partial class Reward {
         [XmlAttribute] public int count;
         [XmlAttribute] public int code;
         [XmlAttribute] public int rank = 1;
-        [XmlAttribute] public int equip;
+        //[XmlAttribute] public int equip; // Never set
     }
 }
