@@ -19,5 +19,8 @@ public class M2dFeatureLocaleAttribute : XmlIgnoreAttribute {
     ///
     /// Selector would be 'key'
     /// </summary>
+    /// <remarks>
+    /// To specify multiple selectors, separate each with '|'.
+    /// </remarks>
     public string? Selector { get; set; }
 }

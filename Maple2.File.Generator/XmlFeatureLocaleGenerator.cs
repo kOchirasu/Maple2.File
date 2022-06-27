@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -6,7 +7,7 @@ using Maple2.File.Generator.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Maple2.File.Generator; 
+namespace Maple2.File.Generator;
 
 [Generator]
 public class XmlFeatureLocaleGenerator : XmlGenerator {
@@ -103,12 +104,19 @@ public List<{type}> _{field.Name} {{
         string type = field.Type.ToDisplayString();
         string concreteList = type.Replace("IList", "List");
 
-        string groupSelector = attributeData.GetValueOrDefault("Selector", string.Empty);
-        string groupBy = string.IsNullOrEmpty(groupSelector) ? string.Empty : $"select => select.{groupSelector}";
+        string[] groupSelector = attributeData.GetValueOrDefault("Selector", string.Empty).Split("|");
+        var groupBy = new StringBuilder();
+        if (groupSelector.Length == 1) {
+            groupBy.Append($"select => select.{groupSelector[0]}");
+        } else {
+            groupBy.Append("select => (select.");
+            groupBy.Append(string.Join(", select.", groupSelector));
+            groupBy.Append(')');
+        }
 
         return $@"
 private {concreteList} {field.Name}_;
-public {type} {propertyName} => {field.Name}_.ResolveFeatureLocale({groupBy}).ToList();
+public {type} {propertyName} => {field.Name}_.ResolveFeatureLocale({groupBy.ToString()}).ToList();
 
 [XmlElement(""{propertyName}"")]
 public {concreteList} _{field.Name} {{
