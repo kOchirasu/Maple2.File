@@ -14,8 +14,10 @@ public class TableParser {
     private readonly M2dReader xmlReader;
     private readonly XmlSerializer paletteSerializer;
     private readonly XmlSerializer defaultItemsSerializer;
+    private readonly XmlSerializer dungeonRoomSerializer;
     private readonly XmlSerializer itemBreakIngredientSerializer;
     private readonly XmlSerializer itemGemstoneUpgradeSerializer;
+    private readonly XmlSerializer itemLapenshardUpgradeSerializer;
     private readonly XmlSerializer jobSerializer;
     private readonly XmlSerializer setItemOptionSerializer;
 
@@ -23,8 +25,10 @@ public class TableParser {
         this.xmlReader = xmlReader;
         this.paletteSerializer = new XmlSerializer(typeof(ColorPaletteRoot));
         this.defaultItemsSerializer = new XmlSerializer(typeof(DefaultItems));
+        this.dungeonRoomSerializer = new XmlSerializer(typeof(DungeonRoomRoot));
         this.itemBreakIngredientSerializer = new XmlSerializer(typeof(ItemBreakIngredientRoot));
         this.itemGemstoneUpgradeSerializer = new XmlSerializer(typeof(ItemGemstoneUpgradeRoot));
+        this.itemLapenshardUpgradeSerializer = new XmlSerializer(typeof(ItemLapenshardUpgradeRoot));
         this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
         this.jobSerializer = new XmlSerializer(typeof(JobRoot));
     }
@@ -61,6 +65,17 @@ public class TableParser {
         }
     }
 
+    public IEnumerable<(int Id, DungeonRoom Item)> ParseDungeonRoom() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/dungeonroom.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = dungeonRoomSerializer.Deserialize(reader) as DungeonRoomRoot;
+        Debug.Assert(data != null);
+
+        foreach (DungeonRoom dungeon in data.dungeonRoom) {
+            yield return (dungeon.dungeonRoomID, dungeon);
+        }
+    }
+
     public IEnumerable<(int ItemId, ItemBreakIngredient Item)> ParseItemBreakIngredient() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/itembreakingredient.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
@@ -79,6 +94,17 @@ public class TableParser {
         Debug.Assert(data != null);
 
         foreach (ItemGemstoneUpgrade key in data.key) {
+            yield return (key.ItemId, key);
+        }
+    }
+
+    public IEnumerable<(int ItemId, ItemLapenshardUpgrade Item)> ParseItemLapenshardUpgrade() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/itemlapenshardupgrade.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = itemLapenshardUpgradeSerializer.Deserialize(reader) as ItemLapenshardUpgradeRoot;
+        Debug.Assert(data != null);
+
+        foreach (ItemLapenshardUpgrade key in data.key) {
             yield return (key.ItemId, key);
         }
     }

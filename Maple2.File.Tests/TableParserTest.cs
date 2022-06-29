@@ -29,6 +29,15 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestDungeonRoomParser() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseDungeonRoom()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestItemBreakIngredientParser() {
         var parser = new TableParser(TestUtils.XmlReader);
 
@@ -46,23 +55,12 @@ public class TableParserTest {
         }
     }
 
-    private record struct Obj(int a, int b, int c);
-
     [TestMethod]
-    public void Test() {
-        var a = new List<Obj>();
-        a.Add(new Obj(1, 2, 3));
-        a.Add(new Obj(1, 2, 4));
-        a.Add(new Obj(1, 2, 5));
-        a.Add(new Obj(1, 3, 6));
-        a.Add(new Obj(2, 2, 7));
-        a.Add(new Obj(1, 2, 3));
+    public void TestItemLapenshardUpgradeParser() {
+        var parser = new TableParser(TestUtils.XmlReader);
 
-        foreach (IGrouping<(int a, int b), Obj> group in a.GroupBy(select => (select.a, select.b))) {
-            Console.WriteLine($"{group.Key}:");
-            foreach (Obj result in group) {
-                Console.WriteLine($"- {result}");
-            }
+        foreach ((_, _) in parser.ParseItemLapenshardUpgrade()) {
+            continue;
         }
     }
 
