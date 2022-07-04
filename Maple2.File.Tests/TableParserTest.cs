@@ -99,6 +99,42 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestMagicPathParser() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseMagicPath()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestMapSpawnTagParser() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseMapSpawnTag()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestPetSpawnInfoParser() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParsePetSpawnInfo()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestSetItemInfoParser() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseSetItemInfo()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestSetItemOptionParser() {
         var parser = new TableParser(TestUtils.XmlReader);
 

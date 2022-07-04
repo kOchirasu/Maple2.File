@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Maple2.File.IO;
@@ -19,6 +20,10 @@ public class TableParser {
     private readonly XmlSerializer itemGemstoneUpgradeSerializer;
     private readonly XmlSerializer itemLapenshardUpgradeSerializer;
     private readonly XmlSerializer jobSerializer;
+    private readonly XmlSerializer magicPathSerializer;
+    private readonly XmlSerializer mapSpawnTagSerializer;
+    private readonly XmlSerializer petSpawnInfoSerializer;
+    private readonly XmlSerializer setItemInfoSerializer;
     private readonly XmlSerializer setItemOptionSerializer;
 
     public TableParser(M2dReader xmlReader) {
@@ -29,8 +34,12 @@ public class TableParser {
         this.itemBreakIngredientSerializer = new XmlSerializer(typeof(ItemBreakIngredientRoot));
         this.itemGemstoneUpgradeSerializer = new XmlSerializer(typeof(ItemGemstoneUpgradeRoot));
         this.itemLapenshardUpgradeSerializer = new XmlSerializer(typeof(ItemLapenshardUpgradeRoot));
-        this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
         this.jobSerializer = new XmlSerializer(typeof(JobRoot));
+        this.magicPathSerializer = new XmlSerializer(typeof(MagicPath));
+        this.mapSpawnTagSerializer = new XmlSerializer(typeof(MapSpawnTag));
+        this.petSpawnInfoSerializer = new XmlSerializer(typeof(PetSpawnInfoRoot));
+        this.setItemInfoSerializer = new XmlSerializer(typeof(SetItemInfoRoot));
+        this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
     }
 
     public IEnumerable<(int Id, ColorPalette Palette)> ParseColorPalette() {
@@ -44,7 +53,7 @@ public class TableParser {
     }
 
     public IEnumerable<(int Id, ColorPalette Palette)> ParseColorPaletteAchieve() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("colorpalette_achieve.xml"));
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/na/colorpalette_achieve.xml"));
         var data = paletteSerializer.Deserialize(reader) as ColorPaletteRoot;
         Debug.Assert(data != null);
 
@@ -54,7 +63,7 @@ public class TableParser {
     }
 
     public IEnumerable<(int JobCode, string Slot, IList<DefaultItems.Item> Items)> ParseDefaultItems() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("defaultitems.xml"));
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/defaultitems.xml"));
         var data = defaultItemsSerializer.Deserialize(reader) as DefaultItems;
         Debug.Assert(data != null);
 
@@ -66,8 +75,7 @@ public class TableParser {
     }
 
     public IEnumerable<(int Id, DungeonRoom Item)> ParseDungeonRoom() {
-        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/dungeonroom.xml")));
-        var reader = XmlReader.Create(new StringReader(xml));
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/na/dungeonroom.xml"));
         var data = dungeonRoomSerializer.Deserialize(reader) as DungeonRoomRoot;
         Debug.Assert(data != null);
 
@@ -120,9 +128,48 @@ public class TableParser {
         }
     }
 
+    public IEnumerable<(long Id, MagicType Type)> ParseMagicPath() {
+        string sanitized = Sanitizer.SanitizeMagicPath(xmlReader.GetString(xmlReader.GetEntry("table/magicpath.xml")));
+        var data = magicPathSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as MagicPath;
+        Debug.Assert(data != null);
+
+        foreach (MagicType type in data.type) {
+            yield return (type.id, type);
+        }
+    }
+
+    public IEnumerable<(int MapId, IEnumerable<MapSpawnTag.Region> Region)> ParseMapSpawnTag() {
+        string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/mapspawntag.xml")));
+        var data = mapSpawnTagSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as MapSpawnTag;
+        Debug.Assert(data != null);
+
+        foreach (IGrouping<int, MapSpawnTag.Region> group in data.region.GroupBy(region => region.mapCode)) {
+            yield return (group.Key, group);
+        }
+    }
+
+    public IEnumerable<(int FieldId, IEnumerable<PetSpawnInfo> Info)> ParsePetSpawnInfo() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/petspawninfo.xml"));
+        var data = petSpawnInfoSerializer.Deserialize(reader) as PetSpawnInfoRoot;
+        Debug.Assert(data != null);
+
+        foreach (IGrouping<int, PetSpawnInfo> group in data.SpawnInfo.GroupBy(spawnInfo => spawnInfo.fieldID)) {
+            yield return (group.Key, group);
+        }
+    }
+
+    public IEnumerable<(int Id, SetItemInfo Info)> ParseSetItemInfo() {
+        string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/setiteminfo.xml")));
+        var data = setItemInfoSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as SetItemInfoRoot;
+        Debug.Assert(data != null);
+
+        foreach (SetItemInfo info in data.set) {
+            yield return (info.id, info);
+        }
+    }
+
     public IEnumerable<(int Id, SetItemOption Option)> ParseSetItemOption() {
-        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/setitemoption.xml")));
-        var reader = XmlReader.Create(new StringReader(xml));
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/setitemoption.xml"));
         var data = setItemOptionSerializer.Deserialize(reader) as SetItemOptionRoot;
         Debug.Assert(data != null);
 

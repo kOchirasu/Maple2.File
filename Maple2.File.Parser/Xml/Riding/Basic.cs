@@ -1,0 +1,60 @@
+﻿using System.Numerics;
+using System.Xml.Serialization;
+using M2dXmlGenerator;
+using Maple2.File.Parser.Enum;
+
+namespace Maple2.File.Parser.Xml.Riding;
+
+public partial class Basic {
+    [XmlAttribute] public int id;
+    [XmlAttribute] public RideType type = RideType.@default;
+    [XmlAttribute] public string kfm = string.Empty;
+    [XmlAttribute] public string kfm2 = string.Empty;
+    [XmlAttribute] public string nif = string.Empty;
+    [XmlAttribute] public float scale;
+    [XmlAttribute] public float nameTagOffsetY;
+    [XmlAttribute] public float hpBarOffsetY;
+    [XmlAttribute] public bool nameTagHide;
+    [XmlAttribute] public bool hideRider;
+    [XmlAttribute] public byte hidePCInfo; // 1,2
+    [XmlAttribute] public bool battleLife;
+    [XmlAttribute] public bool enableRideOffUI;
+    [XmlAttribute] public bool useRidingUI;
+    [XmlAttribute] public bool useRidingNavi;
+    [XmlAttribute] public bool useAdjustLevelGapDamage;
+    [XmlAttribute] public int skillSetID;
+    [XmlAttribute] public bool showRideeNameTag;
+    [XmlAttribute] public bool disablePickUp;
+    [XmlAttribute] public bool disableHideOnBush;
+    [XmlAttribute] public string rideBone = string.Empty;
+    [XmlAttribute] public string rideBone2 = string.Empty;
+    [M2dVector3] public Vector3 rideTranslation;
+    [M2dVector3] public Vector3 rideRotation;
+    [M2dVector3] public Vector3 rideTranslation2;
+    [M2dVector3] public Vector3 rideRotation2;
+    [XmlAttribute] public float rideSummonCastTime;
+    [XmlAttribute] public float walkSpeed;
+    [XmlAttribute] public float runSpeed;
+    [XmlAttribute] public float runXSpeed;
+    [XmlAttribute] public float swimSpeed;
+    [XmlAttribute] public bool enableSwim;
+    [XmlAttribute] public string rideAniPC = string.Empty;
+    [XmlAttribute] public string rideAniPC_Idle = string.Empty;
+    [XmlAttribute] public string rideAniPC_Run = string.Empty;
+    [XmlAttribute] public string rideAniPC_Jump = string.Empty;
+    [XmlAttribute] public string rideAniPC_SP_Idle = string.Empty;
+    [XmlAttribute] public string rideAniPC_SP_Run = string.Empty;
+    [XmlAttribute] public string rideAniPC_SP_Jump = string.Empty;
+    [XmlAttribute] public string idleXMotion = string.Empty;
+    [XmlAttribute] public string runXMotion = string.Empty;
+    [XmlAttribute] public long runXConsumeEp;
+    [XmlAttribute] public int fallDamageDown;
+    [XmlAttribute] public string pressXEffectIdle = string.Empty;
+    [XmlAttribute] public string releaseXEffectIdle = string.Empty;
+    [XmlAttribute] public string pressXEffectRun = string.Empty;
+    [XmlAttribute] public string releaseXEffectRun = string.Empty;
+    [XmlAttribute] public string pressXEffectIdleNonstop = string.Empty;
+    [XmlAttribute] public string pressXEffectRunNonstop = string.Empty;
+    [XmlAttribute] public string loopEffect = string.Empty;
+    [XmlAttribute] public string rideOffBySkillEffect = string.Empty;
+}
