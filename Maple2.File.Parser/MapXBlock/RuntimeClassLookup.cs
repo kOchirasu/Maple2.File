@@ -5,12 +5,12 @@ using System.Reflection.Emit;
 using Maple2.File.Parser.Flat;
 using Maple2.File.Parser.Tools;
 
-namespace Maple2.File.Parser.MapXBlock; 
+namespace Maple2.File.Parser.MapXBlock;
 
 // RuntimeClassLookup generates the assembly at runtime
-public class RuntimeClassLookup : ClassLookup {
+public sealed class RuntimeClassLookup : ClassLookup {
     private const string RUNTIME_ASSEMBLY = "Maple2.File.Flat.Runtime";
-        
+
     private readonly Dictionary<string, Type> cache;
     private readonly ModuleBuilder moduleBuilder;
 
@@ -25,7 +25,7 @@ public class RuntimeClassLookup : ClassLookup {
 
         moduleBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndCollect)
             .DefineDynamicModule(assemblyName.Name);
-            
+
         // Manual index overrides
         var proxyNifAsset = new FlatProperty {Name = "ProxyNifAsset", Type = "AssetID", Value = ""};
         var interval = new FlatProperty {Name = "Interval", Type = "SInt32", Value = 0};
@@ -36,7 +36,7 @@ public class RuntimeClassLookup : ClassLookup {
         var spawnRadius = new FlatProperty {Name = "SpawnRadius", Type = "Float32", Value = 0f};
         var npcCount = new FlatProperty {Name = "NpcCount", Type = "UInt32", Value = (uint)0};
         var reactableSequenceName = new FlatProperty {Name = "reactableSequenceName", Type = "String", Value = ""};
-            
+
         FlatType ms2CubeProp = index.GetType("MS2CubeProp");
         ms2CubeProp.Properties.Add(proxyNifAsset.Name, proxyNifAsset);
         ms2CubeProp.Properties.Add(interval.Name, interval);
@@ -50,6 +50,13 @@ public class RuntimeClassLookup : ClassLookup {
         ms2Actor.Properties.Add(spawnRadius.Name, spawnRadius);
         ms2Actor.Properties.Add(npcCount.Name, npcCount);
         ms2Actor.Properties.Add(reactableSequenceName.Name, reactableSequenceName);
+
+        // Generate classes for all model types. This is very quick and allows parallelism without conflicts.
+        foreach (FlatType type in index.GetAllTypes()) {
+            try {
+                GetClass(type.Name);
+            } catch { /* ignored */ }
+        }
     }
 
     public override Type GetClass(string modelName) {
@@ -61,7 +68,7 @@ public class RuntimeClassLookup : ClassLookup {
         if (cache.TryGetValue(mixinType.Name, out Type classType)) {
             return classType;
         }
-            
+
         TypeBuilder classBuilder = moduleBuilder.DefineType(
             mixinType.Name[1..], // Remove "I" prefix from interface
             TypeAttributes.Class | TypeAttributes.Public,
@@ -73,7 +80,7 @@ public class RuntimeClassLookup : ClassLookup {
         (string, string)[] baseProps = {
             ("ModelName", modelName),
             ("EntityId", string.Empty),
-            ("EntityName", string.Empty)
+            ("EntityName", string.Empty),
         };
         foreach ((string name, string value) in baseProps) {
             var property = new FlatProperty {

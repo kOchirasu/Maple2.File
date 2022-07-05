@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using Maple2.File.Flat;
 using Maple2.File.Parser.Flat;
 
-namespace Maple2.File.Parser.MapXBlock; 
+namespace Maple2.File.Parser.MapXBlock;
 
 public abstract class ClassLookup {
     private static readonly Dictionary<string, Type> typeIndex = new Dictionary<string, Type>();
@@ -38,12 +38,12 @@ public abstract class ClassLookup {
             }
         }
     }
-        
+
     public Type GetMixinType(string modelName) {
         if (mixinTypeCache.TryGetValue(modelName, out Type mixinType)) {
             return mixinType;
         }
-            
+
         FlatType entityType = index.GetType(modelName);
         if (entityType == null) {
             throw new UnknownModelTypeException(modelName);
@@ -69,9 +69,9 @@ public abstract class ClassLookup {
         mixinTypeCache[modelName] = mixinType;
         return mixinType;
     }
-        
+
     public abstract Type GetClass(string modelName);
-        
+
     public static Type GetType(string name) => typeIndex.GetValueOrDefault(name);
 
     public MethodInfo GetMethod(Type type, string name) => methodCache.GetValueOrDefault((type.Name, name));

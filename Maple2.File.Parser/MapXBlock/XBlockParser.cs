@@ -39,16 +39,24 @@ public class XBlockParser {
         return true;
     }
 
-    public void Parse(Action<string, IEnumerable<IMapEntity>> callback) {
-        IEnumerable<(string, IEnumerable<IMapEntity>)> results = reader.Files
+    public ParallelQuery<(string xblock, IEnumerable<IMapEntity> entities)> Parallel() {
+        return reader.Files
             .Where(file => file.Name.StartsWith("xblock/"))
+            .AsParallel()
             .Select(file => {
                 string xblock = Path.GetFileNameWithoutExtension(file.Name);
                 return (xblock, ParseEntities(file));
             });
+    }
 
-        foreach ((string xblock, IEnumerable<IMapEntity> entities) in results) {
-            callback(xblock, entities);
+    public void Parse(Action<string, IEnumerable<IMapEntity>> callback) {
+        foreach (PackFileEntry file in reader.Files) {
+            if (!file.Name.StartsWith("xblock/")) {
+                continue;
+            }
+
+            string xblock = Path.GetFileNameWithoutExtension(file.Name);
+            callback(xblock, ParseEntities(file));
         }
     }
 

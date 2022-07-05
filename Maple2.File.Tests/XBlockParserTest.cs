@@ -1,4 +1,5 @@
-﻿using Maple2.File.Flat;
+﻿using System.Diagnostics;
+using Maple2.File.Flat;
 using Maple2.File.Flat.maplestory2library;
 using Maple2.File.Parser.Flat;
 using Maple2.File.Parser.MapXBlock;
@@ -23,5 +24,29 @@ public class XBlockParserTest {
                 }
             }
         });
+    }
+
+    [Ignore]
+    public void TestXBlockParserAll() {
+        var sw = new Stopwatch();
+        sw.Start();
+        var index = new FlatTypeIndex(TestUtils.ExportedReader);
+        Console.WriteLine($"Index built in {sw.ElapsedMilliseconds}ms");
+
+        sw.Restart();
+        int xblocks = 0;
+        var parser = new XBlockParser(TestUtils.ExportedReader, index);
+        ParallelQuery<int> results = parser.Parallel().SelectMany(map => {
+            xblocks++;
+            return Process(map.entities);
+        });
+        Console.WriteLine($"Total results: {results.Count()}");
+        Console.WriteLine($"Parser completed {xblocks} in {sw.ElapsedMilliseconds}ms");
+
+        IEnumerable<int> Process(IEnumerable<IMapEntity> entities) {
+            foreach (IMapEntity? _ in entities) {
+                yield return 0;
+            }
+        }
     }
 }
