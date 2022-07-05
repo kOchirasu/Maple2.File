@@ -5,6 +5,7 @@ Strongly typed MapleStory2 m2d file parsing
 ### xblock Parsing Example:
 ```csharp
 using var reader = new M2dReader(EXPORTED_PATH);
+var index = new FlatTypeIndex(reader);
 var parser = new XBlockParser(reader, index);
 parser.Include(typeof(ISpawnPoint));
 parser.Include(typeof(IMS2TriggerObject));
@@ -25,6 +26,29 @@ parser.Parse((xblock, entities) => {
         }
     }
     results[xblock] = metadata;
+});
+```
+
+### xblock Parallel Parsing Example:
+```csharp
+using var reader = new M2dReader(EXPORTED_PATH);
+var index = new FlatTypeIndex(reader);
+var parser = new XBlockParser(reader, index);
+
+var results = new Dictionary<string, MapEntityMetadata>();
+parser.Parallel().ForAll(map => {
+    var metadata = new MapEntityMetadata();
+    foreach (IMapEntity entity in map.entities) {
+        switch (entity) {
+            case ISpawnPointPC spawnPoint:
+                ...
+            case ISpawnPointNPC npcSpawnPoint:
+                ...
+            default:
+                ...
+        }
+    }
+    results[map.xblock] = metadata;
 });
 ```
 
