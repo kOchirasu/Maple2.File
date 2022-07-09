@@ -42,8 +42,7 @@ public static class Sanitizer {
 
     public static string SanitizeQuest(string xml) {
         xml = RemoveEmpty(xml);
-        xml = xml.Replace("TRUE", "true");
-        xml = xml.Replace("FALSE", "false");
+        xml = SanitizeBool(xml);
         return xml;
     }
 
@@ -56,6 +55,12 @@ public static class Sanitizer {
     public static string SanitizeFunctionCube(string xml) {
         xml = RemoveEmpty(xml);
         xml = xml.Replace("AutoStateChange=\"1-C\"", "AutoStateChange=\"1-0\"");
+        return xml;
+    }
+
+    public static string SanitizeBool(string xml) {
+        xml = Regex.Replace(xml, "true", "true", RegexOptions.IgnoreCase);
+        xml = Regex.Replace(xml, "false", "false", RegexOptions.IgnoreCase);
         return xml;
     }
 

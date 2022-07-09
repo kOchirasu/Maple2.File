@@ -38,6 +38,24 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestParseInstrumentCategoryInfo() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseInstrumentCategoryInfo()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestParseInstrumentInfo() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseInstrumentInfo()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestItemBreakIngredientParser() {
         var parser = new TableParser(TestUtils.XmlReader);
 

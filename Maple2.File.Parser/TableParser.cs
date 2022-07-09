@@ -16,6 +16,8 @@ public class TableParser {
     private readonly XmlSerializer paletteSerializer;
     private readonly XmlSerializer defaultItemsSerializer;
     private readonly XmlSerializer dungeonRoomSerializer;
+    private readonly XmlSerializer instrumentCategoryInfoSerializer;
+    private readonly XmlSerializer instrumentInfoSerializer;
     private readonly XmlSerializer itemBreakIngredientSerializer;
     private readonly XmlSerializer itemGemstoneUpgradeSerializer;
     private readonly XmlSerializer itemLapenshardUpgradeSerializer;
@@ -31,6 +33,8 @@ public class TableParser {
         this.paletteSerializer = new XmlSerializer(typeof(ColorPaletteRoot));
         this.defaultItemsSerializer = new XmlSerializer(typeof(DefaultItems));
         this.dungeonRoomSerializer = new XmlSerializer(typeof(DungeonRoomRoot));
+        this.instrumentCategoryInfoSerializer = new XmlSerializer(typeof(InstrumentCategoryInfoRoot));
+        this.instrumentInfoSerializer = new XmlSerializer(typeof(InstrumentInfoRoot));
         this.itemBreakIngredientSerializer = new XmlSerializer(typeof(ItemBreakIngredientRoot));
         this.itemGemstoneUpgradeSerializer = new XmlSerializer(typeof(ItemGemstoneUpgradeRoot));
         this.itemLapenshardUpgradeSerializer = new XmlSerializer(typeof(ItemLapenshardUpgradeRoot));
@@ -81,6 +85,28 @@ public class TableParser {
 
         foreach (DungeonRoom dungeon in data.dungeonRoom) {
             yield return (dungeon.dungeonRoomID, dungeon);
+        }
+    }
+
+    public IEnumerable<(int Id, InstrumentCategoryInfo Info)> ParseInstrumentCategoryInfo() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/instrumentcategoryinfo.xml"));
+        var data = instrumentCategoryInfoSerializer.Deserialize(reader) as InstrumentCategoryInfoRoot;
+        Debug.Assert(data != null);
+
+        foreach (InstrumentCategoryInfo instrument in data.category) {
+            yield return (instrument.id, instrument);
+        }
+    }
+
+    public IEnumerable<(int Id, InstrumentInfo Info)> ParseInstrumentInfo() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/instrumentinfo.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = instrumentInfoSerializer.Deserialize(reader) as InstrumentInfoRoot;
+        Debug.Assert(data != null);
+
+        foreach (InstrumentInfo instrument in data.instrument) {
+            yield return (instrument.id, instrument);
         }
     }
 
