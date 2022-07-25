@@ -7,7 +7,7 @@ using Maple2.File.Parser.Xml.Common;
 namespace Maple2.File.Parser.Xml.Skill;
 
 public partial class BeginCondition {
-    [XmlAttribute] public int level = 1;
+    [XmlAttribute] public short level = 1;
     [XmlAttribute] public long money;
     [M2dEnum] public Gender gender = Gender.All;
     [XmlAttribute] public bool target;

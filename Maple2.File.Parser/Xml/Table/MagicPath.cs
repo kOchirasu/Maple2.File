@@ -21,7 +21,7 @@ public partial class MagicData {
     [M2dVector3] public Vector3 fireOffsetPosition;
     [M2dVector3] public Vector3 fireFixedPosition;
     [XmlAttribute] public string fireNode = string.Empty;
-    [M2dVector3] public Vector3 direction = Vector3.UnitX;
+    [M2dVector3] public Vector3 direction = Vector3.UnitY;
     [XmlAttribute] public float dirRotZDegree;
     [M2dVector3] public Vector3 controlValue0;
     [M2dVector3] public Vector3 controlValue1;

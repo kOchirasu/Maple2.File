@@ -7,8 +7,8 @@ namespace Maple2.File.Parser.Xml.Item;
 
 public partial class Limit {
     [M2dEnum] public Gender genderLimit = Gender.All;
-    [XmlAttribute] public int levelLimit = 1;
-    [XmlAttribute] public int levelLimitMax;
+    [XmlAttribute] public short levelLimit = 1;
+    [XmlAttribute] public short levelLimitMax;
     [XmlAttribute] public int transferType;
     [M2dNullable] public int? globalTransferType;
     [M2dNullable] public int? globalTransferTypeNA;

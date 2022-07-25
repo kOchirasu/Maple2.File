@@ -20,7 +20,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestDefaultItemsParser() {
+    public void TestParseDefaultItems() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _, _) in parser.ParseDefaultItems()) {
@@ -29,7 +29,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestDungeonRoomParser() {
+    public void TestParseDungeonRoom() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseDungeonRoom()) {
@@ -56,7 +56,19 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestItemBreakIngredientParser() {
+    public void TestParseInteractObjectInfo() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseInteractObject()) {
+            continue;
+        }
+        foreach ((_, _) in parser.ParseInteractObjectMastery()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestParseItemBreakIngredient() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseItemBreakIngredient()) {
@@ -65,7 +77,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestItemGemstoneUpgradeParser() {
+    public void TestParseItemGemstoneUpgrade() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseItemGemstoneUpgrade()) {
@@ -74,7 +86,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestItemLapenshardUpgradeParser() {
+    public void TestParseItemLapenshardUpgrade() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseItemLapenshardUpgrade()) {
@@ -83,7 +95,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestJobTableParser() {
+    public void TestParseJobTable() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         Dictionary<int, List<JobTable>> results = parser.ParseJobTable()
@@ -117,7 +129,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestMagicPathParser() {
+    public void TestParseMagicPath() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseMagicPath()) {
@@ -126,7 +138,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestMapSpawnTagParser() {
+    public void TestParseMapSpawnTag() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseMapSpawnTag()) {
@@ -135,7 +147,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestPetSpawnInfoParser() {
+    public void TestParsePetSpawnInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParsePetSpawnInfo()) {
@@ -144,7 +156,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestSetItemInfoParser() {
+    public void TestParseSetItemInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseSetItemInfo()) {
@@ -153,7 +165,7 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestSetItemOptionParser() {
+    public void TestParseSetItemOption() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseSetItemOption()) {

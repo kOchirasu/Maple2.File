@@ -18,6 +18,7 @@ public class TableParser {
     private readonly XmlSerializer dungeonRoomSerializer;
     private readonly XmlSerializer instrumentCategoryInfoSerializer;
     private readonly XmlSerializer instrumentInfoSerializer;
+    private readonly XmlSerializer interactObjectSerializer;
     private readonly XmlSerializer itemBreakIngredientSerializer;
     private readonly XmlSerializer itemGemstoneUpgradeSerializer;
     private readonly XmlSerializer itemLapenshardUpgradeSerializer;
@@ -35,6 +36,7 @@ public class TableParser {
         this.dungeonRoomSerializer = new XmlSerializer(typeof(DungeonRoomRoot));
         this.instrumentCategoryInfoSerializer = new XmlSerializer(typeof(InstrumentCategoryInfoRoot));
         this.instrumentInfoSerializer = new XmlSerializer(typeof(InstrumentInfoRoot));
+        this.interactObjectSerializer = new XmlSerializer(typeof(InteractObjectRoot));
         this.itemBreakIngredientSerializer = new XmlSerializer(typeof(ItemBreakIngredientRoot));
         this.itemGemstoneUpgradeSerializer = new XmlSerializer(typeof(ItemGemstoneUpgradeRoot));
         this.itemLapenshardUpgradeSerializer = new XmlSerializer(typeof(ItemLapenshardUpgradeRoot));
@@ -107,6 +109,28 @@ public class TableParser {
 
         foreach (InstrumentInfo instrument in data.instrument) {
             yield return (instrument.id, instrument);
+        }
+    }
+
+    public IEnumerable<(int Id, InteractObject Info)> ParseInteractObject() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/interactobject.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = interactObjectSerializer.Deserialize(reader) as InteractObjectRoot;
+        Debug.Assert(data != null);
+
+        foreach (InteractObject interact in data.interact) {
+            yield return (interact.id, interact);
+        }
+    }
+
+    public IEnumerable<(int Id, InteractObject Info)> ParseInteractObjectMastery() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/interactobject_mastery.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = interactObjectSerializer.Deserialize(reader) as InteractObjectRoot;
+        Debug.Assert(data != null);
+
+        foreach (InteractObject interact in data.interact) {
+            yield return (interact.id, interact);
         }
     }
 

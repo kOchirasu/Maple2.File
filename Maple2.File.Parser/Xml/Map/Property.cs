@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-namespace Maple2.File.Parser.Xml.Map; 
+namespace Maple2.File.Parser.Xml.Map;
 
 public partial class Property {
     [XmlAttribute] public int mapCategoryCode;
@@ -45,7 +45,7 @@ public partial class Property {
     [XmlAttribute] public bool gemSystem = true;
     [M2dArray] public int[] skillUseDisable = Array.Empty<int>();
     [M2dArray] public int[] enteranceBuffIDs = Array.Empty<int>();
-    [M2dArray] public int[] enteranceBuffLevels = Array.Empty<int>();
+    [M2dArray] public short[] enteranceBuffLevels = Array.Empty<short>();
     [M2dArray] public string[] propertyTags = Array.Empty<string>();
 
     // Ignored by client.

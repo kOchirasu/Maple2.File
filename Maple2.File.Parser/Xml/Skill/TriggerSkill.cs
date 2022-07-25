@@ -8,7 +8,7 @@ namespace Maple2.File.Parser.Xml.Skill;
 public partial class TriggerSkill {
     [XmlAttribute] public bool splash;
     [XmlAttribute] public bool randomCast;
-    [M2dArray] public int[] level = Array.Empty<int>();
+    [M2dArray] public short[] level = Array.Empty<short>();
     [M2dArray] public int[] skillID = Array.Empty<int>();
     [M2dArray] public int[] linkSkillID = Array.Empty<int>();
     [XmlAttribute] public int overlapCount = 1; // 1

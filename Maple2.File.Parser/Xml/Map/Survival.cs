@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-namespace Maple2.File.Parser.Xml.Map; 
+namespace Maple2.File.Parser.Xml.Map;
 
 public partial class Survival {
     [XmlAttribute] public short defaultMark;
@@ -16,6 +16,6 @@ public partial class Survival {
     [XmlAttribute] public int plusInven_Basic;
     [XmlAttribute] public int plusInven_Zero;
     [M2dArray] public int[] enteranceBuffIDs = Array.Empty<int>();
-    [M2dArray] public int[] enteranceBuffLevels = Array.Empty<int>();
+    [M2dArray] public short[] enteranceBuffLevels = Array.Empty<short>();
     [XmlAttribute] public bool ExtrafallDamage;
 }
