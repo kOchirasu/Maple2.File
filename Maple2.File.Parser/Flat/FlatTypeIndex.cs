@@ -73,7 +73,9 @@ public class FlatTypeIndex {
 
             string name = node.Attributes["name"].Value;
             xmlNodes[name] = node;
-            var type = new FlatType(name, id);
+            var type = new FlatType(name, id) {
+                Path = entry.Name,
+            };
             Hierarchy.Add(entry.Name, type);
             types[name.ToLower()] = new FlatTypeNode(type);
             //Console.WriteLine($"Created type: {type.Name}");
@@ -130,6 +132,12 @@ public class FlatTypeIndex {
                         Source = propSource,
                         Value = FlatProperty.ParseType(propType, value),
                     };
+                }
+
+                traitNodes = propNode.SelectNodes("trait");
+                foreach (XmlNode traitNode in traitNodes) {
+                    string traitName = traitNode.Attributes["value"].Value;
+                    property.Trait.Add(traitName);
                 }
 
                 // Skip this check by default because it doesn't seem fully correct.

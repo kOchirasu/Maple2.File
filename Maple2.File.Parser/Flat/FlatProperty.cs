@@ -13,6 +13,7 @@ public class FlatProperty {
     public string Id { get; set; }
     public string Source { get; set; }
 
+    public readonly List<string> Trait = new();
     public string Type { get; set; }
     public object Value { get; set; }
 

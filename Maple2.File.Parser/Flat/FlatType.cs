@@ -5,6 +5,8 @@ using System.Linq;
 namespace Maple2.File.Parser.Flat;
 
 public class FlatType {
+    public string Path;
+
     public readonly string Name;
     public readonly uint Id;
     public readonly List<string> Trait;
@@ -30,6 +32,21 @@ public class FlatType {
             FlatProperty prop = Mixin[i].GetProperty(name);
             if (prop != null) {
                 return prop;
+            }
+        }
+
+        return null;
+    }
+
+    public FlatBehavior GetBehavior(string name) {
+        if (Behaviors.ContainsKey(name)) {
+            return Behaviors[name];
+        }
+
+        for (int i = Mixin.Count - 1; i >= 0; i--) {
+            FlatBehavior behavior = Mixin[i].GetBehavior(name);
+            if (behavior != null) {
+                return behavior;
             }
         }
 
