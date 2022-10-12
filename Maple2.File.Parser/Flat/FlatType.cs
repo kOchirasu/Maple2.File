@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Maple2.File.Parser.Flat; 
+namespace Maple2.File.Parser.Flat;
 
 public class FlatType {
     public readonly string Name;
+    public readonly uint Id;
+    public readonly List<string> Trait;
     public readonly List<FlatType> Mixin;
     public readonly Dictionary<string, FlatProperty> Properties;
+    public readonly Dictionary<string, FlatBehavior> Behaviors;
 
-    public FlatType(string name) {
+    public FlatType(string name, uint id) {
         Name = name;
+        Id = id;
+        Trait = new List<string>();
         Mixin = new List<FlatType>();
         Properties = new Dictionary<string, FlatProperty>();
+        Behaviors = new Dictionary<string, FlatBehavior>();
     }
 
     public FlatProperty GetProperty(string name) {
@@ -51,6 +57,17 @@ public class FlatType {
         return props;
     }
 
+    public IEnumerable<FlatProperty> GetNewProperties() {
+        var props = new Dictionary<string, FlatProperty>(Properties);
+        for (int i = Mixin.Count - 1; i >= 0; i--) {
+            foreach (FlatProperty prop in Mixin[i].GetAllProperties()) {
+                props.Remove(prop.Name);
+            }
+        }
+
+        return props.Values;
+    }
+
     public IEnumerable<FlatProperty> GetAllProperties() {
         Dictionary<string, FlatProperty> props = new Dictionary<string, FlatProperty>(Properties);
         for (int i = Mixin.Count - 1; i >= 0; i--) {
@@ -60,6 +77,28 @@ public class FlatType {
         }
 
         return props.Values;
+    }
+
+    public IEnumerable<FlatBehavior> GetNewBehaviors() {
+        var behaviors = new Dictionary<string, FlatBehavior>(Behaviors);
+        for (int i = Mixin.Count - 1; i >= 0; i--) {
+            foreach (FlatBehavior behavior in Mixin[i].GetAllBehaviors()) {
+                behaviors.Remove(behavior.Name);
+            }
+        }
+
+        return behaviors.Values;
+    }
+
+    public IEnumerable<FlatBehavior> GetAllBehaviors() {
+        var behaviors = new Dictionary<string, FlatBehavior>(Behaviors);
+        for (int i = Mixin.Count - 1; i >= 0; i--) {
+            foreach (FlatBehavior behavior in Mixin[i].GetAllBehaviors()) {
+                behaviors.TryAdd(behavior.Name, behavior);
+            }
+        }
+
+        return behaviors.Values;
     }
 
     public bool IsRedundantMixin(FlatType type) {
@@ -83,6 +122,13 @@ public class FlatType {
     // Removes any mixins that are already satisfied by another.
     public IEnumerable<FlatType> RequiredMixin() {
         return Mixin.Where(mixin => !IsRedundantMixin(mixin));
+    }
+
+    // Generates a deterministic random Guid from Id.
+    public Guid ToGuid() {
+        byte[] rand = new byte[16];
+        new Random(unchecked((int) Id)).NextBytes(rand);
+        return new Guid(rand);
     }
 
     protected bool Equals(FlatType other) {

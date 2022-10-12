@@ -7,8 +7,8 @@ namespace Maple2.File.Parser.Xml.Skill;
 
 public partial class SubConditionTarget {
     [M2dArray] public int[] hasBuffID = Array.Empty<int>();
-    [M2dArray] public int[] hasBuffLevel = Array.Empty<int>();
-    [M2dArray] public int[] hasBuffOwner = Array.Empty<int>();
+    [M2dArray] public short[] hasBuffLevel = Array.Empty<short>();
+    [M2dArray] public bool[] hasBuffOwner = Array.Empty<bool>();
     [M2dArray] public int[] checkActivateBuff = Array.Empty<int>();
     [M2dArray] public int[] hasBuffCount = Array.Empty<int>(); // csv map?
     [M2dArray] public string[] hasBuffCountCompare = Array.Empty<string>(); // csv map? CompareType

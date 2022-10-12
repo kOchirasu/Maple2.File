@@ -66,10 +66,14 @@ public class FlatTypeIndex {
                 Console.WriteLine($"Missing name for: {entry.Name}");
                 continue;
             }
+            if (!uint.TryParse(node.Attributes?["id"]?.Value, out uint id)) {
+                Console.WriteLine($"Missing id for: {entry.Name}");
+                continue;
+            }
 
             string name = node.Attributes["name"].Value;
             xmlNodes[name] = node;
-            var type = new FlatType(name);
+            var type = new FlatType(name, id);
             Hierarchy.Add(entry.Name, type);
             types[name.ToLower()] = new FlatTypeNode(type);
             //Console.WriteLine($"Created type: {type.Name}");
@@ -78,6 +82,12 @@ public class FlatTypeIndex {
         // Populate Mixin and Property for Types.
         foreach ((string name, XmlNode node) in xmlNodes) {
             FlatType type = types[name.ToLower()].Value;
+            XmlNodeList traitNodes = node.SelectNodes("trait");
+            foreach (XmlNode traitNode in traitNodes) {
+                string traitName = traitNode.Attributes["value"].Value;
+                type.Trait.Add(traitName);
+            }
+
             XmlNodeList mixinNodes = node.SelectNodes("mixin");
             foreach (XmlNode mixinNode in mixinNodes) {
                 string mixinName = mixinNode.Attributes["name"].Value;
@@ -96,6 +106,7 @@ public class FlatTypeIndex {
                 string propName = propNode.Attributes["name"].Value;
                 string propType = propNode.Attributes["type"].Value;
                 string propId = propNode.Attributes["id"].Value;
+                string propSource = propNode.Attributes["source"]?.Value;
 
                 if (propType.StartsWith("Assoc")) {
                     List<(string, string)> values = new List<(string, string)>();
@@ -107,6 +118,7 @@ public class FlatTypeIndex {
                         Name = propName,
                         Type = propType,
                         Id = propId,
+                        Source = propSource,
                         Value = FlatProperty.ParseAssocType(propType, values),
                     };
                 } else {
@@ -115,6 +127,7 @@ public class FlatTypeIndex {
                         Name = propName,
                         Type = propType,
                         Id = propId,
+                        Source = propSource,
                         Value = FlatProperty.ParseType(propType, value),
                     };
                 }
@@ -129,6 +142,28 @@ public class FlatTypeIndex {
                 }
 
                 type.Properties.Add(property.Name, property);
+            }
+
+            XmlNodeList behaviorNodes = node.SelectNodes("behavior");
+            foreach (XmlNode behaviorNode in behaviorNodes) {
+                if (behaviorNode?.Attributes == null) {
+                    throw new ConstraintException("Null value found for behavior node");
+                }
+
+                var behavior = new FlatBehavior {
+                    Name = behaviorNode.Attributes["name"].Value,
+                    Id = behaviorNode.Attributes["id"].Value,
+                    Type = behaviorNode.Attributes["type"].Value,
+                    Source = behaviorNode.Attributes["source"]?.Value,
+                };
+
+                traitNodes = behaviorNode.SelectNodes("trait");
+                foreach (XmlNode traitNode in traitNodes) {
+                    string traitName = traitNode.Attributes["value"].Value;
+                    behavior.Trait.Add(traitName);
+                }
+
+                type.Behaviors.Add(behavior.Name, behavior);
             }
         }
 

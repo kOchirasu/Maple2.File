@@ -6,11 +6,12 @@ using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
 
-namespace Maple2.File.Parser.Flat; 
+namespace Maple2.File.Parser.Flat;
 
 public class FlatProperty {
     public string Name { get; set; }
     public string Id { get; set; }
+    public string Source { get; set; }
 
     public string Type { get; set; }
     public object Value { get; set; }
