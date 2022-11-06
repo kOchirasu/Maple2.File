@@ -55,7 +55,7 @@ public class TableParser {
         var data = chatStickerSerializer.Deserialize(reader) as ChatStickerRoot;
         Debug.Assert(data != null);
 
-        foreach (ChatSticker sticker in data.sticker) {
+        foreach (ChatSticker sticker in data.chatEmoticon) {
             yield return (sticker.id, sticker);
         }
     }
