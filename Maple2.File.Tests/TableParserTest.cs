@@ -18,6 +18,15 @@ public class TableParserTest {
             continue;
         }
     }
+    
+    [TestMethod]
+    public void TestChatSticker() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseChatSticker()) {
+            continue;
+        }
+    }
 
     [TestMethod]
     public void TestParseDefaultItems() {
