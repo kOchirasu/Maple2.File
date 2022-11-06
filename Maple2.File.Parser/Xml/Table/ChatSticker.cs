@@ -7,7 +7,7 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/chatemoticon.xml
 [XmlRoot("ms2")]
 public class ChatStickerRoot {
-    [XmlElement] public List<ChatSticker> sticker;
+    [XmlElement] public List<ChatSticker> chatEmoticon;
 }
 
 public partial class ChatSticker : IFeatureLocale {
