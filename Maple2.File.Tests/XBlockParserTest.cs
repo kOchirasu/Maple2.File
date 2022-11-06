@@ -2,6 +2,7 @@
 using Maple2.File.Flat;
 using Maple2.File.Flat.maplestory2library;
 using Maple2.File.Parser.Flat;
+using Maple2.File.Parser.Flat.Convert;
 using Maple2.File.Parser.MapXBlock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,6 +10,12 @@ namespace Maple2.File.Tests;
 
 [TestClass]
 public class XBlockParserTest {
+    [TestMethod]
+    public void TestConversion() {
+        var converter = new FlatToModel(TestUtils.ExportedReader);
+        converter.Convert();
+    }
+
     [TestMethod]
     public void TestXBlockParser() {
         var index = new FlatTypeIndex(TestUtils.ExportedReader);

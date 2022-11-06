@@ -10,4 +10,5 @@ public class M2dArrayAttribute : XmlIgnoreAttribute {
 
     public string? Name { get; set; }
     public char Delimiter { get; set; } = ',';
+    public bool KeepEmpty { get; set; }
 }

@@ -72,10 +72,15 @@ public partial class DungeonRoom : IFeatureLocale {
     [XmlAttribute] public int rankTableID;
     [XmlAttribute] public int representID;
 
+    [XmlAttribute] public string clearType;
+    [XmlAttribute] public int BossRanking;
+    [XmlAttribute] public string openPeriodDate;
+    [XmlAttribute] public bool isDisableFindHelper;
+    [XmlAttribute] public int extraRewardTicketBaseCount; // 0
+
     // Not in XML
     // enum extraRewardItemType
     [XmlAttribute] [Obsolete("Unused")] public int extraRewardTicketTableID;
-    [XmlAttribute] [Obsolete("Unused")] public int extraRewardTicketBaseCount; // 0
     [XmlAttribute] [Obsolete("Unused")] public bool isLimitTime;
     [XmlAttribute] [Obsolete("Unused")] public bool isTimeUp;
     [XmlAttribute] [Obsolete("Unused")] public bool isRandomField;

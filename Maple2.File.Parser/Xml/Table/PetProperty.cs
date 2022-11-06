@@ -31,7 +31,7 @@ public partial class PetProperty : IFeatureLocale {
     [XmlAttribute] public short optionLevel;
     [XmlAttribute] public float constantOptionFactor;
     [M2dArray] public int[] additionalEffectID;
-    [M2dArray] public short[] additionalEffectLevel;
+    [M2dArray] public short[] additionalEffectLevel = Array.Empty<short>();
 
     // useless data
     [XmlElement] public Skill skill;

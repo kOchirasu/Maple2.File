@@ -47,6 +47,7 @@ public class XmlArrayGenerator : XmlGenerator {
         AttributeData attributeData = field.GetAttribute(attribute);
         string xmlAttributeName = attributeData.GetValueOrDefault("Name", field.Name);
         char delimiter = attributeData.GetValueOrDefault<char>("Delimiter", ',');
+        bool keepEmpty = attributeData.GetValueOrDefault<bool>("KeepEmpty", false);
 
         var source = new StringBuilder();
         source.Append($@"
@@ -58,7 +59,7 @@ public string _{xmlAttributeName} {{
         source.Append(@"
     }
     set {");
-        AddDeserializer(context, source, field, delimiter);
+        AddDeserializer(context, source, field, delimiter, keepEmpty);
         source.AppendLine(@"
     }
 }");
@@ -70,12 +71,19 @@ public string _{xmlAttributeName} {{
         source.Append($"return {fieldName} != null ? string.Join('{delimiter}', {fieldName}) : null;");
     }
 
-    private void AddDeserializer(GeneratorExecutionContext context, StringBuilder source, IFieldSymbol field, char delimiter) {
+    private void AddDeserializer(GeneratorExecutionContext context, StringBuilder source, IFieldSymbol field, char delimiter, bool keepEmpty) {
         var arrayType = field.Type as IArrayTypeSymbol;
 
         string fieldName = $"this.{field.FieldName()}";
+        if (keepEmpty) {
+            source.AppendLine($@"
+string[] split = value.Split('{delimiter}');");
+        } else {
+            source.AppendLine($@"
+string[] split = value.Split('{delimiter}', StringSplitOptions.RemoveEmptyEntries);");
+        }
+
         source.AppendLine($@"
-string[] split = value.Split('{delimiter}', StringSplitOptions.RemoveEmptyEntries);
 {fieldName} = new {arrayType.ElementType}[split.Length];
 for (int i = 0; i < split.Length; i++) {{
     var val = split[i].Trim();");
@@ -92,7 +100,11 @@ if (int.TryParse(val, out int n)) {{
 }}
 ");
         } else if (arrayType.ElementType.IsValueType) {
-            source.AppendLine($"{fieldName}[i] = {arrayType.ElementType}.Parse(val);");
+            if (arrayType.ElementType.ToString() == "bool") {
+                source.AppendLine($@"{fieldName}[i] = bool.TryParse(val, out bool result) ? result : (val != ""0"");");
+            } else {
+                source.AppendLine($"{fieldName}[i] = {arrayType.ElementType}.Parse(val);");
+            }
         } else {
             source.AppendLine($"{fieldName}[i] = val;");
         }

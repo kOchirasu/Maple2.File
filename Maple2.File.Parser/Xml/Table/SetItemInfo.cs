@@ -14,4 +14,6 @@ public partial class SetItemInfo : IFeatureLocale {
     [XmlAttribute] public int id;
     [M2dArray] public int[] itemIDs;
     [XmlAttribute] public int optionID;
+    [XmlAttribute] public bool showEffectIfItsSetItemMotion;
+    [XmlAttribute] public bool isDisableTooltip;
 }
