@@ -14,6 +14,7 @@ namespace Maple2.File.Parser;
 public class TableParser {
     private readonly M2dReader xmlReader;
     private readonly XmlSerializer paletteSerializer;
+    private readonly XmlSerializer chatStickerSerializer;
     private readonly XmlSerializer defaultItemsSerializer;
     private readonly XmlSerializer dungeonRoomSerializer;
     private readonly XmlSerializer instrumentCategoryInfoSerializer;
@@ -31,6 +32,7 @@ public class TableParser {
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
+        this.chatStickerSerializer = new XmlSerializer(typeof(ChatStickerRoot));
         this.paletteSerializer = new XmlSerializer(typeof(ColorPaletteRoot));
         this.defaultItemsSerializer = new XmlSerializer(typeof(DefaultItems));
         this.dungeonRoomSerializer = new XmlSerializer(typeof(DungeonRoomRoot));
@@ -46,6 +48,16 @@ public class TableParser {
         this.petSpawnInfoSerializer = new XmlSerializer(typeof(PetSpawnInfoRoot));
         this.setItemInfoSerializer = new XmlSerializer(typeof(SetItemInfoRoot));
         this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
+    }
+
+    public IEnumerable<(int Id, ChatSticker ChatSticker)> ParseChatSticker() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/chatemoticon.xml"));
+        var data = chatStickerSerializer.Deserialize(reader) as ChatStickerRoot;
+        Debug.Assert(data != null);
+
+        foreach (ChatSticker sticker in data.sticker) {
+            yield return (sticker.id, sticker);
+        }
     }
 
     public IEnumerable<(int Id, ColorPalette Palette)> ParseColorPalette() {
