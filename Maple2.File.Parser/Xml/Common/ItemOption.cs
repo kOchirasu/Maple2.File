@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Common;
 
@@ -162,8 +163,8 @@ public class ItemOption {
     [XmlAttribute] public int smd_value_base;
     [XmlAttribute] public int sss_value_base;
     [XmlAttribute] public int dashdistance_value_base;
-    [XmlAttribute] public int spd_value_base;
-    [XmlAttribute] public int sid_value_base;
+    // [XmlAttribute] public int spd_value_base;
+    // [XmlAttribute] public int sid_value_base;
     [XmlAttribute] public int finaladditionaldamage_value_base;
     [XmlAttribute] public int cri_value_base;
     [XmlAttribute] public int sgi_value_base;
@@ -329,10 +330,10 @@ public class ItemOption {
     [XmlAttribute] public int reduce_gemstone_upgrade_fee_value_base;
     [XmlAttribute] public int reduce_pet_remakeoption_fee_value_base;
     [XmlAttribute] public int improve_riding_speed_value_base;
-    [XmlAttribute] public int improve_survival_kill_exp_value_base;
-    [XmlAttribute] public int improve_survival_time_exp_value_base;
-    [XmlAttribute] public int offensive_physicaldamage_value_base;
-    [XmlAttribute] public int offensive_magicaldamage_value_base;
+    // [XmlAttribute] public int improve_survival_kill_exp_value_base;
+    // [XmlAttribute] public int improve_survival_time_exp_value_base;
+    // [XmlAttribute] public int offensive_physicaldamage_value_base;
+    // [XmlAttribute] public int offensive_magicaldamage_value_base;
     [XmlAttribute] public int reduce_gameitem_socket_unlock_fee_value_base;
 
     public int SpecialValue(byte i) => i switch {
@@ -340,8 +341,8 @@ public class ItemOption {
         1 => smd_value_base,
         2 => sss_value_base,
         3 => dashdistance_value_base,
-        4 => spd_value_base,
-        5 => sid_value_base,
+        // 4 => spd_value_base,
+        // 5 => sid_value_base,
         6 => finaladditionaldamage_value_base,
         7 => cri_value_base,
         8 => sgi_value_base,
@@ -507,10 +508,10 @@ public class ItemOption {
         168 => reduce_gemstone_upgrade_fee_value_base,
         169 => reduce_pet_remakeoption_fee_value_base,
         170 => improve_riding_speed_value_base,
-        171 => improve_survival_kill_exp_value_base,
-        172 => improve_survival_time_exp_value_base,
-        173 => offensive_physicaldamage_value_base,
-        174 => offensive_magicaldamage_value_base,
+        // 171 => improve_survival_kill_exp_value_base,
+        // 172 => improve_survival_time_exp_value_base,
+        // 173 => offensive_physicaldamage_value_base,
+        // 174 => offensive_magicaldamage_value_base,
         175 => reduce_gameitem_socket_unlock_fee_value_base,
         _ => throw new ArgumentOutOfRangeException(nameof(i), i, null),
     };
@@ -521,8 +522,8 @@ public class ItemOption {
     [XmlAttribute] public float smd_rate_base;
     [XmlAttribute] public float sss_rate_base;
     [XmlAttribute] public float dashdistance_rate_base;
-    [XmlAttribute] public float spd_rate_base;
-    [XmlAttribute] public float sid_rate_base;
+    // [XmlAttribute] public float spd_rate_base;
+    // [XmlAttribute] public float sid_rate_base;
     [XmlAttribute] public float finaladditionaldamage_rate_base;
     [XmlAttribute] public float cri_rate_base;
     [XmlAttribute] public float sgi_rate_base;
@@ -688,10 +689,10 @@ public class ItemOption {
     [XmlAttribute] public float reduce_gemstone_upgrade_fee_rate_base;
     [XmlAttribute] public float reduce_pet_remakeoption_fee_rate_base;
     [XmlAttribute] public float improve_riding_speed_rate_base;
-    [XmlAttribute] public float improve_survival_kill_exp_rate_base;
-    [XmlAttribute] public float improve_survival_time_exp_rate_base;
-    [XmlAttribute] public float offensive_physicaldamage_rate_base;
-    [XmlAttribute] public float offensive_magicaldamage_rate_base;
+    // [XmlAttribute] public float improve_survival_kill_exp_rate_base;
+    // [XmlAttribute] public float improve_survival_time_exp_rate_base;
+    // [XmlAttribute] public float offensive_physicaldamage_rate_base;
+    // [XmlAttribute] public float offensive_magicaldamage_rate_base;
     [XmlAttribute] public float reduce_gameitem_socket_unlock_fee_rate_base;
 
     public float SpecialRate(byte i) => i switch {
@@ -699,8 +700,8 @@ public class ItemOption {
         1 => smd_rate_base,
         2 => sss_rate_base,
         3 => dashdistance_rate_base,
-        4 => spd_rate_base,
-        5 => sid_rate_base,
+        // 4 => spd_rate_base,
+        // 5 => sid_rate_base,
         6 => finaladditionaldamage_rate_base,
         7 => cri_rate_base,
         8 => sgi_rate_base,
@@ -866,10 +867,10 @@ public class ItemOption {
         168 => reduce_gemstone_upgrade_fee_rate_base,
         169 => reduce_pet_remakeoption_fee_rate_base,
         170 => improve_riding_speed_rate_base,
-        171 => improve_survival_kill_exp_rate_base,
-        172 => improve_survival_time_exp_rate_base,
-        173 => offensive_physicaldamage_rate_base,
-        174 => offensive_magicaldamage_rate_base,
+        // 171 => improve_survival_kill_exp_rate_base,
+        // 172 => improve_survival_time_exp_rate_base,
+        // 173 => offensive_physicaldamage_rate_base,
+        // 174 => offensive_magicaldamage_rate_base,
         175 => reduce_gameitem_socket_unlock_fee_rate_base,
         _ => throw new ArgumentOutOfRangeException(nameof(i), i, null),
     };
