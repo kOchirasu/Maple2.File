@@ -18,7 +18,7 @@ public class TableParserTest {
             continue;
         }
     }
-    
+
     [TestMethod]
     public void TestChatSticker() {
         var parser = new TableParser(TestUtils.XmlReader);
@@ -42,6 +42,69 @@ public class TableParserTest {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseDungeonRoom()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestGuildBuff() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildBuff()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestGuildContribution() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildContribution()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestGuildEvent() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildEvent()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestGuildExp() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildEvent()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestGuildHouse() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildHouse()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestGuildNpc() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildNpc()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestGuildProperty() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildProperty()) {
             continue;
         }
     }
@@ -86,6 +149,24 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestParseItemExchangeScroll() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseItemExchangeScroll()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestItemExtraction() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseItemExtraction()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestParseItemGemstoneUpgrade() {
         var parser = new TableParser(TestUtils.XmlReader);
 
@@ -112,18 +193,31 @@ public class TableParserTest {
             .ToDictionary(group => group.Key, group => group.ToList());
 
         var expected = new Dictionary<int, string> {
-            {1, ""},
-            {10, "JobChange_02"},
-            {20, "JobChange_02"},
-            {30, "JobChange_02"},
-            {40, "JobChange_02"},
-            {50, "JobChange_02"},
-            {60, "JobChange_02"},
-            {70, "JobChange_02"},
-            {80, "JobChange_02"},
-            {90, "JobChange_02"},
-            {100, "JobChange_02"},
-            {110, "JobChange_02"},
+            {
+                1, ""
+            }, {
+                10, "JobChange_02"
+            }, {
+                20, "JobChange_02"
+            }, {
+                30, "JobChange_02"
+            }, {
+                40, "JobChange_02"
+            }, {
+                50, "JobChange_02"
+            }, {
+                60, "JobChange_02"
+            }, {
+                70, "JobChange_02"
+            }, {
+                80, "JobChange_02"
+            }, {
+                90, "JobChange_02"
+            }, {
+                100, "JobChange_02"
+            }, {
+                110, "JobChange_02"
+            },
         };
         foreach ((int jobCode, string feature) in expected) {
             Assert.IsTrue(results.TryGetValue(jobCode, out List<JobTable>? job));
@@ -156,10 +250,46 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestMasteryRecipe() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseMasteryRecipe()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestParsePetSpawnInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParsePetSpawnInfo()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestParsePremiumClubEffect() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParsePremiumClubEffect()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestParsePremiumClubItem() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParsePremiumClubItem()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestParsePremiumClubPackage() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParsePremiumClubPackage()) {
             continue;
         }
     }

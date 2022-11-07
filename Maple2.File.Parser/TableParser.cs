@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Maple2.File.IO;
+using Maple2.File.Parser.Enum;
 using Maple2.File.Parser.Tools;
 using Maple2.File.Parser.Xml.Table;
 
@@ -12,39 +14,65 @@ namespace Maple2.File.Parser;
 
 public class TableParser {
     private readonly M2dReader xmlReader;
-    private readonly XmlSerializer paletteSerializer;
     private readonly XmlSerializer chatStickerSerializer;
     private readonly XmlSerializer defaultItemsSerializer;
     private readonly XmlSerializer dungeonRoomSerializer;
+    private readonly XmlSerializer guildBuffSerializer;
+    private readonly XmlSerializer guildContributionSerializer;
+    private readonly XmlSerializer guildEventSerializer;
+    private readonly XmlSerializer guildExpSerializer;
+    private readonly XmlSerializer guildHouseSerializer;
+    private readonly XmlSerializer guildNpcSerializer;
+    private readonly XmlSerializer guildPropertySerializer;
     private readonly XmlSerializer instrumentCategoryInfoSerializer;
     private readonly XmlSerializer instrumentInfoSerializer;
     private readonly XmlSerializer interactObjectSerializer;
     private readonly XmlSerializer itemBreakIngredientSerializer;
+    private readonly XmlSerializer itemExchangeScrollSerializer;
+    private readonly XmlSerializer itemExtractionSerializer;
     private readonly XmlSerializer itemGemstoneUpgradeSerializer;
     private readonly XmlSerializer itemLapenshardUpgradeSerializer;
     private readonly XmlSerializer jobSerializer;
     private readonly XmlSerializer magicPathSerializer;
     private readonly XmlSerializer mapSpawnTagSerializer;
+    private readonly XmlSerializer masteryRecipeSerializer;
+    private readonly XmlSerializer paletteSerializer;
     private readonly XmlSerializer petSpawnInfoSerializer;
+    private readonly XmlSerializer premiumClubEffectSerializer;
+    private readonly XmlSerializer premiumClubItemSerializer;
+    private readonly XmlSerializer premiumClubPackageSerializer;
     private readonly XmlSerializer setItemInfoSerializer;
     private readonly XmlSerializer setItemOptionSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
         this.chatStickerSerializer = new XmlSerializer(typeof(ChatStickerRoot));
-        this.paletteSerializer = new XmlSerializer(typeof(ColorPaletteRoot));
         this.defaultItemsSerializer = new XmlSerializer(typeof(DefaultItems));
         this.dungeonRoomSerializer = new XmlSerializer(typeof(DungeonRoomRoot));
+        this.guildBuffSerializer = new XmlSerializer(typeof(GuildBuffRoot));
+        this.guildContributionSerializer = new XmlSerializer(typeof(GuildContributionRoot));
+        this.guildEventSerializer = new XmlSerializer(typeof(GuildEventRoot));
+        this.guildExpSerializer = new XmlSerializer(typeof(GuildExpRoot));
+        this.guildHouseSerializer = new XmlSerializer(typeof(GuildHouseRoot));
+        this.guildNpcSerializer = new XmlSerializer(typeof(GuildNpcRoot));
+        this.guildPropertySerializer = new XmlSerializer(typeof(GuildPropertyRoot));
         this.instrumentCategoryInfoSerializer = new XmlSerializer(typeof(InstrumentCategoryInfoRoot));
         this.instrumentInfoSerializer = new XmlSerializer(typeof(InstrumentInfoRoot));
         this.interactObjectSerializer = new XmlSerializer(typeof(InteractObjectRoot));
         this.itemBreakIngredientSerializer = new XmlSerializer(typeof(ItemBreakIngredientRoot));
+        this.itemExchangeScrollSerializer = new XmlSerializer(typeof(ItemExchangeScrollRoot));
+        this.itemExtractionSerializer = new XmlSerializer(typeof(ItemExtractionRoot));
         this.itemGemstoneUpgradeSerializer = new XmlSerializer(typeof(ItemGemstoneUpgradeRoot));
         this.itemLapenshardUpgradeSerializer = new XmlSerializer(typeof(ItemLapenshardUpgradeRoot));
         this.jobSerializer = new XmlSerializer(typeof(JobRoot));
         this.magicPathSerializer = new XmlSerializer(typeof(MagicPath));
         this.mapSpawnTagSerializer = new XmlSerializer(typeof(MapSpawnTag));
+        this.masteryRecipeSerializer = new XmlSerializer(typeof(MasteryRecipeRoot));
+        this.paletteSerializer = new XmlSerializer(typeof(ColorPaletteRoot));
         this.petSpawnInfoSerializer = new XmlSerializer(typeof(PetSpawnInfoRoot));
+        this.premiumClubEffectSerializer = new XmlSerializer(typeof(PremiumClubEffectRoot));
+        this.premiumClubItemSerializer = new XmlSerializer(typeof(PremiumClubItemRoot));
+        this.premiumClubPackageSerializer = new XmlSerializer(typeof(PremiumClubPackageRoot));
         this.setItemInfoSerializer = new XmlSerializer(typeof(SetItemInfoRoot));
         this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
     }
@@ -98,6 +126,76 @@ public class TableParser {
 
         foreach (DungeonRoom dungeon in data.dungeonRoom) {
             yield return (dungeon.dungeonRoomID, dungeon);
+        }
+    }
+
+    public IEnumerable<(int Id, IEnumerable<GuildBuff> Buff)> ParseGuildBuff() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildbuff.xml"));
+        var data = guildBuffSerializer.Deserialize(reader) as GuildBuffRoot;
+        Debug.Assert(data != null);
+
+        foreach (IGrouping<int, GuildBuff> group in data.guildBuff.GroupBy(guildBuff => guildBuff.id)) {
+            yield return (group.Key, group);
+        }
+    }
+
+    public IEnumerable<(GuildContributionType Id, GuildContribution Item)> ParseGuildContribution() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildcontribution.xml"));
+        var data = guildContributionSerializer.Deserialize(reader) as GuildContributionRoot;
+        Debug.Assert(data != null);
+
+        foreach (GuildContribution contribution in data.contribution) {
+            yield return (contribution.type, contribution);
+        }
+    }
+
+    public IEnumerable<(int Id, GuildEvent Item)> ParseGuildEvent() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildcontribution.xml"));
+        var data = guildEventSerializer.Deserialize(reader) as GuildEventRoot;
+        Debug.Assert(data != null);
+
+        foreach (GuildEvent @event in data.guildEvent) {
+            yield return (@event.id, @event);
+        }
+    }
+
+    public IEnumerable<(int Id, GuildExp Item)> ParseGuildExp() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildexp.xml"));
+        var data = guildExpSerializer.Deserialize(reader) as GuildExpRoot;
+        Debug.Assert(data != null);
+
+        foreach (GuildExp exp in data.guildExp) {
+            yield return (exp.level, exp);
+        }
+    }
+
+    public IEnumerable<(int Id, IEnumerable<GuildHouse> Item)> ParseGuildHouse() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildhouse.xml"));
+        var data = guildHouseSerializer.Deserialize(reader) as GuildHouseRoot;
+        Debug.Assert(data != null);
+
+        foreach (IGrouping<int, GuildHouse> group in data.guildHouse.GroupBy(guildHouse => guildHouse.level)) {
+            yield return (group.Key, group);
+        }
+    }
+
+    public IEnumerable<(GuildNpcType Type, IEnumerable<GuildNpc> Item)> ParseGuildNpc() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildnpc.xml"));
+        var data = guildNpcSerializer.Deserialize(reader) as GuildNpcRoot;
+        Debug.Assert(data != null);
+
+        foreach (IGrouping<GuildNpcType, GuildNpc> group in data.npc.GroupBy(guildNpc => guildNpc.type)) {
+            yield return (group.Key, group);
+        }
+    }
+
+    public IEnumerable<(int Id, GuildProperty Item)> ParseGuildProperty() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildproperty.xml"));
+        var data = guildPropertySerializer.Deserialize(reader) as GuildPropertyRoot;
+        Debug.Assert(data != null);
+
+        foreach (GuildProperty property in data.property) {
+            yield return (property.level, property);
         }
     }
 
@@ -156,6 +254,28 @@ public class TableParser {
         }
     }
 
+    public IEnumerable<(int ExchangeId, ItemExchangeScroll ScrollExchange)> ParseItemExchangeScroll() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/itemexchangescrolltable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = itemExchangeScrollSerializer.Deserialize(reader) as ItemExchangeScrollRoot;
+        Debug.Assert(data != null);
+
+        foreach (ItemExchangeScroll item in data.scroll) {
+            yield return (item.id, item);
+        }
+    }
+
+    public IEnumerable<(int Id, ItemExtraction Extraction)> ParseItemExtraction() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/itemextraction.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = itemExtractionSerializer.Deserialize(reader) as ItemExtractionRoot;
+        Debug.Assert(data != null);
+
+        foreach (ItemExtraction item in data.key) {
+            yield return (item.TargetItemID, item);
+        }
+    }
+
     public IEnumerable<(int ItemId, ItemGemstoneUpgrade Item)> ParseItemGemstoneUpgrade() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/itemgemstoneupgrade.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
@@ -209,6 +329,16 @@ public class TableParser {
         }
     }
 
+    public IEnumerable<(long Id, MasteryRecipe Recipe)> ParseMasteryRecipe() {
+        string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/masteryreceipe.xml")));
+        var data = masteryRecipeSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as MasteryRecipeRoot;
+        Debug.Assert(data != null);
+
+        foreach (MasteryRecipe recipe in data.receipe) {
+            yield return (recipe.id, recipe);
+        }
+    }
+
     public IEnumerable<(int FieldId, IEnumerable<PetSpawnInfo> Info)> ParsePetSpawnInfo() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/petspawninfo.xml"));
         var data = petSpawnInfoSerializer.Deserialize(reader) as PetSpawnInfoRoot;
@@ -216,6 +346,36 @@ public class TableParser {
 
         foreach (IGrouping<int, PetSpawnInfo> group in data.SpawnInfo.GroupBy(spawnInfo => spawnInfo.fieldID)) {
             yield return (group.Key, group);
+        }
+    }
+
+    public IEnumerable<(int Id, PremiumClubEffect Item)> ParsePremiumClubEffect() {
+        string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/vipbenefiteffecttable.xml")));
+        var data = premiumClubEffectSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as PremiumClubEffectRoot;
+        Debug.Assert(data != null);
+
+        foreach (PremiumClubEffect effect in data.benefit) {
+            yield return (effect.effectID, effect);
+        }
+    }
+
+    public IEnumerable<(int Id, PremiumClubItem Item)> ParsePremiumClubItem() {
+        string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/vipbenefititemtable.xml")));
+        var data = premiumClubItemSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as PremiumClubItemRoot;
+        Debug.Assert(data != null);
+
+        foreach (PremiumClubItem item in data.benefit) {
+            yield return (item.id, item);
+        }
+    }
+
+    public IEnumerable<(int Id, PremiumClubPackage Package)> ParsePremiumClubPackage() {
+        string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/vipgoodstable.xml")));
+        var data = premiumClubPackageSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as PremiumClubPackageRoot;
+        Debug.Assert(data != null);
+
+        foreach (PremiumClubPackage package in data.goods) {
+            yield return (package.id, package);
         }
     }
 
