@@ -7,10 +7,10 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/na/itemextraction.xml
 [XmlRoot("ms2")]
 public partial class ItemExtractionRoot {
-    [XmlElement] public List<ItemExtraction> key;
+    [M2dFeatureLocale(Selector = "TargetItemID")] private IList<ItemExtraction> _key;
 }
 
-public partial class ItemExtraction {
+public partial class ItemExtraction : IFeatureLocale{
     [XmlAttribute] public int TargetItemID;
     [XmlAttribute] public int TryCount;
     [XmlAttribute] public int ScrollCount;

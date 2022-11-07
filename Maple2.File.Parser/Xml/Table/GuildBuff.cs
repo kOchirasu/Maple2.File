@@ -7,7 +7,7 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/guildbuff.xml
 [XmlRoot("ms2")]
 public partial class GuildBuffRoot {
-    [M2dFeatureLocale(Selector = "id|level")] public IList<GuildBuff> _guildBuff;
+    [M2dFeatureLocale(Selector = "id|level")] private IList<GuildBuff> _guildBuff;
 }
 
 public partial class GuildBuff : IFeatureLocale {

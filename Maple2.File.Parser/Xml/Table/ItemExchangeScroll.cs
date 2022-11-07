@@ -9,7 +9,7 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/itemexchangescrolltable.xml
 [XmlRoot("ms2")]
 public partial class ItemExchangeScrollRoot {
-    [M2dFeatureLocale(Selector = "id")] public IList<ItemExchangeScroll> _scroll;
+    [M2dFeatureLocale(Selector = "id")] private IList<ItemExchangeScroll> _scroll;
 }
 
 public partial class ItemExchangeScroll : IFeatureLocale {

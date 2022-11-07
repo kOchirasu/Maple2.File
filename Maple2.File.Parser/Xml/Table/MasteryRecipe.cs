@@ -9,7 +9,7 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/masteryreceipe.xml
 [XmlRoot("ms2")]
 public partial class MasteryRecipeRoot {
-    [M2dFeatureLocale(Selector = "id")] public IList<MasteryRecipe> _receipe;
+    [M2dFeatureLocale(Selector = "id")] private IList<MasteryRecipe> _receipe;
 }
 
 public partial class MasteryRecipe : IFeatureLocale {
