@@ -45,6 +45,69 @@ public class TableParserTest {
             continue;
         }
     }
+    
+    [TestMethod]
+    public void TestGuildBuff() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildBuff()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestGuildContribution() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildContribution()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestGuildEvent() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildEvent()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestGuildExp() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildEvent()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestGuildHouse() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildHouse()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestGuildNpc() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildNpc()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestGuildProperty() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGuildProperty()) {
+            continue;
+        }
+    }
 
     [TestMethod]
     public void TestParseInstrumentCategoryInfo() {
@@ -81,6 +144,24 @@ public class TableParserTest {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseItemBreakIngredient()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestParseItemExchangeScroll() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseItemExchangeScroll()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestItemExtraction() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseItemExtraction()) {
             continue;
         }
     }
@@ -154,12 +235,48 @@ public class TableParserTest {
             continue;
         }
     }
+    
+    [TestMethod]
+    public void TestMasteryRecipe() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseMasteryRecipe()) {
+            continue;
+        }
+    }
 
     [TestMethod]
     public void TestParsePetSpawnInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParsePetSpawnInfo()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestParsePremiumClubEffect() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParsePremiumClubEffect()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestParsePremiumClubItem() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParsePremiumClubItem()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestParsePremiumClubPackage() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParsePremiumClubPackage()) {
             continue;
         }
     }
