@@ -10,7 +10,7 @@ public class GuildExpRoot {
     [XmlElement] public List<GuildExp> guildExp;
 }
 
-public partial class GuildExp : IFeatureLocale {
+public partial class GuildExp {
     [XmlAttribute] public int level;
     [XmlAttribute] public int value;
 }

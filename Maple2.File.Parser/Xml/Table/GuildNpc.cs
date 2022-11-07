@@ -7,8 +7,8 @@ namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/guildnpc.xml
 [XmlRoot("ms2")]
-public class GuildNpcRoot {
-    [XmlElement] public List<GuildNpc> npc;
+public partial class GuildNpcRoot {
+    [M2dFeatureLocale(Selector = "type|level")] private IList<GuildNpc> _npc;
 }
 
 public partial class GuildNpc : IFeatureLocale {

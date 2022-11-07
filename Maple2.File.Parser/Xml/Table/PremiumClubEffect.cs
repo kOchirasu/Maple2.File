@@ -6,11 +6,11 @@ namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/vipbenefiteffecttable.xml
 [XmlRoot("ms2")]
-public class PremiumClubEffectRoot {
-    [XmlElement] public List<PremiumClubEffect> benefit;
+public partial class PremiumClubEffectRoot {
+    [M2dFeatureLocale(Selector = "effectID|effectLevel")] private IList<PremiumClubEffect> _benefit;
 }
 
 public partial class PremiumClubEffect : IFeatureLocale {
     [XmlAttribute] public int effectID;
-    [XmlAttribute] public bool effectLevel;
+    [XmlAttribute] public short effectLevel;
 }

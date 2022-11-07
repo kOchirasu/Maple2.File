@@ -6,16 +6,16 @@ namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/guildbuff.xml
 [XmlRoot("ms2")]
-public class GuildBuffRoot {
-    [XmlElement] public List<GuildBuff> guildBuff;
+public partial class GuildBuffRoot {
+    [M2dFeatureLocale(Selector = "id|level")] public IList<GuildBuff> _guildBuff;
 }
 
 public partial class GuildBuff : IFeatureLocale {
     [XmlAttribute] public int id;
-    [XmlAttribute] public int level;
+    [XmlAttribute] public short level;
     [XmlAttribute] public int additionalEffectId;
-    [XmlAttribute] public int additionalEffectLevel;
-    [XmlAttribute] public int requireLevel;
+    [XmlAttribute] public short additionalEffectLevel;
+    [XmlAttribute] public short requireLevel;
     [XmlAttribute] public int upgradeCost;
     [XmlAttribute] public int cost;
     [XmlAttribute] public int duration;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -144,7 +145,7 @@ public class TableParser {
         Debug.Assert(data != null);
 
         foreach (GuildContribution contribution in data.contribution) {
-            yield return (contribution.Type, contribution);
+            yield return (contribution.type, contribution);
         }
     }
 
@@ -270,7 +271,7 @@ public class TableParser {
         var data = itemExtractionSerializer.Deserialize(reader) as ItemExtractionRoot;
         Debug.Assert(data != null);
 
-        foreach (ItemExtraction item in data.key) {
+        foreach (ItemExtraction item in data._key) {
             yield return (item.TargetItemID, item);
         }
     }

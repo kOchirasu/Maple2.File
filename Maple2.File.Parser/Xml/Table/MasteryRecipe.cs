@@ -8,8 +8,8 @@ namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/masteryreceipe.xml
 [XmlRoot("ms2")]
-public class MasteryRecipeRoot {
-    [XmlElement] public List<MasteryRecipe> receipe;
+public partial class MasteryRecipeRoot {
+    [M2dFeatureLocale(Selector = "id")] public IList<MasteryRecipe> _receipe;
 }
 
 public partial class MasteryRecipe : IFeatureLocale {
@@ -17,8 +17,9 @@ public partial class MasteryRecipe : IFeatureLocale {
     [M2dEnum] public MasteryType masteryType;
     [XmlAttribute] public bool exceptRewardExp;
     [XmlAttribute] public int requireMastery;
-    [XmlAttribute] public int requireMeso;
+    [XmlAttribute] public long requireMeso;
     [M2dArray] public int[] requireQuest = Array.Empty<int>();
+    [XmlAttribute] public short requireLevel;
     [XmlAttribute] public long rewardExp;
     [XmlAttribute] public int rewardMastery;
     [XmlAttribute] public int gatheringTime;
@@ -29,7 +30,7 @@ public partial class MasteryRecipe : IFeatureLocale {
     [M2dArray] public string[] requireItem3 = Array.Empty<string>();
     [M2dArray] public string[] requireItem4 = Array.Empty<string>();
     [M2dArray] public string[] requireItem5 = Array.Empty<string>();
-    [XmlAttribute] public int habitatMapId;
+    [M2dArray] public int[] habitatMapId = Array.Empty<int>();
     [M2dArray] public int[] rewardItem1 = Array.Empty<int>();
     [M2dArray] public int[] rewardItem2 = Array.Empty<int>();
     [M2dArray] public int[] rewardItem3 = Array.Empty<int>();
