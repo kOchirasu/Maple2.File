@@ -271,7 +271,7 @@ public class TableParser {
         var data = itemExtractionSerializer.Deserialize(reader) as ItemExtractionRoot;
         Debug.Assert(data != null);
 
-        foreach (ItemExtraction item in data._key) {
+        foreach (ItemExtraction item in data.key) {
             yield return (item.TargetItemID, item);
         }
     }
