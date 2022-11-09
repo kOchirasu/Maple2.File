@@ -36,6 +36,7 @@ public class TableParser {
     private readonly XmlSerializer magicPathSerializer;
     private readonly XmlSerializer mapSpawnTagSerializer;
     private readonly XmlSerializer masteryRecipeSerializer;
+    private readonly XmlSerializer masteryRewardSerializer;
     private readonly XmlSerializer paletteSerializer;
     private readonly XmlSerializer petSpawnInfoSerializer;
     private readonly XmlSerializer premiumClubEffectSerializer;
@@ -68,6 +69,7 @@ public class TableParser {
         this.magicPathSerializer = new XmlSerializer(typeof(MagicPath));
         this.mapSpawnTagSerializer = new XmlSerializer(typeof(MapSpawnTag));
         this.masteryRecipeSerializer = new XmlSerializer(typeof(MasteryRecipeRoot));
+        this.masteryRewardSerializer = new XmlSerializer(typeof(MasteryRewardRoot));
         this.paletteSerializer = new XmlSerializer(typeof(ColorPaletteRoot));
         this.petSpawnInfoSerializer = new XmlSerializer(typeof(PetSpawnInfoRoot));
         this.premiumClubEffectSerializer = new XmlSerializer(typeof(PremiumClubEffectRoot));
@@ -336,6 +338,16 @@ public class TableParser {
 
         foreach (MasteryRecipe recipe in data.receipe) {
             yield return (recipe.id, recipe);
+        }
+    }
+
+    public IEnumerable<(MasteryType Type, MasteryReward Reward)> ParseMasteryReward() {
+        string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/mastery.xml")));
+        var data = masteryRewardSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as MasteryRewardRoot;
+        Debug.Assert(data != null);
+
+        foreach (MasteryReward reward in data.mastery) {
+            yield return (reward.type, reward);
         }
     }
 

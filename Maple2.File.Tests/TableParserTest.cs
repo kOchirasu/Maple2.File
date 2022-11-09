@@ -259,6 +259,15 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestMasteryReward() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseMasteryReward()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestParsePetSpawnInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
 
