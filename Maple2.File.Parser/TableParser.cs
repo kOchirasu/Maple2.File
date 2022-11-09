@@ -262,7 +262,7 @@ public class TableParser {
         var data = itemExchangeScrollSerializer.Deserialize(reader) as ItemExchangeScrollRoot;
         Debug.Assert(data != null);
 
-        foreach (ItemExchangeScroll item in data.scroll) {
+        foreach (ItemExchangeScroll item in data.exchange) {
             yield return (item.id, item);
         }
     }
