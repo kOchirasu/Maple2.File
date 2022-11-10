@@ -17,6 +17,10 @@ public class TableParser {
     private readonly XmlSerializer chatStickerSerializer;
     private readonly XmlSerializer defaultItemsSerializer;
     private readonly XmlSerializer dungeonRoomSerializer;
+    private readonly XmlSerializer fishSerializer;
+    private readonly XmlSerializer fishHabitatSerializer;
+    private readonly XmlSerializer fishingRodSerializer;
+    private readonly XmlSerializer fishingSpotSerializer;
     private readonly XmlSerializer guildBuffSerializer;
     private readonly XmlSerializer guildContributionSerializer;
     private readonly XmlSerializer guildEventSerializer;
@@ -50,6 +54,10 @@ public class TableParser {
         this.chatStickerSerializer = new XmlSerializer(typeof(ChatStickerRoot));
         this.defaultItemsSerializer = new XmlSerializer(typeof(DefaultItems));
         this.dungeonRoomSerializer = new XmlSerializer(typeof(DungeonRoomRoot));
+        this.fishSerializer = new XmlSerializer(typeof(FishRoot));
+        this.fishHabitatSerializer = new XmlSerializer(typeof(FishHabitatRoot));
+        this.fishingRodSerializer = new XmlSerializer(typeof(FishingRodRoot));
+        this.fishingSpotSerializer = new XmlSerializer(typeof(FishingSpotRoot));
         this.guildBuffSerializer = new XmlSerializer(typeof(GuildBuffRoot));
         this.guildContributionSerializer = new XmlSerializer(typeof(GuildContributionRoot));
         this.guildEventSerializer = new XmlSerializer(typeof(GuildEventRoot));
@@ -128,6 +136,46 @@ public class TableParser {
 
         foreach (DungeonRoom dungeon in data.dungeonRoom) {
             yield return (dungeon.dungeonRoomID, dungeon);
+        }
+    }
+
+    public IEnumerable<(int Id, Fish Fish)> ParseFish() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/fish.xml"));
+        var data = fishSerializer.Deserialize(reader) as FishRoot;
+        Debug.Assert(data != null);
+
+        foreach (Fish fish in data.fish) {
+            yield return (fish.id, fish);
+        }
+    }
+
+    public IEnumerable<(int Id, FishHabitat Habitat)> ParseFishHabitat() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/fishhabitat.xml"));
+        var data = fishHabitatSerializer.Deserialize(reader) as FishHabitatRoot;
+        Debug.Assert(data != null);
+
+        foreach (FishHabitat habitat in data.fish) {
+            yield return (habitat.id, habitat);
+        }
+    }
+
+    public IEnumerable<(int Id, FishingRod Rod)> ParseFishingRod() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/fishingrod.xml"));
+        var data = fishingRodSerializer.Deserialize(reader) as FishingRodRoot;
+        Debug.Assert(data != null);
+
+        foreach (FishingRod rod in data.rod) {
+            yield return (rod.rodCode, rod);
+        }
+    }
+
+    public IEnumerable<(int Id, FishingSpot Spot)> ParseFishingSpot() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/fishingspot.xml"));
+        var data = fishingSpotSerializer.Deserialize(reader) as FishingSpotRoot;
+        Debug.Assert(data != null);
+
+        foreach (FishingSpot spot in data.spot) {
+            yield return (spot.id, spot);
         }
     }
 
