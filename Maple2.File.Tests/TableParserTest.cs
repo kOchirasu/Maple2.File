@@ -47,6 +47,42 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestFish() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseFish()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestFishHabitat() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseFishHabitat()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestFishingRod() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseFishingRod()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestFishingSpot() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseFishingSpot()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestGuildBuff() {
         var parser = new TableParser(TestUtils.XmlReader);
 
