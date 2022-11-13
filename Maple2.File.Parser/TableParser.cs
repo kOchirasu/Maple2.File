@@ -14,9 +14,11 @@ namespace Maple2.File.Parser;
 
 public class TableParser {
     private readonly M2dReader xmlReader;
+    private readonly XmlSerializer bankTypeSerializer;
     private readonly XmlSerializer chatStickerSerializer;
     private readonly XmlSerializer defaultItemsSerializer;
     private readonly XmlSerializer dungeonRoomSerializer;
+    private readonly XmlSerializer enchantScrollSerializer;
     private readonly XmlSerializer fishSerializer;
     private readonly XmlSerializer fishHabitatSerializer;
     private readonly XmlSerializer fishingRodSerializer;
@@ -36,6 +38,10 @@ public class TableParser {
     private readonly XmlSerializer itemExtractionSerializer;
     private readonly XmlSerializer itemGemstoneUpgradeSerializer;
     private readonly XmlSerializer itemLapenshardUpgradeSerializer;
+    private readonly XmlSerializer itemRemakeScrollSerializer;
+    private readonly XmlSerializer itemRepackingScrollSerializer;
+    private readonly XmlSerializer itemSocketSerializer;
+    private readonly XmlSerializer itemSocketScrollSerializer;
     private readonly XmlSerializer jobSerializer;
     private readonly XmlSerializer magicPathSerializer;
     private readonly XmlSerializer mapSpawnTagSerializer;
@@ -48,12 +54,15 @@ public class TableParser {
     private readonly XmlSerializer premiumClubPackageSerializer;
     private readonly XmlSerializer setItemInfoSerializer;
     private readonly XmlSerializer setItemOptionSerializer;
+    private readonly XmlSerializer titleTagSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
+        this.bankTypeSerializer = new XmlSerializer(typeof(BankTypeRoot));
         this.chatStickerSerializer = new XmlSerializer(typeof(ChatStickerRoot));
         this.defaultItemsSerializer = new XmlSerializer(typeof(DefaultItems));
         this.dungeonRoomSerializer = new XmlSerializer(typeof(DungeonRoomRoot));
+        this.enchantScrollSerializer = new XmlSerializer(typeof(EnchantScrollRoot));
         this.fishSerializer = new XmlSerializer(typeof(FishRoot));
         this.fishHabitatSerializer = new XmlSerializer(typeof(FishHabitatRoot));
         this.fishingRodSerializer = new XmlSerializer(typeof(FishingRodRoot));
@@ -73,6 +82,10 @@ public class TableParser {
         this.itemExtractionSerializer = new XmlSerializer(typeof(ItemExtractionRoot));
         this.itemGemstoneUpgradeSerializer = new XmlSerializer(typeof(ItemGemstoneUpgradeRoot));
         this.itemLapenshardUpgradeSerializer = new XmlSerializer(typeof(ItemLapenshardUpgradeRoot));
+        this.itemRemakeScrollSerializer = new XmlSerializer(typeof(ItemRemakeScrollRoot));
+        this.itemRepackingScrollSerializer = new XmlSerializer(typeof(ItemRepackingScrollRoot));
+        this.itemSocketSerializer = new XmlSerializer(typeof(ItemSocketRoot));
+        this.itemSocketScrollSerializer = new XmlSerializer(typeof(ItemSocketScrollRoot));
         this.jobSerializer = new XmlSerializer(typeof(JobRoot));
         this.magicPathSerializer = new XmlSerializer(typeof(MagicPath));
         this.mapSpawnTagSerializer = new XmlSerializer(typeof(MapSpawnTag));
@@ -85,6 +98,25 @@ public class TableParser {
         this.premiumClubPackageSerializer = new XmlSerializer(typeof(PremiumClubPackageRoot));
         this.setItemInfoSerializer = new XmlSerializer(typeof(SetItemInfoRoot));
         this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
+        this.titleTagSerializer = new XmlSerializer(typeof(TitleTagRoot));
+
+        // var seen = new HashSet<string>();
+        // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
+        //     if (!seen.Contains(args.Attr.Name)) {
+        //         Console.WriteLine($"Missing {args.Attr.Name}={args.Attr.Value}");
+        //         seen.Add(args.Attr.Name);
+        //     }
+        // };
+    }
+
+    public IEnumerable<(int Id, BankType BankType)> ParseBankType() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/banktype.xml"));
+        var data = bankTypeSerializer.Deserialize(reader) as BankTypeRoot;
+        Debug.Assert(data != null);
+
+        foreach (BankType type in data.bankType) {
+            yield return (type.id, type);
+        }
     }
 
     public IEnumerable<(int Id, ChatSticker ChatSticker)> ParseChatSticker() {
@@ -136,6 +168,16 @@ public class TableParser {
 
         foreach (DungeonRoom dungeon in data.dungeonRoom) {
             yield return (dungeon.dungeonRoomID, dungeon);
+        }
+    }
+
+    public IEnumerable<(int Id, EnchantScroll EnchantScroll)> ParseEnchantScroll() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/enchantscroll.xml"));
+        var data = enchantScrollSerializer.Deserialize(reader) as EnchantScrollRoot;
+        Debug.Assert(data != null);
+
+        foreach (EnchantScroll scroll in data.scroll) {
+            yield return (scroll.id, scroll);
         }
     }
 
@@ -348,6 +390,46 @@ public class TableParser {
         }
     }
 
+    public IEnumerable<(int Id, ItemRemakeScroll Scroll)> ParseItemRemakeScroll() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/itemremakescroll.xml"));
+        var data = itemRemakeScrollSerializer.Deserialize(reader) as ItemRemakeScrollRoot;
+        Debug.Assert(data != null);
+
+        foreach (ItemRemakeScroll scroll in data.remakeScroll) {
+            yield return (scroll.id, scroll);
+        }
+    }
+
+    public IEnumerable<(int Id, ItemRepackingScroll Scroll)> ParseItemRepackingScroll() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/itemrepackingscroll.xml"));
+        var data = itemRepackingScrollSerializer.Deserialize(reader) as ItemRepackingScrollRoot;
+        Debug.Assert(data != null);
+
+        foreach (ItemRepackingScroll scroll in data.rePackingScroll) {
+            yield return (scroll.id, scroll);
+        }
+    }
+
+    public IEnumerable<(int Id, ItemSocket Socket)> ParseItemSocket() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/itemsocket.xml"));
+        var data = itemSocketSerializer.Deserialize(reader) as ItemSocketRoot;
+        Debug.Assert(data != null);
+
+        foreach (ItemSocket socket in data.itemSocket) {
+            yield return (socket.id, socket);
+        }
+    }
+
+    public IEnumerable<(int Id, ItemSocketScroll Scroll)> ParseItemSocketScroll() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/itemsocketscroll.xml"));
+        var data = itemSocketScrollSerializer.Deserialize(reader) as ItemSocketScrollRoot;
+        Debug.Assert(data != null);
+
+        foreach (ItemSocketScroll scroll in data.scroll) {
+            yield return (scroll.id, scroll);
+        }
+    }
+
     public IEnumerable<JobTable> ParseJobTable() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/job.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
@@ -456,6 +538,16 @@ public class TableParser {
 
         foreach (SetItemOption option in data.option) {
             yield return (option.id, option);
+        }
+    }
+
+    public IEnumerable<(int Id, TitleTag TitleTag)> ParseTitleTag() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/titletag.xml"));
+        var data = titleTagSerializer.Deserialize(reader) as TitleTagRoot;
+        Debug.Assert(data != null);
+
+        foreach (TitleTag title in data.key) {
+            yield return (title.id, title);
         }
     }
 }

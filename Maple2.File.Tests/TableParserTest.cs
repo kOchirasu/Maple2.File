@@ -20,6 +20,33 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestParseScroll() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseEnchantScroll()) {
+            continue;
+        }
+        foreach ((_, _) in parser.ParseItemRemakeScroll()) {
+            continue;
+        }
+        foreach ((_, _) in parser.ParseItemRepackingScroll()) {
+            continue;
+        }
+        foreach ((_, _) in parser.ParseItemSocketScroll()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestBankType() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseBankType()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestChatSticker() {
         var parser = new TableParser(TestUtils.XmlReader);
 
@@ -221,6 +248,15 @@ public class TableParserTest {
     }
 
     [TestMethod]
+    public void TestParseItemSocket() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseItemSocket()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
     public void TestParseJobTable() {
         var parser = new TableParser(TestUtils.XmlReader);
 
@@ -353,6 +389,15 @@ public class TableParserTest {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseSetItemOption()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestParseTitleTag() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseTitleTag()) {
             continue;
         }
     }
