@@ -33,7 +33,7 @@ public partial class ItemExchangeScroll : IFeatureLocale {
         [XmlAttribute] public long meso;
         [XmlElement] public List<Item> item;
     }
-    
+
     public partial class Item {
         [M2dArray] public string[] id = Array.Empty<string>();
     }
