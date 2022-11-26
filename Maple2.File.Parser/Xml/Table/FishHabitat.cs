@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using M2dXmlGenerator;
 
 namespace Maple2.File.Parser.Xml.Table;
 
@@ -12,5 +13,5 @@ public partial class FishHabitatRoot {
 
 public partial class FishHabitat {
     [XmlAttribute] public int id;
-    [XmlAttribute] public string[] habitat = Array.Empty<string>();
+    [M2dArray] public string[] habitat = Array.Empty<string>();
 }
