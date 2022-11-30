@@ -13,7 +13,7 @@ public partial class EnchantScrollRoot {
 
 public partial class EnchantScroll : IFeatureLocale {
     [XmlAttribute] public int id;
-    [XmlAttribute] public int scrollType;
+    [XmlAttribute] public short scrollType;
     [XmlAttribute] public short minLv;
     [XmlAttribute] public short maxLv;
     [M2dArray] public int[] grade = Array.Empty<int>();

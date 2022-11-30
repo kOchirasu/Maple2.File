@@ -13,8 +13,8 @@ public partial class GuildNpcRoot {
 
 public partial class GuildNpc : IFeatureLocale {
     [M2dEnum] public GuildNpcType type;
-    [XmlAttribute] public int level;
-    [XmlAttribute] public long upgradeCost;
+    [XmlAttribute] public short level;
+    [XmlAttribute] public int upgradeCost;
     [XmlAttribute] public int requireGuildLevel;
     [XmlAttribute] public int requireHouseLevel;
     [XmlAttribute] public string stringKey;

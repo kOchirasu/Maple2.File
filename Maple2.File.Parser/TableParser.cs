@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -48,6 +47,8 @@ public class TableParser {
     private readonly XmlSerializer masteryRecipeSerializer;
     private readonly XmlSerializer masteryRewardSerializer;
     private readonly XmlSerializer paletteSerializer;
+    private readonly XmlSerializer petExpSerializer;
+    private readonly XmlSerializer petPropertySerializer;
     private readonly XmlSerializer petSpawnInfoSerializer;
     private readonly XmlSerializer premiumClubEffectSerializer;
     private readonly XmlSerializer premiumClubItemSerializer;
@@ -92,6 +93,8 @@ public class TableParser {
         this.masteryRecipeSerializer = new XmlSerializer(typeof(MasteryRecipeRoot));
         this.masteryRewardSerializer = new XmlSerializer(typeof(MasteryRewardRoot));
         this.paletteSerializer = new XmlSerializer(typeof(ColorPaletteRoot));
+        this.petExpSerializer = new XmlSerializer(typeof(PetExpRoot));
+        this.petPropertySerializer = new XmlSerializer(typeof(PetPropertyRoot));
         this.petSpawnInfoSerializer = new XmlSerializer(typeof(PetSpawnInfoRoot));
         this.premiumClubEffectSerializer = new XmlSerializer(typeof(PremiumClubEffectRoot));
         this.premiumClubItemSerializer = new XmlSerializer(typeof(PremiumClubItemRoot));
@@ -161,7 +164,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, DungeonRoom Item)> ParseDungeonRoom() {
+    public IEnumerable<(int Id, DungeonRoom Dungeon)> ParseDungeonRoom() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/na/dungeonroom.xml"));
         var data = dungeonRoomSerializer.Deserialize(reader) as DungeonRoomRoot;
         Debug.Assert(data != null);
@@ -171,7 +174,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, EnchantScroll EnchantScroll)> ParseEnchantScroll() {
+    public IEnumerable<(int Id, EnchantScroll Scroll)> ParseEnchantScroll() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/enchantscroll.xml"));
         var data = enchantScrollSerializer.Deserialize(reader) as EnchantScrollRoot;
         Debug.Assert(data != null);
@@ -221,7 +224,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, IEnumerable<GuildBuff> Buff)> ParseGuildBuff() {
+    public IEnumerable<(int Id, IEnumerable<GuildBuff> Buffs)> ParseGuildBuff() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildbuff.xml"));
         var data = guildBuffSerializer.Deserialize(reader) as GuildBuffRoot;
         Debug.Assert(data != null);
@@ -231,7 +234,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(GuildContributionType Id, GuildContribution Item)> ParseGuildContribution() {
+    public IEnumerable<(GuildContributionType Type, GuildContribution Contribution)> ParseGuildContribution() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildcontribution.xml"));
         var data = guildContributionSerializer.Deserialize(reader) as GuildContributionRoot;
         Debug.Assert(data != null);
@@ -241,7 +244,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, GuildEvent Item)> ParseGuildEvent() {
+    public IEnumerable<(int Id, GuildEvent Event)> ParseGuildEvent() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildcontribution.xml"));
         var data = guildEventSerializer.Deserialize(reader) as GuildEventRoot;
         Debug.Assert(data != null);
@@ -251,7 +254,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, GuildExp Item)> ParseGuildExp() {
+    public IEnumerable<(int Id, GuildExp Exp)> ParseGuildExp() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildexp.xml"));
         var data = guildExpSerializer.Deserialize(reader) as GuildExpRoot;
         Debug.Assert(data != null);
@@ -261,7 +264,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, IEnumerable<GuildHouse> Item)> ParseGuildHouse() {
+    public IEnumerable<(int Id, IEnumerable<GuildHouse> Houses)> ParseGuildHouse() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildhouse.xml"));
         var data = guildHouseSerializer.Deserialize(reader) as GuildHouseRoot;
         Debug.Assert(data != null);
@@ -271,7 +274,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(GuildNpcType Type, IEnumerable<GuildNpc> Item)> ParseGuildNpc() {
+    public IEnumerable<(GuildNpcType Type, IEnumerable<GuildNpc> Npcs)> ParseGuildNpc() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildnpc.xml"));
         var data = guildNpcSerializer.Deserialize(reader) as GuildNpcRoot;
         Debug.Assert(data != null);
@@ -281,7 +284,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, GuildProperty Item)> ParseGuildProperty() {
+    public IEnumerable<(int Id, GuildProperty Property)> ParseGuildProperty() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/guildproperty.xml"));
         var data = guildPropertySerializer.Deserialize(reader) as GuildPropertyRoot;
         Debug.Assert(data != null);
@@ -461,7 +464,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(long Id, MasteryRecipe Recipe)> ParseMasteryRecipe() {
+    public IEnumerable<(int Id, MasteryRecipe Recipe)> ParseMasteryRecipe() {
         string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/masteryreceipe.xml")));
         var data = masteryRecipeSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as MasteryRecipeRoot;
         Debug.Assert(data != null);
@@ -481,6 +484,26 @@ public class TableParser {
         }
     }
 
+    public IEnumerable<(short Level, PetExp Exp)> ParsePetExp() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/petexp.xml"));
+        var data = petExpSerializer.Deserialize(reader) as PetExpRoot;
+        Debug.Assert(data != null);
+
+        foreach (PetExp exp in data.exp) {
+            yield return (exp.level, exp);
+        }
+    }
+
+    public IEnumerable<(int Id, PetProperty Property)> ParsePetProperty() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/petproperty.xml"));
+        var data = petPropertySerializer.Deserialize(reader) as PetPropertyRoot;
+        Debug.Assert(data != null);
+
+        foreach (PetProperty property in data.pets) {
+            yield return (property.code, property);
+        }
+    }
+
     public IEnumerable<(int FieldId, IEnumerable<PetSpawnInfo> Info)> ParsePetSpawnInfo() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/petspawninfo.xml"));
         var data = petSpawnInfoSerializer.Deserialize(reader) as PetSpawnInfoRoot;
@@ -491,7 +514,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, PremiumClubEffect Item)> ParsePremiumClubEffect() {
+    public IEnumerable<(int Id, PremiumClubEffect Effect)> ParsePremiumClubEffect() {
         string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/vipbenefiteffecttable.xml")));
         var data = premiumClubEffectSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as PremiumClubEffectRoot;
         Debug.Assert(data != null);

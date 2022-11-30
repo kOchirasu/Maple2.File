@@ -104,9 +104,13 @@ public List<{type}> _{field.Name} {{
         string type = field.Type.ToDisplayString();
         string concreteList = type.Replace("IList", "List");
 
-        string[] groupSelector = attributeData.GetValueOrDefault("Selector", string.Empty).Split("|");
+        string[] groupSelector = attributeData.GetValueOrDefault("Selector", string.Empty).Split("|", StringSplitOptions.RemoveEmptyEntries);
+        string resolver = "ResolveFeatureLocale";
         var groupBy = new StringBuilder();
-        if (groupSelector.Length == 1) {
+        if (groupSelector.Length == 0) {
+            // If no selector is specified, just return all matching entries.
+            resolver = "FeatureLocale";
+        } else if (groupSelector.Length == 1) {
             groupBy.Append($"select => select.{groupSelector[0]}");
         } else {
             groupBy.Append("select => (select.");
@@ -116,7 +120,7 @@ public List<{type}> _{field.Name} {{
 
         return $@"
 private {concreteList} {field.Name}_;
-public {type} {propertyName} => {field.Name}_.ResolveFeatureLocale({groupBy.ToString()}).ToList();
+public {type} {propertyName} => {field.Name}_.{resolver}({groupBy.ToString()}).ToList();
 
 [XmlElement(""{propertyName}"")]
 public {concreteList} _{field.Name} {{

@@ -11,9 +11,9 @@ public partial class GuildPropertyRoot {
 }
 
 public partial class GuildProperty : IFeatureLocale {
-    [XmlAttribute] public int level;
+    [XmlAttribute] public short level;
     [XmlAttribute] public int accumExp;
-    [XmlAttribute] public int capacity;
+    [XmlAttribute] public byte capacity;
     [XmlAttribute] public long fundMax;
     [XmlAttribute] public int donationMax;
     [XmlAttribute] public int attendGuildExp;

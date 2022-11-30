@@ -18,6 +18,6 @@ public partial class ItemSocketScroll : IFeatureLocale {
     [XmlAttribute] public short maxLv;
     [M2dArray] public int[] slot = Array.Empty<int>();
     [M2dArray] public int[] rank = Array.Empty<int>();
-    [XmlAttribute] public bool tradableCountDeduction;
+    [XmlAttribute] public int tradableCountDeduction;
     [M2dArray] public int[] usePart = Array.Empty<int>();
 }

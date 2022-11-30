@@ -264,34 +264,21 @@ public class TableParserTest {
             .GroupBy(result => result.code)
             .ToDictionary(group => group.Key, group => group.ToList());
 
-        var expected = new Dictionary<int, string> {
-            {
-                1, ""
-            }, {
-                10, "JobChange_02"
-            }, {
-                20, "JobChange_02"
-            }, {
-                30, "JobChange_02"
-            }, {
-                40, "JobChange_02"
-            }, {
-                50, "JobChange_02"
-            }, {
-                60, "JobChange_02"
-            }, {
-                70, "JobChange_02"
-            }, {
-                80, "JobChange_02"
-            }, {
-                90, "JobChange_02"
-            }, {
-                100, "JobChange_02"
-            }, {
-                110, "JobChange_02"
-            },
+        var expected = new Dictionary<int, (string, int)> {
+            {1, ("", 1)},
+            {10, ("JobChange_02", 2)},
+            {20, ("JobChange_02", 1)},
+            {30, ("JobChange_02", 1)},
+            {40, ("JobChange_02", 2)},
+            {50, ("JobChange_02", 1)},
+            {60, ("JobChange_02", 1)},
+            {70, ("JobChange_02", 2)},
+            {80, ("JobChange_02", 2)},
+            {90, ("JobChange_02", 1)},
+            {100, ("JobChange_02", 1)},
+            {110, ("JobChange_02", 1)},
         };
-        foreach ((int jobCode, string feature) in expected) {
+        foreach ((int jobCode, (string feature, int itemCount)) in expected) {
             Assert.IsTrue(results.TryGetValue(jobCode, out List<JobTable>? job));
             Assert.IsNotNull(job);
             // Ensure that FeatureLocale was filtered properly
@@ -300,6 +287,9 @@ public class TableParserTest {
             // Ensure that some value was parsed
             Assert.IsTrue(job[0].skills.skill.Count > 0);
             Assert.IsTrue(job[0].learn.Count > 0);
+            // Ensure the right amount of items are parsed
+            Assert.AreEqual(job[0].startInvenItem.item.Count, itemCount);
+            Assert.AreEqual(job[0].reward.item.Count, itemCount);
         }
     }
 
@@ -340,9 +330,15 @@ public class TableParserTest {
     }
 
     [TestMethod]
-    public void TestParsePetSpawnInfo() {
+    public void TestParsePetTable() {
         var parser = new TableParser(TestUtils.XmlReader);
 
+        foreach ((_, _) in parser.ParsePetExp()) {
+            continue;
+        }
+        foreach ((_, _) in parser.ParsePetProperty()) {
+            continue;
+        }
         foreach ((_, _) in parser.ParsePetSpawnInfo()) {
             continue;
         }

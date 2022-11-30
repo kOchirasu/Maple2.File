@@ -17,16 +17,16 @@
         <EmbeddedResource Include="Resource\M2dNullableAttribute.cs" />
         <Compile Remove="Resource\M2dVector3Attribute.cs" />
         <EmbeddedResource Include="Resource\M2dVector3Attribute.cs" />
-        <Compile Remove="Resource\IFeatureLocale.cs" />
-        <EmbeddedResource Include="Resource\IFeatureLocale.cs" />
         <Compile Remove="Resource\M2dFeatureLocaleAttribute.cs" />
         <EmbeddedResource Include="Resource\M2dFeatureLocaleAttribute.cs" />
-        <Compile Remove="Resource\FeatureLocaleFilter.cs" />
-        <EmbeddedResource Include="Resource\FeatureLocaleFilter.cs" />
         <Compile Remove="Resource\M2dEnumAttribute.cs" />
         <EmbeddedResource Include="Resource\M2dEnumAttribute.cs" />
         <Compile Remove="Resource\M2dColorAttribute.cs" />
         <EmbeddedResource Include="Resource\M2dColorAttribute.cs" />
+        <Compile Remove="Resource\IFeatureLocale.cs" />
+        <EmbeddedResource Include="Resource\IFeatureLocale.cs" />
+        <Compile Remove="Resource\FeatureLocaleFilter.cs" />
+        <EmbeddedResource Include="Resource\FeatureLocaleFilter.cs" />
     </ItemGroup>
 
 </Project>

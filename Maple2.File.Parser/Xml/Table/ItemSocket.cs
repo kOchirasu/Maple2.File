@@ -14,8 +14,8 @@ public partial class ItemSocketRoot {
 public partial class ItemSocket : IFeatureLocale {
     [XmlAttribute] public int id;
     [XmlAttribute] public int grade;
-    [XmlAttribute] public int maxCount;
+    [XmlAttribute] public byte maxCount;
     [XmlAttribute] public int openType;
     [M2dArray] public int[] randomOpenRange = Array.Empty<int>();
-    [XmlAttribute] public int fixOpenCount;
+    [XmlAttribute] public byte fixOpenCount;
 }

@@ -34,7 +34,7 @@ public partial class CharacterVoice : IFeatureLocale {
 }
 
 public partial class JobItem {
-    [M2dFeatureLocale(Selector = "itemID")] private IList<Item> _item;
+    [M2dFeatureLocale] private IList<Item> _item;
 
     public partial class Item : IFeatureLocale {
         [XmlAttribute] public int itemID;

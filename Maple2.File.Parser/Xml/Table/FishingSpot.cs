@@ -15,5 +15,5 @@ public partial class FishingSpot : IFeatureLocale {
     [XmlAttribute] public int id;
     [XmlAttribute] public int minMastery;
     [XmlAttribute] public int maxMastery;
-    [XmlAttribute] public string[] liquidType = Array.Empty<string>();
+    [M2dArray] public string[] liquidType = Array.Empty<string>();
 }
