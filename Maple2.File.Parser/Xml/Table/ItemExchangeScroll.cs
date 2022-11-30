@@ -18,7 +18,7 @@ public partial class ItemExchangeScroll : IFeatureLocale {
     [XmlAttribute] public int tradableCountDeduction;
 
     [M2dEnum] public ItemExchangeScrollType type;
-    [XmlElement] public Ingredient recipe;
+    [XmlElement] public Ingredient receipe;
     [XmlElement] public Ingredient requireEquip;
     [XmlElement] public Ingredient exchange;
     [XmlElement] public Require require;
@@ -30,9 +30,11 @@ public partial class ItemExchangeScroll : IFeatureLocale {
     }
 
     public partial class Require {
-        public partial class Item {
-            [M2dArray] public string[] id = Array.Empty<string>();
-        }
         [XmlAttribute] public long meso;
+        [XmlElement] public List<Item> item;
+    }
+
+    public partial class Item {
+        [M2dArray] public string[] id = Array.Empty<string>();
     }
 }
