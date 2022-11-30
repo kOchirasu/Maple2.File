@@ -13,5 +13,5 @@ public partial class FishHabitatRoot {
 
 public partial class FishHabitat {
     [XmlAttribute] public int id;
-    [M2dArray] public string[] habitat = Array.Empty<string>();
+    [M2dArray] public int[] habitat = Array.Empty<int>();
 }
