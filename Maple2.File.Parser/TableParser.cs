@@ -57,15 +57,6 @@ public class TableParser {
     private readonly XmlSerializer setItemOptionSerializer;
     private readonly XmlSerializer titleTagSerializer;
     private readonly XmlSerializer individualItemDropSerializer;
-    private readonly XmlSerializer individualItemDropChargeSerializer;
-    private readonly XmlSerializer individualItemDropEventSerializer;
-    private readonly XmlSerializer individualItemDropEventNpcSerializer;
-    private readonly XmlSerializer individualItemDropNewGachaSerializer;
-    private readonly XmlSerializer individualItemDropPetSerializer;
-    private readonly XmlSerializer individualItemDropQuestObjSerializer;
-    private readonly XmlSerializer individualItemDropQuestMobSerializer;
-    private readonly XmlSerializer individualItemDropGachaSerializer;
-    private readonly XmlSerializer individualItemDropGearBoxSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -113,15 +104,6 @@ public class TableParser {
         this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
         this.titleTagSerializer = new XmlSerializer(typeof(TitleTagRoot));
         this.individualItemDropSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropChargeSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropEventSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropEventNpcSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropNewGachaSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropPetSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropQuestObjSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropQuestMobSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropGachaSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
-        this.individualItemDropGearBoxSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -606,7 +588,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropCharge() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_charge.xml"));
-        var data = individualItemDropChargeSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -616,7 +598,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEvent() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_event.xml"));
-        var data = individualItemDropEventSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -626,7 +608,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEventNpc() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_eventnpc.xml"));
-        var data = individualItemDropEventNpcSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -636,7 +618,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropNewGacha() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_newgacha.xml"));
-        var data = individualItemDropNewGachaSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -646,7 +628,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropPet() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_pet.xml"));
-        var data = individualItemDropPetSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -656,7 +638,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestObj() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_quest_obj.xml"));
-        var data = individualItemDropQuestObjSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -666,7 +648,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestMob() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_quest_mob.xml"));
-        var data = individualItemDropQuestMobSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -676,7 +658,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropGacha() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/na/individualitemdrop_gacha.xml"));
-        var data = individualItemDropQuestMobSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
@@ -686,7 +668,7 @@ public class TableParser {
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemGearBox() {
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/na/individualitemdrop_gearbox.xml"));
-        var data = individualItemDropGearBoxSerializer.Deserialize(reader) as IndividualItemDropRoot;
+        var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
         foreach (IndividualItemDrop drop in data.individualDropBox) {
