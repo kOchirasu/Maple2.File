@@ -397,4 +397,49 @@ public class TableParserTest {
             continue;
         }
     }
+
+    [TestMethod]
+    public void TestIndividualItemDrop() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseIndividualItemDrop()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropCharge()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropEvent()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropEventNpc()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropNewGacha()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropPet()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropQuestObj()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropQuestMob()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemDropGacha()) {
+            continue;
+        }
+
+        foreach ((_, _) in parser.ParseIndividualItemGearBox()) {
+            continue;
+        }
+    }
 }
