@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
@@ -20,16 +21,47 @@ public partial class IndividualItemDropRoot {
 
 public partial class IndividualItemDrop : IFeatureLocale {
     [XmlAttribute] public int individualDropBoxID;
-    [XmlAttribute] public byte dropGroup;
+
+    // CItemDropDataIndividual
     [XmlAttribute] public int item;
     [XmlAttribute] public int item2;
-    [XmlAttribute] public int smartDropRate;
-    [XmlAttribute] public string isApplySmartGenderDrop = string.Empty;
-    [XmlAttribute] public byte showTooltip;
-    [XmlAttribute] public bool showIconOnGachaUI;
+
+    [XmlAttribute] public int itemCode;
+    [XmlAttribute] public int weight;
+    [M2dNullable] public int? PackageUIShowGrade;
+    [XmlAttribute] public bool assistBonus;
+    [XmlAttribute] public bool constraintsQuest;
     [XmlAttribute] public int enchantLevel;
+    [XmlAttribute] public short petLevel;
+    [XmlAttribute] public int socketDataID;
+
+    [XmlAttribute] public bool tradableCountDeduction;
+    [XmlAttribute] public bool rePackingLimitCountDeduction;
+    [XmlAttribute] public bool disableBreak;
+    [XmlAttribute] public bool isBindCharacter;
+    [XmlAttribute] public bool showIconOnGachaUI;
+
+    [XmlAttribute] public int properJobWeight;
+    [XmlAttribute] public int imProperJobWeight;
+    [XmlAttribute] public bool isAnnounce;
+    [XmlAttribute] public byte showTooltip;
+
+    // CItemDropInitParam
+    // if CItemDropDataIndividual.itemCode == 90000008, * 10000
     [XmlAttribute] public float minCount;
     [XmlAttribute] public float maxCount;
-    [M2dNullable] public int? socketDataID;
-    [M2dNullable] public int? PackageUIShowGrade;
+
+    [M2dArray] public int[] mapDependency = Array.Empty<int>();
+    [M2dArray] public int[] grade = Array.Empty<int>();
+    [M2dArray] public int[] gradeProbability = Array.Empty<int>();
+
+    // After Init
+    [XmlAttribute] public int smartDropRate;
+    [XmlAttribute] public byte dropGroup;
+    [XmlAttribute] public short dropGroupMinLevel;
+    [XmlAttribute] public bool isSharedDrop;
+    [XmlAttribute] public bool isApplySmartGenderDrop;
+    [XmlAttribute] public bool serverDrop;
+    [M2dArray] public int[] dropCount = Array.Empty<int>();
+    [M2dArray] public int[] dropCountProbability = Array.Empty<int>();
 }

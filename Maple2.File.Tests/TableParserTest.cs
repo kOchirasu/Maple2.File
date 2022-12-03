@@ -405,83 +405,38 @@ public class TableParserTest {
         foreach ((_, _) in parser.ParseIndividualItemDrop()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropCharge() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropCharge()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropEvent() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropEvent()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropEventNpc() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropEventNpc()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropNewGacha() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropNewGacha()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropPet() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropPet()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropQuestObj() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropQuestObj()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropQuestMob() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropQuestMob()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropGacha() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemDropGacha()) {
             continue;
         }
-    }
-
-    [TestMethod]
-    public void TestIndividualItemDropGearBox() {
-        var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _) in parser.ParseIndividualItemGearBox()) {
             continue;

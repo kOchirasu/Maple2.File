@@ -577,7 +577,9 @@ public class TableParser {
     }
 
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDrop() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -587,7 +589,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropCharge() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_charge.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_charge.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -597,7 +601,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEvent() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_event.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_event.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -607,7 +613,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEventNpc() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_eventnpc.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_eventnpc.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -617,7 +625,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropNewGacha() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_newgacha.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_newgacha.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -627,7 +637,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropPet() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_pet.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_pet.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -637,7 +649,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestObj() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_quest_obj.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_quest_obj.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -647,7 +661,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestMob() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/individualitemdrop_quest_mob.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_quest_mob.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -657,7 +673,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropGacha() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/na/individualitemdrop_gacha.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/individualitemdrop_gacha.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
@@ -667,7 +685,9 @@ public class TableParser {
     }
     
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemGearBox() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/na/individualitemdrop_gearbox.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/individualitemdrop_gearbox.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
 
