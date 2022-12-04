@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Maple2.File.Parser.Xml.Script; 
+namespace Maple2.File.Parser.Xml.Script;
 
-public class Content {
+public class ScriptContent {
     [XmlAttribute] public string text = string.Empty;
     [XmlAttribute] public string voiceID = string.Empty;
     [XmlAttribute] public string illust = string.Empty;
+}
+
+public class CinematicContent : ScriptContent {
     [XmlAttribute] public int buttonSet;
     [XmlAttribute] public bool openTalkReward;
     [XmlAttribute] public int functionID;
@@ -23,6 +26,6 @@ public class Content {
     [XmlAttribute] public string screenEffectAction = string.Empty;
     [XmlAttribute] public int screenEffectValue;
 
-    [XmlElement] public List<Distractor> distractor;
-    [XmlElement("event")] public List<Event> @event;
+    [XmlElement] public List<CinematicDistractor> distractor;
+    [XmlElement("event")] public List<CinematicEventScript> @event;
 }

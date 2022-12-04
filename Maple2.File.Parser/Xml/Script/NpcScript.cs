@@ -9,6 +9,6 @@ namespace Maple2.File.Parser.Xml.Script;
 public partial class NpcScript {
     [M2dFeatureLocale(Selector = "id")] private IList<TalkScript> _select;
     [M2dFeatureLocale] private TalkScript _job;
-    [M2dFeatureLocale(Selector = "id")] private IList<TalkScript> _monologue;
-    [M2dFeatureLocale(Selector = "id")] private IList<TalkScript> _script;
+    [M2dFeatureLocale(Selector = "id")] private IList<MonologueScript> _monologue;
+    [M2dFeatureLocale(Selector = "id")] private IList<ConditionTalkScript> _script;
 }

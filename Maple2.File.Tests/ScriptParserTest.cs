@@ -10,10 +10,10 @@ public class ScriptParserTest {
     public void TestNpcScriptParser() {
         var parser = new ScriptParser(TestUtils.XmlReader);
 
-        // parser.NameSerializer.UnknownElement += TestUtils.UnknownElementHandler;
-        // parser.NameSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
-        // parser.NpcSerializer.UnknownElement += TestUtils.UnknownElementHandler;
-        // parser.NpcSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
+        // parser.scriptStringSerializer.UnknownElement += TestUtils.UnknownElementHandler;
+        // parser.scriptStringSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
+        // parser.npcScriptSerializer.UnknownElement += TestUtils.UnknownElementHandler;
+        // parser.npcScriptSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
 
         int count = 0;
         foreach ((int id, NpcScript script) in parser.ParseNpc()) {
@@ -28,13 +28,14 @@ public class ScriptParserTest {
     public void TestQuestScriptParser() {
         var parser = new ScriptParser(TestUtils.XmlReader);
 
-        // parser.NameSerializer.UnknownElement += TestUtils.UnknownElementHandler;
-        // parser.NameSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
-        // parser.NpcSerializer.UnknownElement += TestUtils.UnknownElementHandler;
-        // parser.NpcSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
+        // parser.scriptStringSerializer.UnknownElement += TestUtils.UnknownElementHandler;
+        // parser.scriptStringSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
+        // parser.questScriptSerializer.UnknownElement += TestUtils.UnknownElementHandler;
+        // parser.questScriptSerializer.UnknownAttribute += TestUtils.UnknownAttributeHandler;
 
         int count = 0;
-        foreach (QuestScript script in parser.ParseQuest()) {
+        foreach ((int id, QuestScript script) in parser.ParseQuest()) {
+            Assert.IsTrue(id > 0);
             Assert.IsNotNull(script);
             count++;
         }

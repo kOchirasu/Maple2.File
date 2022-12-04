@@ -17,10 +17,10 @@ public static class TestUtils {
     }
 
     public static void UnknownElementHandler(object? sender, XmlElementEventArgs e) {
-        Debug.Print("Missing elements: {0}", e.ExpectedElements);
+        Debug.Print("Missing element {0}, expected [{1}]", e.Element.Name, e.ExpectedElements);
     }
 
     public static void UnknownAttributeHandler(object? sender, XmlAttributeEventArgs e) {
-        Debug.Print("Missing attributes: {0}", e.ExpectedAttributes);
+        Debug.Print("Missing attribute {0}, expected [{1}]", e.Attr.Name, e.ExpectedAttributes);
     }
 }

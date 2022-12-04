@@ -33,13 +33,13 @@ public class ScriptParser {
         }
     }
 
-    public IEnumerable<QuestScript> ParseQuest() {
+    public IEnumerable<(int Id, QuestScript Script)> ParseQuest() {
         foreach (PackFileEntry entry in xmlReader.Files.Where(entry => entry.Name.StartsWith("script/quest"))) {
             var root = questScriptSerializer.Deserialize(xmlReader.GetXmlReader(entry)) as QuestScriptRoot;
             Debug.Assert(root != null);
 
             foreach (QuestScript quest in root.quest) {
-                yield return quest;
+                yield return (quest.id, quest);
             }
         }
     }

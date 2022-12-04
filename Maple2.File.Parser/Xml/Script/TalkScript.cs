@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
@@ -6,15 +7,21 @@ namespace Maple2.File.Parser.Xml.Script;
 
 public partial class TalkScript : IFeatureLocale {
     [XmlAttribute] public int id;
+    [XmlAttribute] public string tag = string.Empty; // "limitFameGrade"
     [XmlAttribute] public bool randomPick;
-    [XmlAttribute] public int popupProp;
-    [XmlAttribute] public int popupState;
-    [M2dArray] public int[] gotoConditionTalkID;
-    [XmlAttribute] public int jobCondition;
 
-    [XmlElement] public List<Content> content;
+    [XmlElement] public List<CinematicContent> content;
 
     // Ignored by client.
-    //[XmlAttribute] public string buttonSet; // "roulette"
-    //[XmlAttribute] public string tag; // "limitFameGrade"
+    [XmlAttribute] public string buttonSet = string.Empty; // "roulette"
+}
+
+// Only used for Scripts/Npc/%d.xml <script>
+public partial class ConditionTalkScript : TalkScript, IFeatureLocale {
+    [M2dArray] public int[] gotoConditionTalkID = Array.Empty<int>();
+}
+
+// Only used for Scripts/Quest/%d.xml <script>
+public partial class QuestTalkScript : TalkScript, IFeatureLocale {
+    [XmlAttribute] public int jobCondition;
 }
