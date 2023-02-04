@@ -47,7 +47,14 @@ public class FlatToModel {
             }
 
             EntityModel model = Convert(type);
-            string name = type.Path.Replace("flat", "model");
+            string name = type.Path;
+            if (name.StartsWith("flat/library")) {
+                name = name.Replace(".flat", ".model");
+            } else if (name.StartsWith("flat/presets")) {
+                name = name.Replace(".flat", ".preset");
+            }
+            name = name.Replace("flat/", "convert/");
+
             Directory.CreateDirectory(Path.GetDirectoryName(name) ?? string.Empty);
             var writer = new XmlTextWriter(new StreamWriter(name, false, Encoding.UTF8));
             writer.Formatting = Formatting.Indented;
