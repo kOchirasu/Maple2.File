@@ -11,7 +11,9 @@ namespace Maple2.File.Parser.Flat.Convert;
 
 public class FlatToModel {
     private readonly FlatTypeIndex index;
+    private readonly AssetIndex assetIndex;
     private readonly XmlSerializer serializer;
+    private readonly XmlSerializer presetSerializer;
     private readonly XmlSerializerNamespaces xmlNamespace;
 
     // These files are .preset equivalents so we don't need to generate .model
@@ -32,9 +34,11 @@ public class FlatToModel {
         "beastqualitysettings_preset_productiongi",
     };
 
-    public FlatToModel(M2dReader reader, string root = "flat") {
+    public FlatToModel(M2dReader reader, M2dReader assetReader, string root = "flat") {
         index = new FlatTypeIndex(reader, root);
+        assetIndex = new AssetIndex(assetReader);
         serializer = new XmlSerializer(typeof(EntityModel));
+        presetSerializer = new XmlSerializer(typeof(EntityModelPreset));
         xmlNamespace = new XmlSerializerNamespaces();
         xmlNamespace.Add(string.Empty, string.Empty);
     }
@@ -46,25 +50,31 @@ public class FlatToModel {
                 continue;
             }
 
-            EntityModel model = Convert(type);
             string name = type.Path;
+            bool isPreset = false;
             if (name.StartsWith("flat/library")) {
                 name = name.Replace(".flat", ".model");
             } else if (name.StartsWith("flat/presets")) {
                 name = name.Replace(".flat", ".preset");
+                isPreset = true;
             }
             name = name.Replace("flat/", "convert/");
 
+            EntityModel model = Convert(type, isPreset);
             Directory.CreateDirectory(Path.GetDirectoryName(name) ?? string.Empty);
             var writer = new XmlTextWriter(new StreamWriter(name, false, Encoding.UTF8));
             writer.Formatting = Formatting.Indented;
-            serializer.Serialize(writer, model, xmlNamespace);
+            if (isPreset) {
+                presetSerializer.Serialize(writer, model, xmlNamespace);
+            } else {
+                serializer.Serialize(writer, model, xmlNamespace);
+            }
             //Console.WriteLine($"Created {name}");
         }
     }
 
-    private static EntityModel Convert(FlatType type) {
-        var model = new EntityModel();
+    private EntityModel Convert(FlatType type, bool isPreset) {
+        EntityModel model = isPreset ? new EntityModelPreset() : new EntityModel();
         model.Id = type.ToGuid().ToString();
 
         List<FlatType> requiredMixin = type.RequiredMixin().ToList();
@@ -75,7 +85,7 @@ public class FlatToModel {
 
         model.Properties.Property = type.GetNewProperties().Select(prop => new Property {
             Name = prop.Name,
-            Value = new Value(prop.Type, prop.Value),
+            Value = new Value(assetIndex, prop.Type, prop.Value),
             Traits = new LTraits {
                 Trait = prop.Trait.Select(trait => new Trait{Name = trait}).ToList(),
             },
@@ -93,7 +103,7 @@ public class FlatToModel {
 
                 if (!mixinProperty.ValueEquals(property.Value)) {
                     overridden = true;
-                    propOverride.Value = new Value(property.Type, property.Value);
+                    propOverride.Value = new Value(assetIndex, property.Type, property.Value);
                 }
 
                 if (!mixinProperty.Trait.SequenceEqual(property.Trait)) {

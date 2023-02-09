@@ -55,6 +55,9 @@ public class EntityModel {
     public class LExtraDataList { }
 }
 
+[XmlRoot]
+public class EntityModelPreset : EntityModel { }
+
 public class Mixin {
     [XmlAttribute("SourceID")] public string SourceId;
     [XmlAttribute] public string SourceName;
@@ -97,6 +100,8 @@ public class BehaviorOverride {
 }
 
 public class Value : IXmlSerializable {
+    private readonly AssetIndex index;
+
     private readonly string type;
     private readonly object value;
 
@@ -105,7 +110,8 @@ public class Value : IXmlSerializable {
         value = "Invalid";
     }
 
-    public Value(string type, object value) {
+    public Value(AssetIndex index, string type, object value) {
+        this.index = index;
         this.type = type.Replace("AssetID", "Asset");
         this.value = value;
     }
@@ -122,7 +128,7 @@ public class Value : IXmlSerializable {
         WriteType(writer, type, value);
     }
 
-    private static void WriteType(XmlWriter writer, string valueType, object value) {
+    private void WriteType(XmlWriter writer, string valueType, object value) {
         if (valueType.StartsWith("Assoc")) {
             writer.WriteStartElement("Map");
             valueType = valueType.Replace("Assoc", "");
@@ -143,7 +149,7 @@ public class Value : IXmlSerializable {
         GetTypeWriter(valueType, value)(writer);
     }
 
-    private static IEnumerable<(string, Action<XmlWriter>)> GetMapTypeWriter(string type, object value) {
+    private IEnumerable<(string, Action<XmlWriter>)> GetMapTypeWriter(string type, object value) {
         return value switch {
             Dictionary<string, string> strDict => strDict.Select(entry => (entry.Key, GetTypeWriter(type, entry.Value))),
             Dictionary<string, bool> boolDict => boolDict.Select(entry => (entry.Key, GetTypeWriter(type, entry.Value))),
@@ -159,7 +165,7 @@ public class Value : IXmlSerializable {
         };
     }
 
-    private static Action<XmlWriter> GetTypeWriter(string type, object value) {
+    private Action<XmlWriter> GetTypeWriter(string type, object value) {
         return writer => {
             writer.WriteStartElement(type);
             switch (value) {
@@ -205,6 +211,21 @@ public class Value : IXmlSerializable {
                             writer.WriteString(value.ToString());
                             writer.WriteEndElement();
                             writer.WriteStartElement("TargetContainerHierarchy");
+                            writer.WriteEndElement();
+                            break;
+                        case "Asset":
+                            string llid = value.ToString();
+                            (string name, string path, string tags) = index.GetFields(llid);
+
+                            writer.WriteAttributeString("Value", llid);
+                            writer.WriteStartElement("LastKnownName");
+                            writer.WriteString(name);
+                            writer.WriteEndElement();
+                            writer.WriteStartElement("LastKnownPath");
+                            writer.WriteString(path);
+                            writer.WriteEndElement();
+                            writer.WriteStartElement("LastKnownTags");
+                            writer.WriteString(tags);
                             writer.WriteEndElement();
                             break;
                         case "AttachedNifAsset":
