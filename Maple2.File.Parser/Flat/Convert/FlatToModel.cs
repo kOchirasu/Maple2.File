@@ -50,19 +50,19 @@ public class FlatToModel {
                 continue;
             }
 
-            string name = type.Path;
+            string ext = "";
             bool isPreset = false;
-            if (name.StartsWith("flat/library")) {
-                name = name.Replace(".flat", ".model");
-            } else if (name.StartsWith("flat/presets")) {
-                name = name.Replace(".flat", ".preset");
+            if (type.Path.StartsWith("flat/library")) {
+                ext = "model";
+            } else if (type.Path.StartsWith("flat/presets")) {
+                ext = "preset";
                 isPreset = true;
             }
-            name = name.Replace("flat/", "convert/");
+            string path = Path.GetDirectoryName(type.Path.Replace("flat/", "convert/")) ?? string.Empty;
 
             EntityModel model = Convert(type, isPreset);
-            Directory.CreateDirectory(Path.GetDirectoryName(name) ?? string.Empty);
-            var writer = new XmlTextWriter(new StreamWriter(name, false, Encoding.UTF8));
+            Directory.CreateDirectory(path);
+            var writer = new XmlTextWriter(new StreamWriter($"{path}/{type.Name}.{ext}", false, Encoding.UTF8));
             writer.Formatting = Formatting.Indented;
             if (isPreset) {
                 presetSerializer.Serialize(writer, model, xmlNamespace);
