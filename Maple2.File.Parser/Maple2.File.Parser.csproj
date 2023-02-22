@@ -11,8 +11,8 @@
         <PackageTags>MapleStory2, File, Parser, m2d, xml</PackageTags>
         <!-- Use following lines to write the generated files to disk. -->
         <EmitCompilerGeneratedFiles Condition=" '$(Configuration)' == 'Debug' ">true</EmitCompilerGeneratedFiles>
-        <PackageVersion>2.0.15</PackageVersion>
-        <TargetFramework>net6.0</TargetFramework>
+        <PackageVersion>2.0.16</PackageVersion>
+        <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

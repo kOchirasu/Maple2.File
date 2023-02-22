@@ -7,12 +7,14 @@ using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.Parser.Enum;
 using Maple2.File.Parser.Tools;
+using Maple2.File.Parser.Xml.String;
 using Maple2.File.Parser.Xml.Table;
 
 namespace Maple2.File.Parser;
 
 public class TableParser {
     private readonly M2dReader xmlReader;
+    private readonly XmlSerializer nameSerializer;
     private readonly XmlSerializer bankTypeSerializer;
     private readonly XmlSerializer chatStickerSerializer;
     private readonly XmlSerializer defaultItemsSerializer;
@@ -60,6 +62,7 @@ public class TableParser {
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
+        this.nameSerializer = new XmlSerializer(typeof(StringMapping));
         this.bankTypeSerializer = new XmlSerializer(typeof(BankTypeRoot));
         this.chatStickerSerializer = new XmlSerializer(typeof(ChatStickerRoot));
         this.defaultItemsSerializer = new XmlSerializer(typeof(DefaultItems));
@@ -186,13 +189,19 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, Fish Fish)> ParseFish() {
+    public IEnumerable<(int Id, string Name, Fish Fish)> ParseFish() {
+        XmlReader nameReader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/stringfishname.xml"));
+        var mapping = nameSerializer.Deserialize(nameReader) as StringMapping;
+        Debug.Assert(mapping != null);
+
+        Dictionary<int, string> fishNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
+
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/fish.xml"));
         var data = fishSerializer.Deserialize(reader) as FishRoot;
         Debug.Assert(data != null);
 
         foreach (Fish fish in data.fish) {
-            yield return (fish.id, fish);
+            yield return (fish.id, fishNames.GetValueOrDefault(fish.id), fish);
         }
     }
 
@@ -318,14 +327,20 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, InteractObject Info)> ParseInteractObject() {
+    public IEnumerable<(int Id, string Name, InteractObject Info)> ParseInteractObject() {
+        XmlReader nameReader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/setitemname.xml"));
+        var mapping = nameSerializer.Deserialize(nameReader) as StringMapping;
+        Debug.Assert(mapping != null);
+
+        Dictionary<int, string> interactNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
+
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/interactobject.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
         var data = interactObjectSerializer.Deserialize(reader) as InteractObjectRoot;
         Debug.Assert(data != null);
 
         foreach (InteractObject interact in data.interact) {
-            yield return (interact.id, interact);
+            yield return (interact.id, interactNames.GetValueOrDefault(interact.id), interact);
         }
     }
 
@@ -546,13 +561,19 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, SetItemInfo Info)> ParseSetItemInfo() {
+    public IEnumerable<(int Id, string Name, SetItemInfo Info)> ParseSetItemInfo() {
+        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/setitemname.xml"));
+        var mapping = nameSerializer.Deserialize(reader) as StringMapping;
+        Debug.Assert(mapping != null);
+
+        Dictionary<int, string> setNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
+
         string sanitized = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/setiteminfo.xml")));
         var data = setItemInfoSerializer.Deserialize(XmlReader.Create(new StringReader(sanitized))) as SetItemInfoRoot;
         Debug.Assert(data != null);
 
         foreach (SetItemInfo info in data.set) {
-            yield return (info.id, info);
+            yield return (info.id, setNames.GetValueOrDefault(info.id), info);
         }
     }
 
@@ -566,13 +587,19 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, TitleTag TitleTag)> ParseTitleTag() {
+    public IEnumerable<(int Id, string Name, TitleTag TitleTag)> ParseTitleTag() {
+        XmlReader nameReader = xmlReader.GetXmlReader(xmlReader.GetEntry("en/titlename.xml"));
+        var mapping = nameSerializer.Deserialize(nameReader) as StringMapping;
+        Debug.Assert(mapping != null);
+
+        Dictionary<int, string> titleNames = mapping.key.ToDictionary(key => int.Parse(key.id), key => key.name);
+
         XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/titletag.xml"));
         var data = titleTagSerializer.Deserialize(reader) as TitleTagRoot;
         Debug.Assert(data != null);
 
         foreach (TitleTag title in data.key) {
-            yield return (title.id, title);
+            yield return (title.id, titleNames.GetValueOrDefault(title.id), title);
         }
     }
 
@@ -587,7 +614,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropCharge() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_charge.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -599,7 +626,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEvent() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_event.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -611,7 +638,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEventNpc() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_eventnpc.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -623,7 +650,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropNewGacha() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_newgacha.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -635,7 +662,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropPet() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_pet.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -647,7 +674,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestObj() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_quest_obj.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -659,7 +686,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestMob() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_quest_mob.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -671,7 +698,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropGacha() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/individualitemdrop_gacha.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -683,7 +710,7 @@ public class TableParser {
             yield return (drop.individualDropBoxID, drop);
         }
     }
-    
+
     public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemGearBox() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/individualitemdrop_gearbox.xml")));
         xml = Sanitizer.SanitizeBool(xml);

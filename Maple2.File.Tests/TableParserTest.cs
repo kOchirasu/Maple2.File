@@ -77,7 +77,7 @@ public class TableParserTest {
     public void TestFish() {
         var parser = new TableParser(TestUtils.XmlReader);
 
-        foreach ((_, _) in parser.ParseFish()) {
+        foreach ((_, _, _) in parser.ParseFish()) {
             continue;
         }
     }
@@ -194,7 +194,7 @@ public class TableParserTest {
     public void TestParseInteractObjectInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
 
-        foreach ((_, _) in parser.ParseInteractObject()) {
+        foreach ((_, _, _) in parser.ParseInteractObject()) {
             continue;
         }
         foreach ((_, _) in parser.ParseInteractObjectMastery()) {
@@ -375,7 +375,7 @@ public class TableParserTest {
     public void TestParseSetItemInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
 
-        foreach ((_, _) in parser.ParseSetItemInfo()) {
+        foreach ((_, _, _) in parser.ParseSetItemInfo()) {
             continue;
         }
     }
@@ -393,7 +393,7 @@ public class TableParserTest {
     public void TestParseTitleTag() {
         var parser = new TableParser(TestUtils.XmlReader);
 
-        foreach ((_, _) in parser.ParseTitleTag()) {
+        foreach ((_, _, _) in parser.ParseTitleTag()) {
             continue;
         }
     }

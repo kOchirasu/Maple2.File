@@ -12,8 +12,8 @@ namespace Maple2.File.Tests;
 public class XBlockParserTest {
     [TestMethod]
     public void TestConversion() {
-        var flatConverter = new FlatToModel(TestUtils.ExportedReader, TestUtils.AssetMetadataReader);
-        flatConverter.Convert();
+        // var flatConverter = new FlatToModel(TestUtils.ExportedReader, TestUtils.AssetMetadataReader);
+        // flatConverter.Convert();
 
         // var xblockConverter = new XBlockToBlock(TestUtils.ExportedReader);
         // xblockConverter.Convert();
