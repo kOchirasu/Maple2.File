@@ -603,14 +603,18 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, IEnumerable<IndividualItemDrop> ItemDrops)> ParseIndividualItemDrop() {
+    public IEnumerable<(int id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDrop() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-        foreach (IGrouping<byte, IndividualItemDrop> group in data.individualDropBox.GroupBy(dropbox => dropbox.dropGroup)) {
-            yield return (group.Key, group);
+
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
