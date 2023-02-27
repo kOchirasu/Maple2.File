@@ -16,7 +16,7 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/na/individualitemdrop_gearbox.xml
 [XmlRoot("ms2")]
 public partial class IndividualItemDropRoot {
-    [M2dFeatureLocale(Selector = "individualDropBoxID")] private IList<IndividualItemDrop> _individualDropBox;
+    [M2dFeatureLocale(Selector = "individualDropBoxID|dropGroup|item")] private IList<IndividualItemDrop> _individualDropBox;
 }
 
 public partial class IndividualItemDrop : IFeatureLocale {

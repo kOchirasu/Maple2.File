@@ -603,123 +603,143 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDrop() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDrop() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropCharge() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropCharge() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_charge.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEvent() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropEvent() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_event.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropEventNpc() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropEventNpc() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_eventnpc.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropNewGacha() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropNewGacha() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_newgacha.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropPet() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropPet() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_pet.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestObj() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropQuestObj() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_quest_obj.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropQuestMob() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropQuestMob() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/individualitemdrop_quest_mob.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemDropGacha() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemDropGacha() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/individualitemdrop_gacha.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 
-    public IEnumerable<(int Id, IndividualItemDrop ItemDrop)> ParseIndividualItemGearBox() {
+    public IEnumerable<(int Id, IDictionary<byte, List<IndividualItemDrop>>)> ParseIndividualItemGearBox() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/individualitemdrop_gearbox.xml")));
         xml = Sanitizer.SanitizeBool(xml);
         var reader = XmlReader.Create(new StringReader(xml));
         var data = individualItemDropSerializer.Deserialize(reader) as IndividualItemDropRoot;
         Debug.Assert(data != null);
-
-        foreach (IndividualItemDrop drop in data.individualDropBox) {
-            yield return (drop.individualDropBoxID, drop);
+        var groups = data.individualDropBox.GroupBy(dropbox =>  new {dropbox.individualDropBoxID, dropbox.dropGroup})
+            .ToDictionary(group => group.Key, group => group.ToList());
+        foreach (var group in groups) {
+            yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
+                ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
 }
