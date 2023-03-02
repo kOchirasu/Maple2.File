@@ -1,6 +1,7 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
-namespace Maple2.File.Parser.Xml.AdditionalEffect; 
+namespace Maple2.File.Parser.Xml.AdditionalEffect;
 
 public class FinalStatusProperty {
     [XmlElement] public FinalStat Stat;
@@ -86,4 +87,86 @@ public class FinalStat {
     [XmlAttribute] public float finalrmsprate;
     [XmlAttribute] public float finalbaprate;
     [XmlAttribute] public float finalbap_petrate;
+
+    public long Value(byte i) {
+        return i switch {
+            0 => finalstrvalue,
+            1 => finaldexvalue,
+            2 => finalintvalue,
+            3 => finallukvalue,
+            4 => finalhpvalue,
+            5 => finalhp_rgpvalue,
+            6 => finalhp_invvalue,
+            7 => finalspvalue,
+            8 => finalsp_rgpvalue,
+            9 => finalsp_invvalue,
+            10 => finalepvalue,
+            11 => finalep_rgpvalue,
+            12 => finalep_invvalue,
+            13 => finalaspvalue,
+            14 => finalmspvalue,
+            15 => finalatpvalue,
+            16 => finalevpvalue,
+            17 => finalcapvalue,
+            18 => finalcadvalue,
+            19 => finalcarvalue,
+            20 => finalnddvalue,
+            21 => finalabpvalue,
+            22 => finaljmpvalue,
+            23 => finalpapvalue,
+            24 => finalmapvalue,
+            25 => finalparvalue,
+            26 => finalmarvalue,
+            27 => finalwapminvalue,
+            28 => finalwapmaxvalue,
+            29 => finaldmgvalue,
+            30 => finaldmgvalue,
+            31 => finalpenvalue,
+            32 => finalrmspvalue,
+            33 => finalbapvalue,
+            34 => finalbap_petvalue,
+            _ => throw new ArgumentOutOfRangeException(nameof(i), i, "Invalid Final Stat value."),
+        };
+    }
+
+    public float Rate(byte i) {
+        return i switch {
+            0 => finalstrrate,
+            1 => finaldexrate,
+            2 => finalintrate,
+            3 => finallukrate,
+            4 => finalhprate,
+            5 => finalhp_rgprate,
+            6 => finalhp_invrate,
+            7 => finalsprate,
+            8 => finalsp_rgprate,
+            9 => finalsp_invrate,
+            10 => finaleprate,
+            11 => finalep_rgprate,
+            12 => finalep_invrate,
+            13 => finalasprate,
+            14 => finalmsprate,
+            15 => finalatprate,
+            16 => finalevprate,
+            17 => finalcaprate,
+            18 => finalcadrate,
+            19 => finalcarrate,
+            20 => finalnddrate,
+            21 => finalabprate,
+            22 => finaljmprate,
+            23 => finalpaprate,
+            24 => finalmaprate,
+            25 => finalparrate,
+            26 => finalmarrate,
+            27 => finalwapminrate,
+            28 => finalwapmaxrate,
+            29 => finaldmgrate,
+            30 => finaldmgrate,
+            31 => finalpenrate,
+            32 => finalrmsprate,
+            33 => finalbaprate,
+            34 => finalbap_petrate,
+            _ => throw new ArgumentOutOfRangeException(nameof(i), i, "Invalid Final Stat rate."),
+        };
+    }
 }
