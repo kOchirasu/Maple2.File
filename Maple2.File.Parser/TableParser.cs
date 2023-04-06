@@ -142,7 +142,7 @@ public class TableParser {
         var data = paletteSerializer.Deserialize(reader) as ColorPaletteRoot;
         Debug.Assert(data != null);
 
-        foreach (ColorPalette palette in data.color) {
+        foreach (ColorPalette palette in data.colorPalette) {
             yield return (palette.id, palette);
         }
     }
@@ -152,7 +152,7 @@ public class TableParser {
         var data = paletteSerializer.Deserialize(reader) as ColorPaletteRoot;
         Debug.Assert(data != null);
 
-        foreach (ColorPalette palette in data.color) {
+        foreach (ColorPalette palette in data.colorPalette) {
             yield return (palette.id, palette);
         }
     }
