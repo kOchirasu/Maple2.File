@@ -2,12 +2,12 @@
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
-namespace Maple2.File.Parser.Xml.Table; 
+namespace Maple2.File.Parser.Xml.Table;
 
 // ./data/xml/table/defaultitems.xml
 [XmlRoot("ms2")]
 public partial class DefaultItems {
-    [M2dFeatureLocale(Selector = "jobCode")] private IList<Key> _key;
+    [M2dFeatureLocale] private IList<Key> _key;
 
     public partial class Key : IFeatureLocale {
         [XmlAttribute] public int jobCode;
@@ -17,7 +17,7 @@ public partial class DefaultItems {
 
     public partial class Slot {
         [XmlAttribute] public string name = string.Empty;
-        
+
         [M2dFeatureLocale(Selector = "id")] private IList<Item> _item;
     }
 
