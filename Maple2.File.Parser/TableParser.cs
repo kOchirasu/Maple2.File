@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -59,6 +60,7 @@ public class TableParser {
     private readonly XmlSerializer setItemOptionSerializer;
     private readonly XmlSerializer titleTagSerializer;
     private readonly XmlSerializer individualItemDropSerializer;
+    private readonly XmlSerializer gachaInfoSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -107,6 +109,7 @@ public class TableParser {
         this.setItemOptionSerializer = new XmlSerializer(typeof(SetItemOptionRoot));
         this.titleTagSerializer = new XmlSerializer(typeof(TitleTagRoot));
         this.individualItemDropSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
+        this.gachaInfoSerializer = new XmlSerializer(typeof(GachaInfoRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -740,6 +743,18 @@ public class TableParser {
         foreach (var group in groups) {
             yield return (group.Key.individualDropBoxID, group.Value.GroupBy(drop => drop.dropGroup).
                 ToDictionary(drop => drop.Key, drop => drop.ToList()));
+        }
+    }
+    
+    public IEnumerable<(int Id, GachaInfo Info)> ParseGachaInfo() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/gacha_info.xml")));
+        xml = Sanitizer.SanitizeBool(xml);
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = gachaInfoSerializer.Deserialize(reader) as GachaInfoRoot;
+        Debug.Assert(data != null);
+
+        foreach (GachaInfo gachaInfo in data.randomBox) {
+            yield return (gachaInfo.randomBoxID, gachaInfo);
         }
     }
 }

@@ -442,4 +442,13 @@ public class TableParserTest {
             continue;
         }
     }
+    
+    [TestMethod]
+    public void TestGachaInfo() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseGachaInfo()) {
+            continue;
+        }
+    }
 }
