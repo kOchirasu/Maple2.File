@@ -61,6 +61,7 @@ public class TableParser {
     private readonly XmlSerializer titleTagSerializer;
     private readonly XmlSerializer individualItemDropSerializer;
     private readonly XmlSerializer gachaInfoSerializer;
+    private readonly XmlSerializer shopBeautyCouponSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -110,6 +111,7 @@ public class TableParser {
         this.titleTagSerializer = new XmlSerializer(typeof(TitleTagRoot));
         this.individualItemDropSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
         this.gachaInfoSerializer = new XmlSerializer(typeof(GachaInfoRoot));
+        this.shopBeautyCouponSerializer = new XmlSerializer(typeof(ShopBeautyCouponRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -755,6 +757,17 @@ public class TableParser {
 
         foreach (GachaInfo gachaInfo in data.randomBox) {
             yield return (gachaInfo.randomBoxID, gachaInfo);
+        }
+    }
+    
+    public IEnumerable<(int ShopId, ShopBeautyCoupon Item)> ParseShopBeautyCoupon() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/shop_beautycoupon.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = shopBeautyCouponSerializer.Deserialize(reader) as ShopBeautyCouponRoot;
+        Debug.Assert(data != null);
+
+        foreach (ShopBeautyCoupon coupon in data.shop) {
+            yield return (coupon.shopID, coupon);
         }
     }
 }
