@@ -7,15 +7,15 @@ namespace Maple2.File.Parser.Xml.Table;
 // ./data/xml/table/shop_beautycoupon.xml
 [XmlRoot("ms2")]
 public partial class ShopBeautyCouponRoot {
-    [M2dFeatureLocale(Selector = "shopID")] private IList<ShopBeautyCoupon> _shop;
+    public IList<ShopBeautyCoupon> shop;
 }
 
-public partial class ShopBeautyCoupon : IFeatureLocale {
+public partial class ShopBeautyCoupon {
     [XmlAttribute] public int shopID;
     [XmlAttribute] public byte byItem;
-    [XmlElement] public List<Item> item;
+    [M2dFeatureLocale(Selector = "id")] public List<Item> item;
     
-    public partial class Item {
+    public partial class Item : IFeatureLocale {
         [XmlAttribute] public int id;
     }
 }
