@@ -56,10 +56,10 @@ public partial class Slot {
         [XmlElement] public List<Custom> custom;
     }
 
-    public class Custom {
+    public partial class Custom {
         [XmlAttribute] public string icon = string.Empty;
-        [XmlAttribute] public string position = string.Empty;
-        [XmlAttribute] public string rotation = string.Empty;
+        [M2dVector3] public Vector3 position;
+        [M2dVector3] public Vector3 rotation;
     }
 
     public partial class UserRotation {

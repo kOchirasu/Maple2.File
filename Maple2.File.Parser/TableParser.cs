@@ -61,6 +61,8 @@ public class TableParser {
     private readonly XmlSerializer titleTagSerializer;
     private readonly XmlSerializer individualItemDropSerializer;
     private readonly XmlSerializer gachaInfoSerializer;
+    private readonly XmlSerializer shopBeautyCouponSerializer;
+    private readonly XmlSerializer meretmarketCategorySerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -110,6 +112,8 @@ public class TableParser {
         this.titleTagSerializer = new XmlSerializer(typeof(TitleTagRoot));
         this.individualItemDropSerializer = new XmlSerializer(typeof(IndividualItemDropRoot));
         this.gachaInfoSerializer = new XmlSerializer(typeof(GachaInfoRoot));
+        this.shopBeautyCouponSerializer = new XmlSerializer(typeof(ShopBeautyCouponRoot));
+        this.meretmarketCategorySerializer = new XmlSerializer(typeof(MeretMarketCategoryRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -755,6 +759,34 @@ public class TableParser {
 
         foreach (GachaInfo gachaInfo in data.randomBox) {
             yield return (gachaInfo.randomBoxID, gachaInfo);
+        }
+    }
+    
+    public IEnumerable<(int ShopId, ShopBeautyCoupon Item)> ParseShopBeautyCoupon() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/shop_beautycoupon.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = shopBeautyCouponSerializer.Deserialize(reader) as ShopBeautyCouponRoot;
+        Debug.Assert(data != null);
+
+        foreach (ShopBeautyCoupon coupon in data.shop) {
+            yield return (coupon.shopID, coupon);
+        }
+    }
+
+    public IEnumerable<(int CategoryId, string Feature, MeretMarketCategory Category)> ParseMeretMarketCategory() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/meratmarketcategory.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = meretmarketCategorySerializer.Deserialize(reader) as MeretMarketCategoryRoot;
+        Debug.Assert(data != null);
+
+        foreach (MeretMarketCategory category in data.category) {
+            yield return (category.id, string.Empty, category);
+        }
+        
+        foreach(MeretMarketEnvironment environment in data.environment) {
+            foreach (MeretMarketCategory category in environment.category) {
+                yield return (category.id, environment._feature, category);
+            }
         }
     }
 }

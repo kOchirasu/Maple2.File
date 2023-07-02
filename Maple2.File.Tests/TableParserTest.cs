@@ -451,4 +451,22 @@ public class TableParserTest {
             continue;
         }
     }
+    
+    [TestMethod]
+    public void TestShopBeautyCoupon() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseShopBeautyCoupon()) {
+            continue;
+        }
+    }
+    
+    [TestMethod]
+    public void TestMeretMarketCategory() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _, _) in parser.ParseMeretMarketCategory()) {
+            continue;
+        }
+    }
 }
