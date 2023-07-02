@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using M2dXmlGenerator;
 
@@ -13,13 +14,14 @@ public partial class MeretMarketCategoryRoot {
 
 public partial class MeretMarketCategory {
     [XmlAttribute] public int id;
-    [XmlAttribute] public string tabType;
+    [XmlAttribute] public string tabType = string.Empty;
     [XmlElement] public List<Tab> tab;
     
     public partial class Tab {
-        [XmlAttribute] public string name;
+        [XmlAttribute] public string name = string.Empty;
         [XmlAttribute] public int id;
-        [XmlAttribute] public string symbol;
+        [XmlAttribute] public string symbol = string.Empty;
+        [M2dArray] public string[] category = Array.Empty<string>();
         [XmlAttribute] public byte priority;
         [XmlAttribute] public byte @static;
         [XmlAttribute] public bool sortGender;
