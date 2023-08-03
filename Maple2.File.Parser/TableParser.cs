@@ -63,6 +63,7 @@ public class TableParser {
     private readonly XmlSerializer gachaInfoSerializer;
     private readonly XmlSerializer shopBeautyCouponSerializer;
     private readonly XmlSerializer meretmarketCategorySerializer;
+    private readonly XmlSerializer expBaseSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -114,6 +115,7 @@ public class TableParser {
         this.gachaInfoSerializer = new XmlSerializer(typeof(GachaInfoRoot));
         this.shopBeautyCouponSerializer = new XmlSerializer(typeof(ShopBeautyCouponRoot));
         this.meretmarketCategorySerializer = new XmlSerializer(typeof(MeretMarketCategoryRoot));
+        this.expBaseSerializer = new XmlSerializer(typeof(ExpBaseRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -787,6 +789,17 @@ public class TableParser {
             foreach (MeretMarketCategory category in environment.category) {
                 yield return (category.id, environment._feature, category);
             }
+        }
+    }
+
+    public IEnumerable<(int TableId, ExpBaseTable Table)> ParseExpBaseTable() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/expbasetable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = expBaseSerializer.Deserialize(reader) as ExpBaseRoot;
+        Debug.Assert(data != null);
+
+        foreach (ExpBaseTable table in data.table) {
+            yield return (table.expTableID, table);
         }
     }
 }

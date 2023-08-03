@@ -469,4 +469,14 @@ public class TableParserTest {
             continue;
         }
     }
+
+    [TestMethod]
+    public void TestExpBaseTable() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        var results = parser.ParseExpBaseTable();
+        foreach ((_, _) in parser.ParseExpBaseTable()) {
+            continue;
+        }
+    }
 }
