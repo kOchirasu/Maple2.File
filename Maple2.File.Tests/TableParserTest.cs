@@ -442,7 +442,7 @@ public class TableParserTest {
             continue;
         }
     }
-    
+
     [TestMethod]
     public void TestGachaInfo() {
         var parser = new TableParser(TestUtils.XmlReader);
@@ -451,7 +451,7 @@ public class TableParserTest {
             continue;
         }
     }
-    
+
     [TestMethod]
     public void TestShopBeautyCoupon() {
         var parser = new TableParser(TestUtils.XmlReader);
@@ -460,12 +460,58 @@ public class TableParserTest {
             continue;
         }
     }
-    
+
     [TestMethod]
     public void TestMeretMarketCategory() {
         var parser = new TableParser(TestUtils.XmlReader);
 
         foreach ((_, _, _) in parser.ParseMeretMarketCategory()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestExpBaseTable() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseExpBaseTable()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestNextExp() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseNextExp()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestAdventureLevelAbility() {
+        var parser = new TableParser(TestUtils.XmlReader);
+        var results = parser.ParseAdventureLevelAbility();
+
+        foreach ((_, _) in parser.ParseAdventureLevelAbility()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestAdventureLevelMission() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseAdventureLevelMission()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestAdventureLevelReward() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseAdventureLevelReward()) {
             continue;
         }
     }

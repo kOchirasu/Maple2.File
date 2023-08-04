@@ -63,7 +63,12 @@ public class TableParser {
     private readonly XmlSerializer gachaInfoSerializer;
     private readonly XmlSerializer shopBeautyCouponSerializer;
     private readonly XmlSerializer meretmarketCategorySerializer;
-
+    private readonly XmlSerializer expBaseSerializer;
+    private readonly XmlSerializer nextExpSerializer;
+    private readonly XmlSerializer adventureLevelAbilitySerializer;
+    private readonly XmlSerializer adventureLevelMissionSerializer;
+    private readonly XmlSerializer adventureLevelRewardSerializer;
+    
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
         this.nameSerializer = new XmlSerializer(typeof(StringMapping));
@@ -114,6 +119,11 @@ public class TableParser {
         this.gachaInfoSerializer = new XmlSerializer(typeof(GachaInfoRoot));
         this.shopBeautyCouponSerializer = new XmlSerializer(typeof(ShopBeautyCouponRoot));
         this.meretmarketCategorySerializer = new XmlSerializer(typeof(MeretMarketCategoryRoot));
+        this.expBaseSerializer = new XmlSerializer(typeof(ExpBaseRoot));
+        this.nextExpSerializer = new XmlSerializer(typeof(NextExpRoot));
+        this.adventureLevelAbilitySerializer = new XmlSerializer(typeof(AdventureLevelAbilityRoot));
+        this.adventureLevelMissionSerializer = new XmlSerializer(typeof(AdventureLevelMissionRoot));
+        this.adventureLevelRewardSerializer = new XmlSerializer(typeof(AdventureLevelRewardRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -787,6 +797,61 @@ public class TableParser {
             foreach (MeretMarketCategory category in environment.category) {
                 yield return (category.id, environment._feature, category);
             }
+        }
+    }
+
+    public IEnumerable<(int TableId, ExpBaseTable Table)> ParseExpBaseTable() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/expbasetable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = expBaseSerializer.Deserialize(reader) as ExpBaseRoot;
+        Debug.Assert(data != null);
+
+        foreach (ExpBaseTable table in data.table) {
+            yield return (table.expTableID, table);
+        }
+    }
+
+    public IEnumerable<(int Level, NextExp NextExp)> ParseNextExp() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/nextexp.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = nextExpSerializer.Deserialize(reader) as NextExpRoot;
+        Debug.Assert(data != null);
+
+        foreach (NextExp entry in data.exp) {
+            yield return (entry.level, entry);
+        }
+    }
+    
+    public IEnumerable<(int Level, AdventureLevelAbility Ability)> ParseAdventureLevelAbility() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/adventurelevelability.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = adventureLevelAbilitySerializer.Deserialize(reader) as AdventureLevelAbilityRoot;
+        Debug.Assert(data != null);
+
+        foreach (AdventureLevelAbility entry in data.ability) {
+            yield return (entry.id, entry);
+        }
+    }
+    
+    public IEnumerable<(int Id, AdventureLevelMission Mission)> ParseAdventureLevelMission() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/adventurelevelmission.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = adventureLevelMissionSerializer.Deserialize(reader) as AdventureLevelMissionRoot;
+        Debug.Assert(data != null);
+
+        foreach (AdventureLevelMission entry in data.mission) {
+            yield return (entry.missionId, entry);
+        }
+    }
+    
+    public IEnumerable<(int Id, AdventureLevelReward Reward)> ParseAdventureLevelReward() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/adventurelevelreward.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = adventureLevelRewardSerializer.Deserialize(reader) as AdventureLevelRewardRoot;
+        Debug.Assert(data != null);
+
+        foreach (AdventureLevelReward entry in data.reward) {
+            yield return (entry.level, entry);
         }
     }
 }
