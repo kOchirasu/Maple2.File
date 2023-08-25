@@ -515,4 +515,40 @@ public class TableParserTest {
             continue;
         }
     }
+
+    [TestMethod]
+    public void TestUgcDesign() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseUgcDesign()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestBanner() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseBanner()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestNameTagSymbol() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseNameTagSymbol()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestCommonExp() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseCommonExp()) {
+            continue;
+        }
+    }
 }
