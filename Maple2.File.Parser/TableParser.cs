@@ -68,6 +68,10 @@ public class TableParser {
     private readonly XmlSerializer adventureLevelAbilitySerializer;
     private readonly XmlSerializer adventureLevelMissionSerializer;
     private readonly XmlSerializer adventureLevelRewardSerializer;
+    private readonly XmlSerializer ugcDesignSerializer;
+    private readonly XmlSerializer bannerSerializer;
+    private readonly XmlSerializer nameTagSymbolSerializer;
+    private readonly XmlSerializer commonExpSerializer;
     
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -124,6 +128,10 @@ public class TableParser {
         this.adventureLevelAbilitySerializer = new XmlSerializer(typeof(AdventureLevelAbilityRoot));
         this.adventureLevelMissionSerializer = new XmlSerializer(typeof(AdventureLevelMissionRoot));
         this.adventureLevelRewardSerializer = new XmlSerializer(typeof(AdventureLevelRewardRoot));
+        this.ugcDesignSerializer = new XmlSerializer(typeof(UgcDesignRoot));
+        this.bannerSerializer = new XmlSerializer(typeof(BannerRoot));
+        this.nameTagSymbolSerializer = new XmlSerializer(typeof(NameTagSymbolRoot));
+        this.commonExpSerializer = new XmlSerializer(typeof(CommonExpRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -843,7 +851,7 @@ public class TableParser {
             yield return (entry.missionId, entry);
         }
     }
-    
+
     public IEnumerable<(int Id, AdventureLevelReward Reward)> ParseAdventureLevelReward() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/adventurelevelreward.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
@@ -852,6 +860,50 @@ public class TableParser {
 
         foreach (AdventureLevelReward entry in data.reward) {
             yield return (entry.level, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, UgcDesign Design)> ParseUgcDesign() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/ugcdesign.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = ugcDesignSerializer.Deserialize(reader) as UgcDesignRoot;
+        Debug.Assert(data != null);
+
+        foreach (UgcDesign entry in data.list) {
+            yield return (entry.itemID, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, Banner Banner)> ParseBanner() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/banner.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = bannerSerializer.Deserialize(reader) as BannerRoot;
+        Debug.Assert(data != null);
+
+        foreach (Banner entry in data.banner) {
+            yield return (entry.id, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, NameTagSymbol Symbol)> ParseNameTagSymbol() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/nametagsymbol.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = nameTagSymbolSerializer.Deserialize(reader) as NameTagSymbolRoot;
+        Debug.Assert(data != null);
+
+        foreach (NameTagSymbol entry in data.symbol) {
+            yield return (entry.id, entry);
+        }
+    }
+
+    public IEnumerable<(CommonExpType Type, CommonExp Exp)> ParseCommonExp() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/commonexptable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = commonExpSerializer.Deserialize(reader) as CommonExpRoot;
+        Debug.Assert(data != null);
+
+        foreach (CommonExp entry in data.exp) {
+            yield return (entry.expType, entry);
         }
     }
 }
