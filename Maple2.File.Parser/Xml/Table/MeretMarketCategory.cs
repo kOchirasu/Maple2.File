@@ -9,14 +9,14 @@ namespace Maple2.File.Parser.Xml.Table;
 [XmlRoot("ms2")]
 public partial class MeretMarketCategoryRoot {
     [XmlElement] public List<MeretMarketCategory> category;
-    [XmlElement] public List<MeretMarketEnvironment> environment;
+    [M2dFeatureLocale] private IList<MeretMarketEnvironment> _environment;
 }
 
 public partial class MeretMarketCategory {
     [XmlAttribute] public int id;
     [XmlAttribute] public string tabType = string.Empty;
     [XmlElement] public List<Tab> tab;
-    
+
     public partial class Tab {
         [XmlAttribute] public string name = string.Empty;
         [XmlAttribute] public int id;
