@@ -72,7 +72,7 @@ public class TableParser {
     private readonly XmlSerializer bannerSerializer;
     private readonly XmlSerializer nameTagSymbolSerializer;
     private readonly XmlSerializer commonExpSerializer;
-    
+
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
         this.nameSerializer = new XmlSerializer(typeof(StringMapping));
@@ -767,7 +767,7 @@ public class TableParser {
                 ToDictionary(drop => drop.Key, drop => drop.ToList()));
         }
     }
-    
+
     public IEnumerable<(int Id, GachaInfo Info)> ParseGachaInfo() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/gacha_info.xml")));
         xml = Sanitizer.SanitizeBool(xml);
@@ -779,7 +779,7 @@ public class TableParser {
             yield return (gachaInfo.randomBoxID, gachaInfo);
         }
     }
-    
+
     public IEnumerable<(int ShopId, ShopBeautyCoupon Item)> ParseShopBeautyCoupon() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/shop_beautycoupon.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
@@ -791,19 +791,22 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int CategoryId, string Feature, MeretMarketCategory Category)> ParseMeretMarketCategory() {
+    public IEnumerable<(int CategoryId, MeretMarketCategory Category)> ParseMeretMarketCategory() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/meratmarketcategory.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
         var data = meretmarketCategorySerializer.Deserialize(reader) as MeretMarketCategoryRoot;
         Debug.Assert(data != null);
 
-        foreach (MeretMarketCategory category in data.category) {
-            yield return (category.id, string.Empty, category);
-        }
-        
-        foreach(MeretMarketEnvironment environment in data.environment) {
-            foreach (MeretMarketCategory category in environment.category) {
-                yield return (category.id, environment._feature, category);
+        // MeretMarketCategory results are exclusive, if the feature is enabled, we only return the results under environment.
+        if (data.environment.Count > 0) {
+            foreach(MeretMarketEnvironment environment in data.environment) {
+                foreach (MeretMarketCategory category in environment.category) {
+                    yield return (category.id, category);
+                }
+            }
+        } else {
+            foreach (MeretMarketCategory category in data.category) {
+                yield return (category.id, category);
             }
         }
     }
@@ -829,7 +832,7 @@ public class TableParser {
             yield return (entry.level, entry);
         }
     }
-    
+
     public IEnumerable<(int Level, AdventureLevelAbility Ability)> ParseAdventureLevelAbility() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/adventurelevelability.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
@@ -840,7 +843,7 @@ public class TableParser {
             yield return (entry.id, entry);
         }
     }
-    
+
     public IEnumerable<(int Id, AdventureLevelMission Mission)> ParseAdventureLevelMission() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/adventurelevelmission.xml")));
         var reader = XmlReader.Create(new StringReader(xml));

@@ -465,7 +465,7 @@ public class TableParserTest {
     public void TestMeretMarketCategory() {
         var parser = new TableParser(TestUtils.XmlReader);
 
-        foreach ((_, _, _) in parser.ParseMeretMarketCategory()) {
+        foreach ((_, _) in parser.ParseMeretMarketCategory()) {
             continue;
         }
     }
