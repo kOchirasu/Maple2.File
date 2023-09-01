@@ -797,12 +797,15 @@ public class TableParser {
         var data = meretmarketCategorySerializer.Deserialize(reader) as MeretMarketCategoryRoot;
         Debug.Assert(data != null);
 
-        foreach (MeretMarketCategory category in data.category) {
-            yield return (category.id, category);
-        }
-
-        foreach(MeretMarketEnvironment environment in data.environment) {
-            foreach (MeretMarketCategory category in environment.category) {
+        // MeretMarketCategory results are exclusive, if the feature is enabled, we only return the results under environment.
+        if (data.environment.Count > 0) {
+            foreach(MeretMarketEnvironment environment in data.environment) {
+                foreach (MeretMarketCategory category in environment.category) {
+                    yield return (category.id, category);
+                }
+            }
+        } else {
+            foreach (MeretMarketCategory category in data.category) {
                 yield return (category.id, category);
             }
         }
