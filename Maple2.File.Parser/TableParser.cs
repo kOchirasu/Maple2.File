@@ -72,6 +72,14 @@ public class TableParser {
     private readonly XmlSerializer bannerSerializer;
     private readonly XmlSerializer nameTagSymbolSerializer;
     private readonly XmlSerializer commonExpSerializer;
+    private readonly XmlSerializer chapterBookSerializer;
+    private readonly XmlSerializer learningQuestSerializer;
+    private readonly XmlSerializer masteryDifferentialFactorSerializer;
+    private readonly XmlSerializer rewardContentSerializer;
+    private readonly XmlSerializer rewardContentItemSerializer;
+    private readonly XmlSerializer rewardContentExpStaticSerializer;
+    private readonly XmlSerializer rewardContentMesoSerializer;
+    private readonly XmlSerializer rewardContentMesoStaticSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -132,6 +140,14 @@ public class TableParser {
         this.bannerSerializer = new XmlSerializer(typeof(BannerRoot));
         this.nameTagSymbolSerializer = new XmlSerializer(typeof(NameTagSymbolRoot));
         this.commonExpSerializer = new XmlSerializer(typeof(CommonExpRoot));
+        this.chapterBookSerializer = new XmlSerializer(typeof(ChapterBookRoot));
+        this.learningQuestSerializer = new XmlSerializer(typeof(LearningQuestRoot));
+        this.masteryDifferentialFactorSerializer = new XmlSerializer(typeof(MasteryDifferentialFactorRoot));
+        this.rewardContentSerializer = new XmlSerializer(typeof(RewardContentRoot));
+        this.rewardContentItemSerializer = new XmlSerializer(typeof(RewardContentItemRoot));
+        this.rewardContentExpStaticSerializer = new XmlSerializer(typeof(RewardContentExpStaticRoot));
+        this.rewardContentMesoSerializer = new XmlSerializer(typeof(RewardContentMesoRoot));
+        this.rewardContentMesoStaticSerializer = new XmlSerializer(typeof(RewardContentMesoStaticRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -797,17 +813,20 @@ public class TableParser {
         var data = meretmarketCategorySerializer.Deserialize(reader) as MeretMarketCategoryRoot;
         Debug.Assert(data != null);
 
-        // MeretMarketCategory results are exclusive, if the feature is enabled, we only return the results under environment.
-        if (data.environment.Count > 0) {
-            foreach(MeretMarketEnvironment environment in data.environment) {
-                foreach (MeretMarketCategory category in environment.category) {
-                    yield return (category.id, category);
-                }
+        IDictionary<int, MeretMarketCategory> categories = new Dictionary<int, MeretMarketCategory>();
+        foreach (MeretMarketCategory category in data.category) {
+            categories.Add(category.id, category);
+        }
+
+        // Replace any existing categories with the ones under environment.
+        foreach (MeretMarketEnvironment environment in data.environment) {
+            foreach (MeretMarketCategory category in environment.category) {
+                categories[category.id] = category;
             }
-        } else {
-            foreach (MeretMarketCategory category in data.category) {
-                yield return (category.id, category);
-            }
+        }
+
+        foreach (MeretMarketCategory category in categories.Values) {
+            yield return (category.id, category);
         }
     }
 
@@ -907,6 +926,102 @@ public class TableParser {
 
         foreach (CommonExp entry in data.exp) {
             yield return (entry.expType, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, ChapterBook Book)> ParseChapterBook() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/chapterbook.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = chapterBookSerializer.Deserialize(reader) as ChapterBookRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (ChapterBook entry in data.chapterbook) {
+            yield return (entry.id, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, LearningQuest Quest)> ParseLearningQuest() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/learningquest.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = learningQuestSerializer.Deserialize(reader) as LearningQuestRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (LearningQuest entry in data.learning) {
+            yield return (entry.id, entry);
+        }
+    }
+
+    public IEnumerable<(int Differential, MasteryDifferentialFactor Factor)> ParseMasteryDifferentialFactor() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/masterydifferentialfactor.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = masteryDifferentialFactorSerializer.Deserialize(reader) as MasteryDifferentialFactorRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (MasteryDifferentialFactor entry in data.v) {
+            yield return (entry.differential, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, RewardContent Reward)> ParseRewardContent() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/rewardcontent.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = rewardContentSerializer.Deserialize(reader) as RewardContentRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (RewardContent entry in data.v) {
+            yield return (entry.rewardID, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, RewardContentItem Reward)> ParseRewardContentItem() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/rewardcontentitemtable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = rewardContentItemSerializer.Deserialize(reader) as RewardContentItemRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (RewardContentItem entry in data.table) {
+            yield return (entry.itemTableID, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, RewardContentExpStatic Reward)> ParseRewardContentExpStatic() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/rewardcontentexpstatictable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = rewardContentExpStaticSerializer.Deserialize(reader) as RewardContentExpStaticRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (RewardContentExpStatic entry in data.table) {
+            yield return (entry.expTableID, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, RewardContentMeso Reward)> ParseRewardContentMeso() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/rewardcontentmesotable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = rewardContentMesoSerializer.Deserialize(reader) as RewardContentMesoRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (RewardContentMeso entry in data.table) {
+            yield return (entry.mesoTableID, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, RewardContentMesoStatic Reward)> ParseRewardContentMesoStatic() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/rewardcontentmesostatictable.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = rewardContentMesoStaticSerializer.Deserialize(reader) as RewardContentMesoStaticRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (RewardContentMesoStatic entry in data.table) {
+            yield return (entry.mesoTableID, entry);
         }
     }
 }
