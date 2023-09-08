@@ -551,4 +551,76 @@ public class TableParserTest {
             continue;
         }
     }
+
+    [TestMethod]
+    public void TestChapterBook() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseChapterBook()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestLearningQuest() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseLearningQuest()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestMasteryDifferentialFactor() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseMasteryDifferentialFactor()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestRewardContent() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseRewardContent()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestRewardContentItem() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseRewardContentItem()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestRewardContentExpStatic() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseRewardContentExpStatic()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestRewardContentMeso() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseRewardContentMeso()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestRewardContentMesoStatic() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseRewardContentMesoStatic()) {
+            continue;
+        }
+    }
 }
