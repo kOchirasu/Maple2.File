@@ -15,5 +15,5 @@ public class MasteryDifferentialFactorRoot {
 public class MasteryDifferentialFactor {
     [XmlAttribute] public int differential;
     [XmlAttribute] public int factor;
-    [XmlAttribute] public string icon;
+    [XmlAttribute] public string icon = string.Empty;
 }

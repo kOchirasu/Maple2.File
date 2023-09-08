@@ -16,7 +16,7 @@ public partial class LearningQuest : IFeatureLocale {
     [XmlAttribute] public int reqLevel;
     [XmlAttribute] public int reqQuest;
     [XmlAttribute] public int reqField;
-    [XmlAttribute] public string movie;
+    [XmlAttribute] public string movie = string.Empty;
     [XmlAttribute] public int gotoField;
     [XmlAttribute] public int gotoPortal;
 }
