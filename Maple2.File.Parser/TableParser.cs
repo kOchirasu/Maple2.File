@@ -1029,7 +1029,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, SurvivalLevel Mkr)> ParseSurvivalLevel() {
+    public IEnumerable<(int Level, SurvivalLevel Entry)> ParseSurvivalLevel() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/survivallevel.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
         var data = survivalLevelSerializer.Deserialize(reader) as SurvivalLevelRoot;
@@ -1041,7 +1041,7 @@ public class TableParser {
         }
     }
 
-    public IEnumerable<(int Id, SurvivalLevelReward Mkr)> ParseSurvivalLevelReward() {
+    public IEnumerable<(int Level, SurvivalLevelReward Reward)> ParseSurvivalLevelReward() {
         string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/survivallevelreward.xml")));
         var reader = XmlReader.Create(new StringReader(xml));
         var data = survivalLevelRewardSerializer.Deserialize(reader) as SurvivalLevelRewardRoot;
