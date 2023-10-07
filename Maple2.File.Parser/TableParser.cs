@@ -80,6 +80,8 @@ public class TableParser {
     private readonly XmlSerializer rewardContentExpStaticSerializer;
     private readonly XmlSerializer rewardContentMesoSerializer;
     private readonly XmlSerializer rewardContentMesoStaticSerializer;
+    private readonly XmlSerializer survivalLevelSerializer;
+    private readonly XmlSerializer survivalLevelRewardSerializer;
 
     public TableParser(M2dReader xmlReader) {
         this.xmlReader = xmlReader;
@@ -148,6 +150,8 @@ public class TableParser {
         this.rewardContentExpStaticSerializer = new XmlSerializer(typeof(RewardContentExpStaticRoot));
         this.rewardContentMesoSerializer = new XmlSerializer(typeof(RewardContentMesoRoot));
         this.rewardContentMesoStaticSerializer = new XmlSerializer(typeof(RewardContentMesoStaticRoot));
+        this.survivalLevelSerializer = new XmlSerializer(typeof(SurvivalLevelRoot));
+        this.survivalLevelRewardSerializer = new XmlSerializer(typeof(SurvivalLevelRewardRoot));
 
         // var seen = new HashSet<string>();
         // this.bankTypeSerializer.UnknownAttribute += (sender, args) => {
@@ -1022,6 +1026,30 @@ public class TableParser {
 
         foreach (RewardContentMesoStatic entry in data.table) {
             yield return (entry.mesoTableID, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, SurvivalLevel Mkr)> ParseSurvivalLevel() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/survivallevel.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = survivalLevelSerializer.Deserialize(reader) as SurvivalLevelRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (SurvivalLevel entry in data.survivalLevelExp) {
+            yield return (entry.level, entry);
+        }
+    }
+
+    public IEnumerable<(int Id, SurvivalLevelReward Mkr)> ParseSurvivalLevelReward() {
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/na/survivallevelreward.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
+        var data = survivalLevelRewardSerializer.Deserialize(reader) as SurvivalLevelRewardRoot;
+
+        Debug.Assert(data != null);
+
+        foreach (SurvivalLevelReward entry in data.survivalLevelReward) {
+            yield return (entry.level, entry);
         }
     }
 }

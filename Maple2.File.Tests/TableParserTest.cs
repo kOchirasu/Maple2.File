@@ -623,4 +623,22 @@ public class TableParserTest {
             continue;
         }
     }
+
+    [TestMethod]
+    public void TestSurvivalLevel() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseSurvivalLevel()) {
+            continue;
+        }
+    }
+
+    [TestMethod]
+    public void TestSurvivalLevelReward() {
+        var parser = new TableParser(TestUtils.XmlReader);
+
+        foreach ((_, _) in parser.ParseSurvivalLevelReward()) {
+            continue;
+        }
+    }
 }
