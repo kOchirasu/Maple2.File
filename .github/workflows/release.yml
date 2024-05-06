@@ -22,5 +22,5 @@ jobs:
       - name: Pack
         run: dotnet pack --configuration Release /p:Version=${VERSION} --output .
       - name: Push
-        run: dotnet nuget push Maple2.File.Parser.Tadeucci.${VERSION}.nupkg --source https://nuget.pkg.github.com/acraven/index.json --api-key ${{ secrets.NUGET_TOKEN }}
+        run: dotnet nuget push Maple2.File.Parser.Tadeucci.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }}
 
