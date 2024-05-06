@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace Maple2.File.IO {
         public readonly IReadOnlyList<PackFileEntry> Files;
 
         public M2dReader(string path) {
+            // Force Globalization to en-US because we use periods instead of commas for decimals
+            CultureInfo.CurrentCulture = new("en-US");
+
             m2dFile = MemoryMappedFile.CreateFromFile(path);
 
             // Create an index from the header file

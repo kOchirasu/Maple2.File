@@ -2,17 +2,23 @@
 using System.Xml.Serialization;
 using Maple2.File.IO;
 using Maple2.File.Parser.Tools;
+using Maple2.File.Tests.helpers;
 
 namespace Maple2.File.Tests;
 
 public static class TestUtils {
-    private const string m2dPath = @"C:\Nexon\Library\Library\maplestory2\appdata\Data";
     public static readonly M2dReader XmlReader;
     public static readonly M2dReader ServerReader;
     public static readonly M2dReader ExportedReader;
     public static readonly M2dReader AssetMetadataReader;
 
     static TestUtils() {
+        DotEnv.Load();
+        string? m2dPath = Environment.GetEnvironmentVariable("MS2_DATA_FOLDER");
+        if (string.IsNullOrEmpty(m2dPath)) {
+            throw new Exception("MS2_DATA_FOLDER is not set");
+        }
+
         XmlReader = new M2dReader(@$"{m2dPath}\Xml.m2d");
         Filter.Load(XmlReader, "NA", "Live");
         ExportedReader = new M2dReader(@$"{m2dPath}\Resource\Exported.m2d");

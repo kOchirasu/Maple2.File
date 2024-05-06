@@ -316,7 +316,8 @@ public class ServerTableParser {
     }
 
     public IEnumerable<(int ShopId, ShopBeauty ShopBeauty)> ParseShopBeautyCoupon() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/Server/shop_beautyCoupon.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/Server/shop_beautyCoupon.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = shopBeautySerializer.Deserialize(reader) as ShopBeautyRoot;
         Debug.Assert(data != null);
 
@@ -326,7 +327,8 @@ public class ServerTableParser {
     }
 
     public IEnumerable<(int ShopId, ShopBeauty ShopBeauty)> ParseShopBeautySpecialHair() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/Server/NA/shop_beautySpecialHair.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/Server/NA/shop_beautySpecialHair.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = shopBeautySerializer.Deserialize(reader) as ShopBeautyRoot;
         Debug.Assert(data != null);
 
@@ -448,7 +450,8 @@ public class ServerTableParser {
     }
 
     public IEnumerable<(int Id, Fish Fish)> ParseFish() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/Server/fish.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/Server/fish.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = fishSerializer.Deserialize(reader) as FishRoot;
         Debug.Assert(data != null);
 
@@ -458,7 +461,8 @@ public class ServerTableParser {
     }
 
     public IEnumerable<(int Id, FishBox Box)> ParseIndividualFishBox() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/Server/individualFishBox.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/Server/individualFishBox.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = fishBoxSerializer.Deserialize(reader) as FishBoxRoot;
         Debug.Assert(data != null);
 
@@ -468,7 +472,8 @@ public class ServerTableParser {
     }
 
     public IEnumerable<(int Id, FishBox Box)> ParseGlobalFishBox() {
-        XmlReader reader = xmlReader.GetXmlReader(xmlReader.GetEntry("table/Server/globalFishBox.xml"));
+        string xml = Sanitizer.RemoveEmpty(xmlReader.GetString(xmlReader.GetEntry("table/Server/globalFishBox.xml")));
+        var reader = XmlReader.Create(new StringReader(xml));
         var data = fishBoxSerializer.Deserialize(reader) as FishBoxRoot;
         Debug.Assert(data != null);
 
